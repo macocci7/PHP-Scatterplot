@@ -22,16 +22,16 @@ class Plotter extends Analyzer
     protected $gridHeightPitch;
     protected $pixGridWidth;
     protected $pixGridHeight;
-    protected $gridHeightMax;
-    protected $gridHeightMin;
-    protected $gridWidthMax;
-    protected $gridWidthMin;
-    protected $gridVertical = false;
-    protected $gridHorizontal = false;
-    protected $vLimitUpper;
-    protected $vLmitLower;
-    protected $hLimitUpper;
-    protected $hLimitLower;
+    protected $gridXMax;
+    protected $gridXMin;
+    protected $gridYMax;
+    protected $gridYMin;
+    protected $gridX = false;
+    protected $gridY = false;
+    protected $xLimitUpper;
+    protected $xLmitLower;
+    protected $yLimitUpper;
+    protected $yLimitLower;
     protected $plotDiameter = 2;
     protected $plotColor = '#000000';
     protected $pixHeightPitch;
@@ -83,12 +83,12 @@ class Plotter extends Analyzer
         $this->boxCount = max($counts);
         $this->baseX = (int) ($this->canvasWidth * (1 - $this->frameXRatio) * 3 / 4);
         $this->baseY = (int) ($this->canvasHeight * (1 + $this->frameYRatio) / 2);
-        $maxValue = $this->layerMax($this->layer);
-        $minValue = $this->layerMin($this->layer);
-        if (isset($this->limitUpper)) {
-            $this->gridMax = $this->limitUpper;
+        list($xMax, $yMax) = $this->layerMax($this->layer);
+        list($xMin, $yMin) = $this->layerMin($this->layer);
+        if (isset($this->xLimitUpper)) {
+            $this->gridXMax = $this->xLimitUpper;
         } else {
-            $this->gridMax = ((int) ($maxValue + ($maxValue - $minValue) * 0.1) * 10 ) / 10;
+            $this->gridXMax = ((int) ($maxValue + ($maxValue - $minValue) * 0.1) * 10 ) / 10;
         }
         if (isset($this->limitLower)) {
             $this->gridMin = $this->limitLower;

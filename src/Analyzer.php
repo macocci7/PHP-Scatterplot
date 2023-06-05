@@ -186,23 +186,31 @@ class Analyzer
 
     public function layerMax($layer)
     {
-        $maxValues = [];
-        foreach ($layers as $data) {
-            foreach($data as $key => $values) {
-                $maxValues[] = max($values);
+        $xMax = [];
+        $yMax = [];
+        foreach ($layers as $layer) {
+            foreach ($layer['x'] as $key => $values) {
+                $xMax[] = max($values);
+            }
+            foreach ($layer['y'] as $key => $values) {
+                $yMax[] = max($values);
             }
         }
-        return max($maxValues);
+        return [max($xMax), max($yMax)];
     }
 
     public function layerMin($layer)
     {
-        $minValues = [];
-        foreach ($layers as $data) {
-            foreach ($data as $key => $values) {
-                $minValues[] = min($values);
+        $xMin = [];
+        $yMin = [];
+        foreach ($layers as $layer) {
+            foreach ($layer['x'] as $key => $values) {
+                $xMin[] = min($values);
+            }
+            foreach ($layer['y'] as $key => $values) {
+                $yMin[] = min($values);
             }
         }
-        return min($minValues);
+        return [min($xMin), min($yMin)];
     }
 }
