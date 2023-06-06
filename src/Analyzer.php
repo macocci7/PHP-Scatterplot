@@ -4,14 +4,62 @@ namespace Macocci7\PhpScatterplot;
 
 use Macocci7\PhpFrequencyTable\FrequencyTable;
 
+define("LIMIT_LAYERS", 8);
+
+/**
+ * Class for analysis
+ */
 class Analyzer
 {
     public $ft;
     public $parsed;
 
+    /**
+     * constructor
+     * @param
+     * @return
+     */
     public function __construct()
     {
         $this->ft = new FrequencyTable();
+    }
+
+    /**
+     * judges whether $layers is valid or not
+     * @param array $layers
+     * @return bool
+     */
+    public function isValidLayers($layers)
+    {
+        if (!is_array($layers)) return false;
+        if (count($layers) > LIMIT_LAYERS) {
+            echo "too many layers. there's more than " . LIMIT_LAYERS . " layers.\n";
+            return false;
+        }
+        foreach ($layers as $layer) {
+            if (!$this->isValidLayer($layer)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * judges whether $layer is valid or not
+     * @param array $layer
+     * @return bool
+     */
+    public function isValidLayer($layer)
+    {
+        if (!is_array($layer)) return false;
+        if (empty($layer)) return false;
+        if (!array_key_exists('x', $layer)) return false;
+        if (!array_key_exists('y', $layer)) return false;
+        foreach ($layer['x'] as $value) {
+            if (!is_int($value) && !is_float($value)) return false;
+        }
+        foreach ($layer['y'] as $value) {
+            if (!is_int($value) && !is_float($value)) return false;
+        }
+        return true;
     }
 
     /**
@@ -184,33 +232,71 @@ class Analyzer
         return $outliers;
     }
 
-    public function layerMax($layer)
+    /**
+     * returns x-max and y-max of $layers
+     * @param array $layers
+     * @return array
+     */
+    public function layerMax($layers)
     {
+        if (!$this->isValidLayers($layers)) return;
         $xMax = [];
         $yMax = [];
         foreach ($layers as $layer) {
-            foreach ($layer['x'] as $key => $values) {
-                $xMax[] = max($values);
-            }
-            foreach ($layer['y'] as $key => $values) {
-                $yMax[] = max($values);
-            }
+            $xMax[] = max($layer['x']);
+            $yMax[] = max($layer['y']);
         }
         return [max($xMax), max($yMax)];
     }
 
-    public function layerMin($layer)
+    /**
+     * return x-min and y-min of $layers
+     * @param array $layers
+     * @return array
+     */
+    public function layerMin($layers)
     {
+        if (!$this->isValidLayers($layers)) return;
         $xMin = [];
         $yMin = [];
         foreach ($layers as $layer) {
-            foreach ($layer['x'] as $key => $values) {
-                $xMin[] = min($values);
-            }
-            foreach ($layer['y'] as $key => $values) {
-                $yMin[] = min($values);
-            }
+            $xMin[] = min($layer['x']);
+            $yMin[] = min($layer['y']);
         }
         return [min($xMin), min($yMin)];
+    }
+
+    /**
+     * returns parsed data of layers
+     * @param array $layers
+     * @return array
+     */
+    public function parse($layers)
+    {
+        if (!$this->isValidLayers($layers)) return;
+        $parsed = [];
+        foreach ($layers as $name => $layer) {
+            $parsed[$name] = [
+                'count' => count($layer['x']),
+                'x' => [
+                    'Mean' => $this->mean($layer['x']),
+                    'Max' => max($layer['x']),
+                    'Min' => min($layer['x']),
+                    'Variance' => $this->variance($layer['x']),
+                    'StandardDeviation' => $this->standardDeviation($layer['x']),
+                ],
+                'y' => [
+                    'Mean' => $this->mean($layer['y']), 
+                    'Max' => max($layer['y']),
+                    'Min' => min($layer['y']),
+                    'Variance' => $this->variance($layer['y']),
+                    'StandardDeviation' => $this->standardDeviation($layer['y']),
+                ],
+                'Covariance' => $this->covariance($layer['x'], $layer['y']),
+                'CorrelationCoefficient' => $this->correlationCoefficient($layer['x'], $layer['y']),
+                'RegressionLineFormula' => $this->regressionLineFormula($layer['x'], $layer['y']),
+            ];
+        }
+        return $parsed;
     }
 }

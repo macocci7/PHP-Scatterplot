@@ -5,7 +5,7 @@
 ### Class:Scatterplot extends Plotter
 - data
 - layers
-- matrix
+- matrix: future version
 
 ### Class:Plotter extends Analyzer
 - plot
@@ -13,7 +13,7 @@
 - regressionCurve
 - referenceLine
 - specificationLimit
-- create
+- create($path)
 
 ### Class:Analyzer
 - mean($data)
