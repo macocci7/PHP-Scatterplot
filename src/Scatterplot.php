@@ -219,13 +219,18 @@ class Scatterplot extends Plotter
 
     /**
      * sets the color of dots
-     * @param string $color
+     * @param array $color
      * @return self
      */
-    public function color($color)
+    public function colors($colors)
     {
-        if (!$this->isColorCode($color)) return;
-        $this->plotColor = $color;
+        if (!is_array($colors)) return;
+        foreach ($colors as $index => $color) {
+            if (!is_int($index)) return;
+            if ($index < 0 || $index > LIMIT_LAYERS) return;
+            if (!$this->isColorCode($color)) return;
+            $this->colors[$index] = $color;
+        }
         return $this;
     }
 
@@ -374,17 +379,22 @@ class Scatterplot extends Plotter
     /**
      * sets the width and color of the regression line
      * @param integer $width
-     * @param string $color
+     * @param array $color
      * @return self
      */
-    public function regressionLine($width, $color)
+    public function regressionLine($width, $colors)
     {
         if (!is_int($width)) return;
         if ($width < 1) return;
-        if (!$this->isColorCode($color)) return;
+        if (!is_array($colors)) return;
+        foreach ($colors as $index => $color) {
+            if (!is_int($index)) return;
+            if ($index < 0 || $index > LIMIT_LAYERS) return;
+            if (!$this->isColorCode($color)) return;
+            $this->regressionLineColors[$index] = $color;
+        }
         $this->regressionLine = true;
         $this->regressionLineWidth = $width;
-        $this->regressionLineColor = $color;
         return $this;
     }
 
@@ -564,6 +574,15 @@ class Scatterplot extends Plotter
     {
         $this->specificationLimitXOff();
         $this->specificationLimitYOff();
+        return $this;
+    }
+
+    /**
+     * sets regression line on
+     */
+    public function regressionLineOn()
+    {
+        $this->regressionLine = true;
         return $this;
     }
 

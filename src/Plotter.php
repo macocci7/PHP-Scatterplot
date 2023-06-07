@@ -37,7 +37,7 @@ class Plotter extends Analyzer
     protected $yLimitUpper;
     protected $yLimitLower;
     protected $plotDiameter = 2;
-    protected $plotColor = '#000000';
+    protected $plotColors = '#000000';
     protected $fontPath = 'fonts/ipaexg.ttf'; // IPA ex Gothic 00401
     //protected $fontPath = 'fonts/ipaexm.ttf'; // IPA ex Mincho 00401
     protected $fontSize = 16;

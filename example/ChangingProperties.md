@@ -60,7 +60,7 @@
 |legends|[John, Jake, Hugo, Alex]|
 |legendWidth|100|
 |legendFontSize|10|
-|colors|[#3333cc, #cc3333, #339933, #33cccc, #cc3333, #ffcc33, #cccc33, #cc33cc]|
+|colors|[#ffffff, #cc3333, #339933, #33cccc, #cc3333, #ffcc33, #cccc33, #cc33cc]|
 </details>
 
 <details><summary>Regression Line Formula</summary>

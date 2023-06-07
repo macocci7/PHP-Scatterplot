@@ -1,9 +1,9 @@
 <?php
 require('../vendor/autoload.php');
 
-use Macocci7\PhpScatterplot\Scatterplot;
+use Macocci7\PhpScatterplot\Analyzer;
 
-$sp = new Scatterplot();
+$a = new Analyzer();
 
 $layers = [
     'John' => [
@@ -16,4 +16,4 @@ $layers = [
     ],
 ];
 
-var_dump($sp->parse($layers));
+var_dump($a->parse($layers));

@@ -17,6 +17,7 @@ Correlation Coefficient and Regression Line Formula.
     - [Basic Usage](#basic-usage)
     - [Using Layers](#using-layers)
     - [Changing Properties](#changing-properties)
+    - [Parsed Data](#parsed-data)
 - [Example](#example)
 - [License](#license)
 
@@ -135,13 +136,13 @@ composer require macocci7/php-scatterplot
         ->gridXPitch(2)
         ->gridYPitch(2)
         ->bgcolor('#ccccff')
-        ->color('#ffffff')
+        ->colors(['#ffffff'])
         ->plotSize(4)
         ->fontColor('#333333')
         ->grid(1, '#999999')
         ->gridXOn()
         ->gridYOn()
-        ->regressionLine(3, '#cc2222')
+        ->regressionLine(3, ['#666666', '#cc2222', '#2222cc', '#22cc22'])
         ->referenceLineX(1.5, 1, '#00ccff')
         ->referenceLineY(1.5, 1, '#00ccff')
         ->specificationLimitX(0.5, 11.5, 1, '#ff00ff')
@@ -165,9 +166,9 @@ composer require macocci7/php-scatterplot
     <?php
     require('../vendor/autoload.php');
 
-    use Macocci7\PhpScatterplot\Scatterplot;
+    use Macocci7\PhpScatterplot\Analyzer;
 
-    $sp = new Scatterplot();
+    $a = new Analyzer();
 
     $layers = [
         'John' => [
@@ -180,7 +181,7 @@ composer require macocci7/php-scatterplot
         ],
     ];
 
-    var_dump($sp->parse($layers));
+    var_dump($a->parse($layers));
     ```
 
 - Result
@@ -289,6 +290,6 @@ composer require macocci7/php-scatterplot
 
 *Document written: 2023/06/06*
 
-*Document updated: 2023/06/06*
+*Document updated: 2023/06/07*
 
 Copyright 2023 macocci7.
