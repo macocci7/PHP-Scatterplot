@@ -281,6 +281,7 @@ composer require macocci7/php-scatterplot
 - [UsingLayers.php](example/UsingLayers.php) >> results in [UsingLayers.md](example/UsingLayers.md)
 - [ChangingProperties.php](example/ChangingProperties.php) >> results in [ChangingProperties.md](example/ChangingProperties.md)
 - [ParsedData.php](example/ParsedData.php) >> results in [ParsedData.txt](example/ParsedData.txt)
+- [Matrix.php](example/Matrix.php) >> results in [Matrix.md](example/Matrix.md)
 
 ## License
 
@@ -290,6 +291,6 @@ composer require macocci7/php-scatterplot
 
 *Document written: 2023/06/06*
 
-*Document updated: 2023/06/07*
+*Document updated: 2023/06/10*
 
 Copyright 2023 macocci7.

@@ -312,13 +312,13 @@ class Plotter extends Analyzer
     public function plotGridValuesY()
     {
         for ($i = $this->gridYMin; $i <= $this->gridYMax; $i += $this->gridYPitch) {
-            $x = $this->baseX - $this->fontSize * 1.1;
+            $x = $this->baseX - $this->fontSize * 0.4;
             $y = $this->pY($i) + $this->fontSize * 0.4;
             $this->image->text((string) $i, $x, $y, function ($font) {
                 $font->file($this->fontPath);
                 $font->size($this->fontSize);
                 $font->color($this->fontColor);
-                $font->align('center');
+                $font->align('right');
                 $font->valign('bottom');
             });
         }
@@ -609,6 +609,9 @@ class Plotter extends Analyzer
         if (!is_string($filePath)) return;
         if (strlen($filePath) == 0) return;
         $this->setProperties();
+        $this->plotLabelX();
+        $this->plotLabelY();
+        $this->plotCaption();
         $this->plotGridsX();
         $this->plotGridsY();
         $this->plotGridValuesX();
@@ -619,9 +622,6 @@ class Plotter extends Analyzer
         $this->plotReferenceLineY();
         $this->plotSpecificationLimitX();
         $this->plotSpecificationLimitY();
-        $this->plotLabelX();
-        $this->plotLabelY();
-        $this->plotCaption();
         $this->plotLegend();
         $this->image->save($filePath);
         return $this;
