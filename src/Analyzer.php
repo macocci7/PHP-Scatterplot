@@ -11,7 +11,14 @@ define("LIMIT_LAYERS", 8);
  */
 class Analyzer
 {
+    /**
+     * Frequency Table
+     */
     public $ft;
+
+    /**
+     * parsed data
+     */
     public $parsed;
 
     /**
@@ -29,15 +36,16 @@ class Analyzer
      * @param array $layers
      * @return bool
      */
-    public function isValidLayers($layers)
+    public function isValidLayers(array $layers)
     {
-        if (!is_array($layers)) return false;
         if (count($layers) > LIMIT_LAYERS) {
             echo "too many layers. there's more than " . LIMIT_LAYERS . " layers.\n";
             return false;
         }
         foreach ($layers as $layer) {
-            if (!$this->isValidLayer($layer)) return false;
+            if (!$this->isValidLayer($layer)) {
+                return false;
+            }
         }
         return true;
     }
@@ -47,17 +55,26 @@ class Analyzer
      * @param array $layer
      * @return bool
      */
-    public function isValidLayer($layer)
+    public function isValidLayer(array $layer)
     {
-        if (!is_array($layer)) return false;
-        if (empty($layer)) return false;
-        if (!array_key_exists('x', $layer)) return false;
-        if (!array_key_exists('y', $layer)) return false;
+        if (empty($layer)) {
+            return false;
+        }
+        if (!array_key_exists('x', $layer)) {
+            return false;
+        }
+        if (!array_key_exists('y', $layer)) {
+            return false;
+        }
         foreach ($layer['x'] as $value) {
-            if (!is_int($value) && !is_float($value)) return false;
+            if (!is_int($value) && !is_float($value)) {
+                return false;
+            }
         }
         foreach ($layer['y'] as $value) {
-            if (!is_int($value) && !is_float($value)) return false;
+            if (!is_int($value) && !is_float($value)) {
+                return false;
+            }
         }
         return true;
     }
@@ -67,12 +84,15 @@ class Analyzer
      * @param array $data
      * @return bool
      */
-    public function isValid($data)
+    public function isValid(array $data)
     {
-        if (!is_array($data)) return false;
-        if (empty($data)) return false;
+        if (empty($data)) {
+            return false;
+        }
         foreach ($data as $value) {
-            if (!is_int($value) && !is_float($value)) return false;
+            if (!is_int($value) && !is_float($value)) {
+                return false;
+            }
         }
         return true;
     }
@@ -82,9 +102,11 @@ class Analyzer
      * @param array $data
      * @return float
      */
-    public function mean($data)
+    public function mean(array $data)
     {
-        if (!$this->isValid($data)) return;
+        if (!$this->isValid($data)) {
+            return;
+        }
         return array_sum($data) / count($data);
     }
 
@@ -93,9 +115,11 @@ class Analyzer
      * @param array $data
      * @return float
      */
-    public function variance($data)
+    public function variance(array $data)
     {
-        if (!$this->isValid($data)) return;
+        if (!$this->isValid($data)) {
+            return;
+        }
         $mean = $this->mean($data);
         $deviation2 = 0;
         foreach ($data as $value) {
@@ -110,10 +134,14 @@ class Analyzer
      * @param array $dataY
      * @return float
      */
-    public function covariance($dataX, $dataY)
+    public function covariance(array $dataX, array $dataY)
     {
-        if (!$this->isValid($dataX) || !$this->isValid($dataY)) return;
-        if (count($dataX) !== count($dataY)) return;
+        if (!$this->isValid($dataX) || !$this->isValid($dataY)) {
+            return;
+        }
+        if (count($dataX) !== count($dataY)) {
+            return;
+        }
         $count = count($dataX);
         $meanX = $this->mean($dataX);
         $meanY = $this->mean($dataY);
@@ -129,9 +157,11 @@ class Analyzer
      * @param array $data
      * @return float
      */
-    public function standardDeviation($data)
+    public function standardDeviation(array $data)
     {
-        if (!$this->isValid($data)) return;
+        if (!$this->isValid($data)) {
+            return;
+        }
         return sqrt($this->variance($data));
     }
 
@@ -141,13 +171,19 @@ class Analyzer
      * @param array $dataY
      * @return float
      */
-    public function correlationCoefficient($dataX, $dataY)
+    public function correlationCoefficient(array $dataX, array $dataY)
     {
-        if (!$this->isValid($dataX) || !$this->isValid($dataY)) return;
-        if (count($dataX) !== count($dataY)) return;
+        if (!$this->isValid($dataX) || !$this->isValid($dataY)) {
+            return;
+        }
+        if (count($dataX) !== count($dataY)) {
+            return;
+        }
         $sx = $this->standardDeviation($dataX);
         $sy = $this->standardDeviation($dataY);
-        if (!($sx * $sy)) return;
+        if (!($sx * $sy)) {
+            return;
+        }
         return $this->covariance($dataX, $dataY) / ($sx * $sy);
     }
 
@@ -157,12 +193,18 @@ class Analyzer
      * @param array $dataY
      * @return array
      */
-    public function regressionLineFormula($dataX, $dataY)
+    public function regressionLineFormula(array $dataX, array $dataY)
     {
-        if (!$this->isValid($dataX) || !$this->isValid($dataY)) return;
-        if (count($dataX) !== count($dataY)) return;
+        if (!$this->isValid($dataX) || !$this->isValid($dataY)) {
+            return;
+        }
+        if (count($dataX) !== count($dataY)) {
+            return;
+        }
         $varianceX = $this->variance($dataX);
-        if (!$varianceX) return;
+        if (!$varianceX) {
+            return;
+        }
         $a = $this->covariance($dataX, $dataY) / $varianceX;
         $b = $this->mean($dataY) - $a * $this->mean($dataX);
         return [
@@ -184,14 +226,20 @@ class Analyzer
      * @param array $data
      * @return float
      */
-    public function getUcl($data)
+    public function getUcl(array $data)
     {
-        if (!$this->isValid($data)) return;
+        if (!$this->isValid($data)) {
+            return;
+        }
         $this->ft->setClassRange(1);
         $this->ft->setData($data);
         $parsed = $this->ft->parse();
-        if (!array_key_exists('ThirdQuartile', $parsed)) return;
-        if (!array_key_exists('InterQuartileRange', $parsed)) return;
+        if (!array_key_exists('ThirdQuartile', $parsed)) {
+            return;
+        }
+        if (!array_key_exists('InterQuartileRange', $parsed)) {
+            return;
+        }
         return $parsed['ThirdQuartile'] + 1.5 * $parsed['InterQuartileRange'];
     }
 
@@ -200,14 +248,20 @@ class Analyzer
      * @param array $data
      * @return float
      */
-    public function getLcl($data)
+    public function getLcl(array $data)
     {
-        if (!$this->isValid($data)) return;
+        if (!$this->isValid($data)) {
+            return;
+        }
         $this->ft->setClassRange(1);
         $this->ft->setData($data);
         $parsed = $this->ft->parse();
-        if (!array_key_exists('FirstQuartile', $parsed)) return;
-        if (!array_key_exists('InterQuartileRange', $parsed)) return;
+        if (!array_key_exists('FirstQuartile', $parsed)) {
+            return;
+        }
+        if (!array_key_exists('InterQuartileRange', $parsed)) {
+            return;
+        }
         return $parsed['FirstQuartile'] - 1.5 * $parsed['InterQuartileRange'];
     }
 
@@ -216,18 +270,24 @@ class Analyzer
      * @param array $data
      * @return array
      */
-    public function outliers($data)
+    public function outliers(array $data)
     {
-        if (!$this->isValid($data)) return;
+        if (!$this->isValid($data)) {
+            return;
+        }
         $this->ft->setClassRange(1);
         $this->ft->setData($data);
         $this->parsed = $this->ft->parse();
         $ucl = $this->getUcl($data);
         $lcl = $this->getLcl($data);
-        if (null === $ucl || null === $lcl) return;
+        if (null === $ucl || null === $lcl) {
+            return;
+        }
         $outliers = [];
         foreach ($data as $value) {
-            if ($value > $ucl || $value < $lcl) $outliers[] = $value;
+            if ($value > $ucl || $value < $lcl) {
+                $outliers[] = $value;
+            }
         }
         return $outliers;
     }
@@ -237,9 +297,11 @@ class Analyzer
      * @param array $layers
      * @return array
      */
-    public function layerMax($layers)
+    public function layerMax(array $layers)
     {
-        if (!$this->isValidLayers($layers)) return;
+        if (!$this->isValidLayers($layers)) {
+            return;
+        }
         $xMax = [];
         $yMax = [];
         foreach ($layers as $layer) {
@@ -254,9 +316,11 @@ class Analyzer
      * @param array $layers
      * @return array
      */
-    public function layerMin($layers)
+    public function layerMin(array $layers)
     {
-        if (!$this->isValidLayers($layers)) return;
+        if (!$this->isValidLayers($layers)) {
+            return;
+        }
         $xMin = [];
         $yMin = [];
         foreach ($layers as $layer) {
@@ -271,9 +335,11 @@ class Analyzer
      * @param array $layers
      * @return array
      */
-    public function parse($layers)
+    public function parse(array $layers)
     {
-        if (!$this->isValidLayers($layers)) return;
+        if (!$this->isValidLayers($layers)) {
+            return;
+        }
         $parsed = [];
         foreach ($layers as $name => $layer) {
             $parsed[$name] = [
@@ -283,18 +349,22 @@ class Analyzer
                     'Max' => max($layer['x']),
                     'Min' => min($layer['x']),
                     'Variance' => $this->variance($layer['x']),
-                    'StandardDeviation' => $this->standardDeviation($layer['x']),
+                    'StandardDeviation'
+                    => $this->standardDeviation($layer['x']),
                 ],
                 'y' => [
-                    'Mean' => $this->mean($layer['y']), 
+                    'Mean' => $this->mean($layer['y']),
                     'Max' => max($layer['y']),
                     'Min' => min($layer['y']),
                     'Variance' => $this->variance($layer['y']),
-                    'StandardDeviation' => $this->standardDeviation($layer['y']),
+                    'StandardDeviation'
+                    => $this->standardDeviation($layer['y']),
                 ],
                 'Covariance' => $this->covariance($layer['x'], $layer['y']),
-                'CorrelationCoefficient' => $this->correlationCoefficient($layer['x'], $layer['y']),
-                'RegressionLineFormula' => $this->regressionLineFormula($layer['x'], $layer['y']),
+                'CorrelationCoefficient'
+                => $this->correlationCoefficient($layer['x'], $layer['y']),
+                'RegressionLineFormula'
+                => $this->regressionLineFormula($layer['x'], $layer['y']),
             ];
         }
         return $parsed;

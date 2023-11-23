@@ -1,20 +1,18 @@
 <?php
+
 require('../vendor/autoload.php');
-require('./class/CsvUtil.php');
-require('./class/Combination.php');
 
-use Macocci7\CsvUtil;
-use Macocci7\Combination;
 use Macocci7\PhpScatterplot\Scatterplot;
+use Macocci7\PhpCsv\Csv;
+use Macocci7\PhpCombination\Combination;
 
-$cu = new CsvUtil();
+$cu = new Csv('csv/weather_tokyo.csv');
 $cb = new Combination();
 
-$cu->load('csv/weather_tokyo.csv')
-   ->encode('SJIS', 'UTF-8')
-   ->offset(7);
-$heads = $cu->heads(4);
-$days = $cu->raw()->column(0);
+$cu->encode('SJIS', 'UTF-8')
+   ->offsetRow(7);
+$heads = $cu->row(5);
+$days = $cu->raw()->column(1);
 
 $dictionary = [
     '平均気温(℃)' => 'Mean Temperature(℃)',
@@ -24,7 +22,7 @@ $dictionary = [
     '降水量の合計(mm)' => 'Precipitation Amount(mm)',
     '平均現地気圧(hPa)' => 'Mean Local Air Pressure(hPa)',
 ];
-$columns = [1, 4, 7, 10, 14, 21];
+$columns = [2, 5, 8, 11, 15, 22];
 $parsed = [];
 $pairs = $cb->pairs($columns);
 foreach ($pairs as $index => $pair) {
@@ -36,7 +34,7 @@ foreach ($pairs as $index => $pair) {
             'y' => $cu->float()->column($y),
         ],
     ];
-    
+
     $sp = new Scatterplot();
     $sp->layers($layers)
        ->regressionLineOn()
@@ -50,7 +48,9 @@ foreach ($pairs as $index => $pair) {
 // Markdown -------------------------------------
 
 echo "# Scatterplot Matrix: Weather in Tokyo\n\n";
-echo "## Data Source\n\n<a href='https://www.data.jma.go.jp/gmd/risk/obsdl/' target='_blank'>Japan Meteorological Agency</a>\n\n";
+echo "## Data Source\n\n"
+   . "<a href='https://www.data.jma.go.jp/gmd/risk/obsdl/' target='_blank'>"
+   . "Japan Meteorological Agency</a>\n\n";
 echo "## Period: " . $days[0] . '～' . $days[count($days) - 1] . "\n";
 $count = count($columns);
 echo "<table>\n";

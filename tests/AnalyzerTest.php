@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
 
-require('vendor/autoload.php');
-require('src/Analyzer.php');
+declare(strict_types=1);
+
+namespace Macocci7\PhpScatterplot;
+
+require_once('vendor/autoload.php');
 
 use PHPUnit\Framework\TestCase;
 use Macocci7\PhpScatterplot\Analyzer;
@@ -11,12 +14,6 @@ final class AnalyzerTest extends TestCase
     public function test_isValid_can_return_bool_correctly(): void
     {
         $cases = [
-            ['data' => null, 'expect' => false, ],
-            ['data' => true, 'expect' => false, ],
-            ['data' => false, 'expect' => false, ],
-            ['data' => 0, 'expect' => false, ],
-            ['data' => 1.2, 'expect' => false, ],
-            ['data' => '0', 'expect' => false, ],
             ['data' => [], 'expect' => false, ],
             ['data' => [[]], 'expect' => false, ],
             ['data' => [null], 'expect' => false, ],
@@ -38,12 +35,6 @@ final class AnalyzerTest extends TestCase
     public function test_mean_can_retrun_mean_correctly(): void
     {
         $cases = [
-            ['data' => null, 'expect' => null, ],
-            ['data' => true, 'expect' => null, ],
-            ['data' => false, 'expect' => null, ],
-            ['data' => 0, 'expect' => null, ],
-            ['data' => 1.2, 'expect' => null, ],
-            ['data' => '0', 'expect' => null, ],
             ['data' => [], 'expect' => null, ],
             ['data' => [[]], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
@@ -67,12 +58,6 @@ final class AnalyzerTest extends TestCase
     public function test_variance_can_return_variance_correctly(): void
     {
         $cases = [
-            ['data' => null, 'expect' => null, ],
-            ['data' => true, 'expect' => null, ],
-            ['data' => false, 'expect' => null, ],
-            ['data' => 0, 'expect' => null, ],
-            ['data' => 1.2, 'expect' => null, ],
-            ['data' => '0', 'expect' => null, ],
             ['data' => [], 'expect' => null, ],
             ['data' => [[]], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
@@ -95,24 +80,12 @@ final class AnalyzerTest extends TestCase
     public function test_covariance_can_return_covariance_correctly(): void
     {
         $cases = [
-            ['x' => null, 'y' => [1], 'expect' => null, ],
-            ['x' => true, 'y' => [1], 'expect' => null, ],
-            ['x' => false, 'y' => [1], 'expect' => null, ],
-            ['x' => 0, 'y' => [1], 'expect' => null, ],
-            ['x' => 1.2, 'y' => [1], 'expect' => null, ],
-            ['x' => '0', 'y' => [1], 'expect' => null, ],
             ['x' => [], 'y' => [1], 'expect' => null, ],
             ['x' => [null], 'y' => [1], 'expect' => null, ],
             ['x' => [true], 'y' => [1], 'expect' => null, ],
             ['x' => [false], 'y' => [1], 'expect' => null, ],
             ['x' => ['1'], 'y' => [1], 'expect' => null, ],
             ['x' => [[]], 'y' => [1], 'expect' => null, ],
-            ['x' => [1], 'y' => null, 'expect' => null, ],
-            ['x' => [1], 'y' => true, 'expect' => null, ],
-            ['x' => [1], 'y' => false, 'expect' => null, ],
-            ['x' => [1], 'y' => 0, 'expect' => null, ],
-            ['x' => [1], 'y' => 1.2, 'expect' => null, ],
-            ['x' => [1], 'y' => '1', 'expect' => null, ],
             ['x' => [1], 'y' => [], 'expect' => null, ],
             ['x' => [1], 'y' => [null], 'expect' => null, ],
             ['x' => [1], 'y' => [true], 'expect' => null, ],
@@ -134,12 +107,6 @@ final class AnalyzerTest extends TestCase
     public function test_standardDeviation_can_return_standard_deviation_correctly(): void
     {
         $cases = [
-            ['data' => null, 'expect' => null, ],
-            ['data' => true, 'expect' => null, ],
-            ['data' => false, 'expect' => null, ],
-            ['data' => 0, 'expect' => null, ],
-            ['data' => 1.2, 'expect' => null, ],
-            ['data' => '1', 'expect' => null, ],
             ['data' => [], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
             ['data' => [true], 'expect' => null, ],
@@ -161,25 +128,12 @@ final class AnalyzerTest extends TestCase
     public function test_correlationCoefficient_can_return_correlation_coefficient_correctly(): void
     {
         $cases = [
-            ['x' => null, 'y' => null, 'expect' => null, ],
-            ['x' => null, 'y' => [1], 'expect' => null, ],
-            ['x' => true, 'y' => [1], 'expect' => null, ],
-            ['x' => false, 'y' => [1], 'expect' => null, ],
-            ['x' => 0, 'y' => [1], 'expect' => null, ],
-            ['x' => 1.2, 'y' => [1], 'expect' => null, ],
-            ['x' => '1', 'y' => [1], 'expect' => null, ],
             ['x' => [], 'y' => [1], 'expect' => null, ],
             ['x' => [null], 'y' => [1], 'expect' => null, ],
             ['x' => [true], 'y' => [1], 'expect' => null, ],
             ['x' => [false], 'y' => [1], 'expect' => null, ],
             ['x' => ['1'], 'y' => [1], 'expect' => null, ],
             ['x' => [[]], 'y' => [1], 'expect' => null, ],
-            ['x' => [1], 'y' => null, 'expect' => null, ],
-            ['x' => [1], 'y' => true, 'expect' => null, ],
-            ['x' => [1], 'y' => false, 'expect' => null, ],
-            ['x' => [1], 'y' => 0, 'expect' => null, ],
-            ['x' => [1], 'y' => 1.2, 'expect' => null, ],
-            ['x' => [1], 'y' => '1', 'expect' => null, ],
             ['x' => [1], 'y' => [], 'expect' => null, ],
             ['x' => [1], 'y' => [null], 'expect' => null, ],
             ['x' => [1], 'y' => [true], 'expect' => null, ],
@@ -202,12 +156,6 @@ final class AnalyzerTest extends TestCase
     public function test_regressionLineFormula_can_return_values_correctly(): void
     {
         $cases = [
-            ['x' => null, 'y' => [1], 'expect' => null, ],
-            ['x' => true, 'y' => [1], 'expect' => null, ],
-            ['x' => false, 'y' => [1], 'expect' => null, ],
-            ['x' => 0, 'y' => [1], 'expect' => null, ],
-            ['x' => 1.2, 'y' => [1], 'expect' => null, ],
-            ['x' => '1', 'y' => [1], 'expect' => null, ],
             ['x' => [], 'y' => [1], 'expect' => null, ],
             ['x' => [null], 'y' => [1], 'expect' => null, ],
             ['x' => [true], 'y' => [1], 'expect' => null, ],
@@ -216,12 +164,6 @@ final class AnalyzerTest extends TestCase
             ['x' => [1.2], 'y' => [1], 'expect' => null, ],
             ['x' => ['1'], 'y' => [1], 'expect' => null, ],
             ['x' => [[]], 'y' => [1], 'expect' => null, ],
-            ['x' => [1], 'y' => null, 'expect' => null, ],
-            ['x' => [1], 'y' => true, 'expect' => null, ],
-            ['x' => [1], 'y' => false, 'expect' => null, ],
-            ['x' => [1], 'y' => 0, 'expect' => null, ],
-            ['x' => [1], 'y' => 1.2, 'expect' => null, ],
-            ['x' => [1], 'y' => '1', 'expect' => null, ],
             ['x' => [1], 'y' => [], 'expect' => null, ],
             ['x' => [1], 'y' => [null], 'expect' => null, ],
             ['x' => [1], 'y' => [true], 'expect' => null, ],
@@ -242,12 +184,6 @@ final class AnalyzerTest extends TestCase
     public function test_getUcl_can_return_ucl_correctly(): void
     {
         $cases = [
-            ['data' => null, 'expect' => null, ],
-            ['data' => true, 'expect' => null, ],
-            ['data' => false, 'expect' => null, ],
-            ['data' => 0, 'expect' => null, ],
-            ['data' => 1.2, 'expect' => null, ],
-            ['data' => '1', 'expect' => null, ],
             ['data' => [], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
             ['data' => [true], 'expect' => null, ],
@@ -268,12 +204,6 @@ final class AnalyzerTest extends TestCase
     public function test_getLcl_can_return_lcl_correctly(): void
     {
         $cases = [
-            ['data' => null, 'expect' => null, ],
-            ['data' => true, 'expect' => null, ],
-            ['data' => false, 'expect' => null, ],
-            ['data' => 0, 'expect' => null, ],
-            ['data' => 1.2, 'expect' => null, ],
-            ['data' => '1', 'expect' => null, ],
             ['data' => [], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
             ['data' => [true], 'expect' => null, ],
@@ -294,12 +224,6 @@ final class AnalyzerTest extends TestCase
     public function test_outliers_can_return_outliers_correctly(): void
     {
         $cases = [
-            ['data' => null, 'expect' => null, ],
-            ['data' => true, 'expect' => null, ],
-            ['data' => false, 'expect' => null, ],
-            ['data' => 0, 'expect' => null, ],
-            ['data' => 1.2, 'expect' => null, ],
-            ['data' => '1', 'expect' => null, ],
             ['data' => [], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
             ['data' => [true], 'expect' => null, ],
