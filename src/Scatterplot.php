@@ -9,7 +9,6 @@ use Macocci7\PhpScatterplot\Plotter;
  */
 class Scatterplot extends Plotter
 {
-
     private $validConfig = [
         'canvasWidth',
         'canvasHeight',
@@ -60,7 +59,9 @@ class Scatterplot extends Plotter
      */
     public function layer($layer)
     {
-        if (!$this->isValidLayer($layer)) return;
+        if (!$this->isValidLayer($layer)) {
+            return;
+        }
         $this->layers[] = $layer;
         return $this;
     }
@@ -72,17 +73,12 @@ class Scatterplot extends Plotter
      */
     public function layers($layers)
     {
-        if (!$this->isValidLayers($layers)) return;
+        if (!$this->isValidLayers($layers)) {
+            return;
+        }
         $this->layers = $layers;
         return $this;
     }
-
-    /* Future version
-    public function matrix()
-    {
-
-    }
-    */
 
     /**
      * sets limits of x
@@ -92,9 +88,15 @@ class Scatterplot extends Plotter
      */
     public function limitX($lower, $upper)
     {
-        if (!is_int($lower) && !s_float($lower)) return;
-        if (!is_int($upper) && !is_float($upper)) return;
-        if ($lower >= $upper) return;
+        if (!is_int($lower) && !s_float($lower)) {
+            return;
+        }
+        if (!is_int($upper) && !is_float($upper)) {
+            return;
+        }
+        if ($lower >= $upper) {
+            return;
+        }
         $this->xLimitUpper = $upper;
         $this->xLimitLower = $lower;
         return $this;
@@ -108,9 +110,15 @@ class Scatterplot extends Plotter
      */
     public function limitY($lower, $upper)
     {
-        if (!is_int($lower) && !s_float($lower)) return;
-        if (!is_int($upper) && !is_float($upper)) return;
-        if ($lower >= $upper) return;
+        if (!is_int($lower) && !s_float($lower)) {
+            return;
+        }
+        if (!is_int($upper) && !is_float($upper)) {
+            return;
+        }
+        if ($lower >= $upper) {
+            return;
+        }
         $this->yLimitUpper = $upper;
         $this->yLimitLower = $lower;
         return $this;
@@ -124,8 +132,12 @@ class Scatterplot extends Plotter
      */
     public function resize($width, $height)
     {
-        if (!is_int($width) || !is_int($height)) return;
-        if ($width < 100 || $height < 100) return;
+        if (!is_int($width) || !is_int($height)) {
+            return;
+        }
+        if ($width < 100 || $height < 100) {
+            return;
+        }
         $this->canvasWidth = $width;
         $this->canvasHeight = $height;
         return $this;
@@ -139,9 +151,15 @@ class Scatterplot extends Plotter
      */
     public function frame($xRatio, $yRatio)
     {
-        if (!is_float($xRatio) || !is_float($yRatio)) return;
-        if ($xRatio <= 0.0 || $xRatio > 1.0) return;
-        if ($yRatio <= 0.0 || $yRatio > 1.0) return;
+        if (!is_float($xRatio) || !is_float($yRatio)) {
+            return;
+        }
+        if ($xRatio <= 0.0 || $xRatio > 1.0) {
+            return;
+        }
+        if ($yRatio <= 0.0 || $yRatio > 1.0) {
+            return;
+        }
         $this->frameXRatio = $xRatio;
         $this->frameYRatio = $yRatio;
         return $this;
@@ -154,7 +172,9 @@ class Scatterplot extends Plotter
      */
     public function bgcolor($color)
     {
-        if (!$this->isColorCode($color)) return;
+        if (!$this->isColorCode($color)) {
+            return;
+        }
         $this->canvasBackgroundColor = $color;
         return $this;
     }
@@ -167,11 +187,19 @@ class Scatterplot extends Plotter
      */
     public function axis($width, $color = null)
     {
-        if (!is_int($width)) return;
-        if ($width < 1) return;
-         if (null !== $color && !$this->isColorCode($color)) return;
+        if (!is_int($width)) {
+            return;
+        }
+        if ($width < 1) {
+            return;
+        }
+        if (null !== $color && !$this->isColorCode($color)) {
+            return;
+        }
         $this->axisWidth = $width;
-        if (null !== $color) $this->axisColor = $color;
+        if (null !== $color) {
+            $this->axisColor = $color;
+        }
         return $this;
     }
 
@@ -183,11 +211,19 @@ class Scatterplot extends Plotter
      */
     public function grid($width, $color = null)
     {
-        if (!is_int($width)) return;
-        if ($width < 1) return;
-        if (null !== $color && !$this->isColorCode($color)) return;
+        if (!is_int($width)) {
+            return;
+        }
+        if ($width < 1) {
+            return;
+        }
+        if (null !== $color && !$this->isColorCode($color)) {
+            return;
+        }
         $this->gridWidth = $width;
-        if (null !== $color) $this->gridColor = $color;
+        if (null !== $color) {
+            $this->gridColor = $color;
+        }
         return $this;
     }
 
@@ -198,8 +234,12 @@ class Scatterplot extends Plotter
      */
     public function gridXPitch($pitch)
     {
-        if (!is_int($pitch) && !is_float($pitch)) return;
-        if ($pitch <= 0) return;
+        if (!is_int($pitch) && !is_float($pitch)) {
+            return;
+        }
+        if ($pitch <= 0) {
+            return;
+        }
         $this->gridXPitch = $pitch;
         return $this;
     }
@@ -211,8 +251,12 @@ class Scatterplot extends Plotter
      */
     public function gridYPitch($pitch)
     {
-        if (!is_int($pitch) && !is_float($pitch)) return;
-        if ($pitch <= 0) return;
+        if (!is_int($pitch) && !is_float($pitch)) {
+            return;
+        }
+        if ($pitch <= 0) {
+            return;
+        }
         $this->gridYPitch = $pitch;
         return $this;
     }
@@ -224,11 +268,19 @@ class Scatterplot extends Plotter
      */
     public function colors($colors)
     {
-        if (!is_array($colors)) return;
+        if (!is_array($colors)) {
+            return;
+        }
         foreach ($colors as $index => $color) {
-            if (!is_int($index)) return;
-            if ($index < 0 || $index > LIMIT_LAYERS) return;
-            if (!$this->isColorCode($color)) return;
+            if (!is_int($index)) {
+                return;
+            }
+            if ($index < 0 || $index > LIMIT_LAYERS) {
+                return;
+            }
+            if (!$this->isColorCode($color)) {
+                return;
+            }
             $this->colors[$index] = $color;
         }
         return $this;
@@ -241,8 +293,12 @@ class Scatterplot extends Plotter
      */
     public function plotSize($size)
     {
-        if (!is_int($size)) return;
-        if ($size < 1) return;
+        if (!is_int($size)) {
+            return;
+        }
+        if ($size < 1) {
+            return;
+        }
         $this->plotDiameter = $size;
         return $this;
     }
@@ -254,11 +310,19 @@ class Scatterplot extends Plotter
      */
     public function fontPath($path)
     {
-        if (!is_string($path)) return;
-        if (strlen($path) < 5) return;
-        if (!file_exists($path)) return;
+        if (!is_string($path)) {
+            return;
+        }
+        if (strlen($path) < 5) {
+            return;
+        }
+        if (!file_exists($path)) {
+            return;
+        }
         $pathinfo = pathinfo($path);
-        if (0 !== strcmp("ttf", strtolower($pathinfo['extension']))) return;
+        if (0 !== strcmp("ttf", strtolower($pathinfo['extension']))) {
+            return;
+        }
         $this->fontPath = $path;
         return $this;
     }
@@ -270,8 +334,12 @@ class Scatterplot extends Plotter
      */
     public function fontSize($size)
     {
-        if (!is_int($size)) return;
-        if ($size < 6) return;
+        if (!is_int($size)) {
+            return;
+        }
+        if ($size < 6) {
+            return;
+        }
         $this->fontSize = $size;
         return $this;
     }
@@ -283,7 +351,9 @@ class Scatterplot extends Plotter
      */
     public function fontColor($color)
     {
-        if (!$this->isColorCode($color)) return;
+        if (!$this->isColorCode($color)) {
+            return;
+        }
         $this->fontColor = $color;
         return $this;
     }
@@ -297,10 +367,18 @@ class Scatterplot extends Plotter
      */
     public function referenceLineX($x, $width = 1, $color = '#0000ff')
     {
-        if (!is_int($x) && !is_float($x)) return;
-        if (!is_int($width)) return;
-        if ($width < 1) return;
-        if (!$this->isColorCode($color)) return;
+        if (!is_int($x) && !is_float($x)) {
+            return;
+        }
+        if (!is_int($width)) {
+            return;
+        }
+        if ($width < 1) {
+            return;
+        }
+        if (!$this->isColorCode($color)) {
+            return;
+        }
         $this->referenceLineX = true;
         $this->referenceLineXValue = $x;
         $this->referenceLineXWidth = $width;
@@ -317,10 +395,18 @@ class Scatterplot extends Plotter
      */
     public function referenceLineY($y, $width = 1, $color = '#0000ff')
     {
-        if (!is_int($y) && !is_float($y)) return;
-        if (!is_int($width)) return;
-        if ($width < 1) return;
-        if (!$this->isColorCode($color)) return;
+        if (!is_int($y) && !is_float($y)) {
+            return;
+        }
+        if (!is_int($width)) {
+            return;
+        }
+        if ($width < 1) {
+            return;
+        }
+        if (!$this->isColorCode($color)) {
+            return;
+        }
         $this->referenceLineY = true;
         $this->referenceLineYValue = $y;
         $this->referenceLineYWidth = $width;
@@ -338,12 +424,24 @@ class Scatterplot extends Plotter
      */
     public function specificationLimitX($lower, $upper, $width = 1, $color = '#ff00ff')
     {
-        if (!is_int($lower) && !is_float($lower)) return;
-        if (!is_int($upper) && !is_float($upper)) return;
-        if ($lower >= $upper) return;
-        if (!is_int($width)) return;
-        if ($width < 1) return;
-        if (!$this->isColorCode($color)) return;
+        if (!is_int($lower) && !is_float($lower)) {
+            return;
+        }
+        if (!is_int($upper) && !is_float($upper)) {
+            return;
+        }
+        if ($lower >= $upper) {
+            return;
+        }
+        if (!is_int($width)) {
+            return;
+        }
+        if ($width < 1) {
+            return;
+        }
+        if (!$this->isColorCode($color)) {
+            return;
+        }
         $this->specificationLimitX = true;
         $this->specificationLimitXLower = $lower;
         $this->specificationLimitXUpper = $upper;
@@ -362,12 +460,24 @@ class Scatterplot extends Plotter
      */
     public function specificationLimitY($lower, $upper, $width = 1, $color = '#ff00ff')
     {
-        if (!is_int($lower) && !is_float($lower)) return;
-        if (!is_int($upper) && !is_float($upper)) return;
-        if ($lower >= $upper) return;
-        if (!is_int($width)) return;
-        if ($width < 1) return;
-        if (!$this->isColorCode($color)) return;
+        if (!is_int($lower) && !is_float($lower)) {
+            return;
+        }
+        if (!is_int($upper) && !is_float($upper)) {
+            return;
+        }
+        if ($lower >= $upper) {
+            return;
+        }
+        if (!is_int($width)) {
+            return;
+        }
+        if ($width < 1) {
+            return;
+        }
+        if (!$this->isColorCode($color)) {
+            return;
+        }
         $this->specificationLimitY = true;
         $this->specificationLimitYLower = $lower;
         $this->specificationLimitYUpper = $upper;
@@ -384,13 +494,25 @@ class Scatterplot extends Plotter
      */
     public function regressionLine($width, $colors)
     {
-        if (!is_int($width)) return;
-        if ($width < 1) return;
-        if (!is_array($colors)) return;
+        if (!is_int($width)) {
+            return;
+        }
+        if ($width < 1) {
+            return;
+        }
+        if (!is_array($colors)) {
+            return;
+        }
         foreach ($colors as $index => $color) {
-            if (!is_int($index)) return;
-            if ($index < 0 || $index > LIMIT_LAYERS) return;
-            if (!$this->isColorCode($color)) return;
+            if (!is_int($index)) {
+                return;
+            }
+            if ($index < 0 || $index > LIMIT_LAYERS) {
+                return;
+            }
+            if (!$this->isColorCode($color)) {
+                return;
+            }
             $this->regressionLineColors[$index] = $color;
         }
         $this->regressionLine = true;
@@ -405,7 +527,9 @@ class Scatterplot extends Plotter
      */
     public function labelX($label)
     {
-        if (!is_string($label)) return;
+        if (!is_string($label)) {
+            return;
+        }
         $this->labelX = $label;
         return $this;
     }
@@ -417,7 +541,9 @@ class Scatterplot extends Plotter
      */
     public function labelY($label)
     {
-        if (!is_string($label)) return;
+        if (!is_string($label)) {
+            return;
+        }
         $this->labelY = $label;
         return $this;
     }
@@ -429,7 +555,9 @@ class Scatterplot extends Plotter
      */
     public function caption($caption)
     {
-        if (!is_string($caption)) return;
+        if (!is_string($caption)) {
+            return;
+        }
         $this->caption = $caption;
         return $this;
     }
@@ -441,7 +569,9 @@ class Scatterplot extends Plotter
      */
     public function legends($legends)
     {
-        if (!is_array($legends)) return;
+        if (!is_array($legends)) {
+            return;
+        }
         $this->legends = $legends;
         $this->legend = true;
         return $this;
@@ -461,7 +591,9 @@ class Scatterplot extends Plotter
             }
             return $config;
         }
-        if (in_array($key, $this->validConfig)) return $this->{$key};
+        if (in_array($key, $this->validConfig)) {
+            return $this->{$key};
+        }
         return null;
     }
 

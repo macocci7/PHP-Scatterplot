@@ -158,20 +158,28 @@ class Plotter extends Analyzer
         // - The value of $this->girdXPitch may be set by the funciton gridXPitch().
         if (!$this->gridXPitch) {
             $this->gridXPitch = 1;
-            if ($this->gridXPitch < 0.125 * $gridXRange)
+            if ($this->gridXPitch < 0.125 * $gridXRange) {
                 $this->gridXPitch = ( (int) (0.125 * $gridXRange * 10)) / 10;
-            if ($this->gridXPitch > 0.2 * $gridXRange)
+            }
+            if ($this->gridXPitch > 0.2 * $gridXRange) {
                 $this->gridXPitch = ( (int) (0.200 * $gridXRange * 10)) / 10;
+            }
         }
         if (!$this->gridYPitch) {
             $this->gridYPitch = 1;
-            if ($this->gridYPitch < 0.125 * $gridYRange)
+            if ($this->gridYPitch < 0.125 * $gridYRange) {
                 $this->gridYPitch = ( (int) (0.125 * $gridYRange * 10)) / 10;
-            if ($this->gridYPitch > 0.2 * $gridYRange)
+            }
+            if ($this->gridYPitch > 0.2 * $gridYRange) {
                 $this->gridYPitch = ( (int) (0.200 * $gridYRange * 10)) / 10;
+            }
         }
         // Creating an instance of intervention/image.
-        $this->image = Image::canvas($this->canvasWidth, $this->canvasHeight, $this->canvasBackgroundColor);
+        $this->image = Image::canvas(
+            $this->canvasWidth,
+            $this->canvasHeight,
+            $this->canvasBackgroundColor
+        );
         // Note:
         // - If $this->labels has values, those values takes precedence.
         // - The values of $this->labels may be set by the function labels().
@@ -189,8 +197,13 @@ class Plotter extends Analyzer
      */
     public function isColorCode($color)
     {
-        if (!is_string($color)) return false;
-        return preg_match('/^#[A-Fa-f0-9]{3}$|^#[A-Fa-f0-9]{6}$/', $color) ? true : false;
+        if (!is_string($color)) {
+            return false;
+        }
+        return preg_match('/^#[A-Fa-f0-9]{3}$|^#[A-Fa-f0-9]{6}$/', $color)
+               ? true
+               : false
+               ;
     }
 
     /**
@@ -225,19 +238,31 @@ class Plotter extends Analyzer
         $y1 = (int) $this->pY($this->gridYMin);
         $x2 = (int) $this->pX($this->gridXMax);
         $y2 = (int) $y1;
-        $this->image->line($x1,$y1,$x2,$y2,function ($draw) {
-            $draw->color($this->axisColor);
-            $draw->width($this->axisWidth);
-        });
+        $this->image->line(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->color($this->axisColor);
+                $draw->width($this->axisWidth);
+            }
+        );
         // vertical axis
         $x1 = (int) $this->pX($this->gridXMin);
         $y1 = (int) $this->pY($this->gridYMax);
         $x2 = (int) $x1;
         $y2 = (int) $this->pY($this->gridYMin);
-        $this->image->line($x1,$y1,$x2,$y2,function ($draw) {
-            $draw->color($this->axisColor);
-            $draw->width($this->axisWidth);
-        });
+        $this->image->line(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->color($this->axisColor);
+                $draw->width($this->axisWidth);
+            }
+        );
         return $this;
     }
 
@@ -248,16 +273,24 @@ class Plotter extends Analyzer
      */
     public function plotGridsX()
     {
-        if (!$this->gridX) return;
+        if (!$this->gridX) {
+            return;
+        }
         for ($i = $this->gridXMin; $i <= $this->gridXMax; $i += $this->gridXPitch) {
             $x1 = (int) $this->pX($i);
             $y1 = (int) $this->pY($this->gridYMax);
             $x2 = (int) $x1;
             $y2 = (int) $this->pY($this->gridYMin);
-            $this->image->line($x1,$y1,$x2,$y2, function ($draw) {
-                $draw->color($this->gridColor);
-                $draw->width($this->gridWidth);
-            });
+            $this->image->line(
+                $x1,
+                $y1,
+                $x2,
+                $y2,
+                function ($draw) {
+                    $draw->color($this->gridColor);
+                    $draw->width($this->gridWidth);
+                }
+            );
         }
         return $this;
     }
@@ -269,16 +302,24 @@ class Plotter extends Analyzer
      */
     public function plotGridsY()
     {
-        if (!$this->gridY) return;
+        if (!$this->gridY) {
+            return;
+        }
         for ($i = $this->gridYMin; $i <= $this->gridYMax; $i += $this->gridYPitch) {
             $x1 = (int) $this->pX($this->gridXMin);
             $y1 = (int) $this->pY($i);
             $x2 = (int) $this->pX($this->gridXMax);
             $y2 = (int) $y1;
-            $this->image->line($x1,$y1,$x2,$y2, function ($draw) {
-                $draw->color($this->gridColor);
-                $draw->width($this->gridWidth);
-            });
+            $this->image->line(
+                $x1,
+                $y1,
+                $x2,
+                $y2,
+                function ($draw) {
+                    $draw->color($this->gridColor);
+                    $draw->width($this->gridWidth);
+                }
+            );
         }
         return $this;
     }
@@ -293,13 +334,18 @@ class Plotter extends Analyzer
         for ($i = $this->gridXMin; $i <= $this->gridXMax; $i += $this->gridXPitch) {
             $x = $this->pX($i);
             $y = $this->baseY + $this->fontSize * 1.2;
-            $this->image->text((string) $i, $x, $y, function ($font) {
-                $font->file($this->fontPath);
-                $font->size($this->fontSize);
-                $font->color($this->fontColor);
-                $font->align('center');
-                $font->valign('bottom');
-            });
+            $this->image->text(
+                (string) $i,
+                $x,
+                $y,
+                function ($font) {
+                    $font->file($this->fontPath);
+                    $font->size($this->fontSize);
+                    $font->color($this->fontColor);
+                    $font->align('center');
+                    $font->valign('bottom');
+                }
+            );
         }
         return $this;
     }
@@ -314,13 +360,18 @@ class Plotter extends Analyzer
         for ($i = $this->gridYMin; $i <= $this->gridYMax; $i += $this->gridYPitch) {
             $x = $this->baseX - $this->fontSize * 0.4;
             $y = $this->pY($i) + $this->fontSize * 0.4;
-            $this->image->text((string) $i, $x, $y, function ($font) {
-                $font->file($this->fontPath);
-                $font->size($this->fontSize);
-                $font->color($this->fontColor);
-                $font->align('right');
-                $font->valign('bottom');
-            });
+            $this->image->text(
+                (string) $i,
+                $x,
+                $y,
+                function ($font) {
+                    $font->file($this->fontPath);
+                    $font->size($this->fontSize);
+                    $font->color($this->fontColor);
+                    $font->align('right');
+                    $font->valign('bottom');
+                }
+            );
         }
         return $this;
     }
@@ -334,13 +385,18 @@ class Plotter extends Analyzer
     {
         $x = (int) $this->canvasWidth / 2;
         $y = $this->baseY + (1 - $this->frameYRatio) * $this->canvasHeight / 3 ;
-        $this->image->text((string) $this->labelX, $x, $y, function ($font) {
-            $font->file($this->fontPath);
-            $font->size($this->fontSize);
-            $font->color($this->fontColor);
-            $font->align('center');
-            $font->valign('bottom');
-        });
+        $this->image->text(
+            (string) $this->labelX,
+            $x,
+            $y,
+            function ($font) {
+                $font->file($this->fontPath);
+                $font->size($this->fontSize);
+                $font->color($this->fontColor);
+                $font->align('center');
+                $font->valign('bottom');
+            }
+        );
         return $this;
     }
 
@@ -356,13 +412,18 @@ class Plotter extends Analyzer
         $image = Image::canvas($width, $height, $this->canvasBackgroundColor);
         $x = $width / 2;
         $y = ($height + $this->fontSize) / 2;
-        $image->text((string) $this->labelY, $x, $y, function ($font) {
-            $font->file($this->fontPath);
-            $font->size($this->fontSize);
-            $font->color($this->fontColor);
-            $font->align('center');
-            $font->valign('bottom');
-        });
+        $image->text(
+            (string) $this->labelY,
+            $x,
+            $y,
+            function ($font) {
+                $font->file($this->fontPath);
+                $font->size($this->fontSize);
+                $font->color($this->fontColor);
+                $font->align('center');
+                $font->valign('bottom');
+            }
+        );
         $image->rotate(90);
         $this->image->insert($image, 'left');
         return $this;
@@ -377,13 +438,18 @@ class Plotter extends Analyzer
     {
         $x = $this->canvasWidth / 2;
         $y = $this->canvasHeight * (1 - $this->frameYRatio) / 3;
-        $this->image->text((string) $this->caption, $x, $y, function ($font) {
-            $font->file($this->fontPath);
-            $font->size($this->fontSize);
-            $font->color($this->fontColor);
-            $font->align('center');
-            $font->valign('bottom');
-        });
+        $this->image->text(
+            (string) $this->caption,
+            $x,
+            $y,
+            function ($font) {
+                $font->file($this->fontPath);
+                $font->size($this->fontSize);
+                $font->color($this->fontColor);
+                $font->align('center');
+                $font->valign('bottom');
+            }
+        );
     }
 
     /**
@@ -393,7 +459,9 @@ class Plotter extends Analyzer
      */
     public function plotLayers()
     {
-        if (!$this->isValidLayers($this->layers)) return;
+        if (!$this->isValidLayers($this->layers)) {
+            return;
+        }
         $i = 0;
         foreach ($this->layers as $layer => $data) {
             $this->plotColor = $this->colors[$i];
@@ -427,13 +495,22 @@ class Plotter extends Analyzer
      */
     public function plotXY($x, $y)
     {
-        if (!is_int($x) && !is_float($x)) return;
-        if (!is_int($y) && !is_float($y)) return;
+        if (!is_int($x) && !is_float($x)) {
+            return;
+        }
+        if (!is_int($y) && !is_float($y)) {
+            return;
+        }
         $px = $this->pX($x);
         $py = $this->pY($y);
-        $this->image->circle($this->plotDiameter, $px, $py, function ($draw) {
-            $draw->background($this->plotColor);
-        });
+        $this->image->circle(
+            $this->plotDiameter,
+            $px,
+            $py,
+            function ($draw) {
+                $draw->background($this->plotColor);
+            }
+        );
         return $this;
     }
 
@@ -444,8 +521,12 @@ class Plotter extends Analyzer
      */
     public function plotRegressionLine($layer)
     {
-        if (!$this->regressionLine) return;
-        if (!$this->isValidLayer($layer)) return;
+        if (!$this->regressionLine) {
+            return;
+        }
+        if (!$this->isValidLayer($layer)) {
+            return;
+        }
         $formula = $this->regressionLineFormula($layer['x'], $layer['y']);
         $a = $formula['a'];
         $b = $formula['b'];
@@ -455,10 +536,16 @@ class Plotter extends Analyzer
         $y1 = $this->pY($a * $xMin + $b);
         $x2 = $this->pX($xMax);
         $y2 = $this->pY($a * $xMax + $b);
-        $this->image->line($x1, $y1, $x2, $y2, function ($draw) {
-            $draw->width($this->regressionLineWidth);
-            $draw->color($this->regressionLineColor);
-        });
+        $this->image->line(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->width($this->regressionLineWidth);
+                $draw->color($this->regressionLineColor);
+            }
+        );
         return $this;
     }
 
@@ -469,15 +556,23 @@ class Plotter extends Analyzer
      */
     public function plotReferenceLineX()
     {
-        if (!$this->referenceLineX) return;
+        if (!$this->referenceLineX) {
+            return;
+        }
         $x1 = (int) $this->pX($this->referenceLineXValue);
         $y1 = (int) $this->pY($this->gridYMax);
         $x2 = (int) $x1;
         $y2 = (int) $this->pY($this->gridYMin);
-        $this->image->line($x1, $y1, $x2, $y2, function ($draw) {
-            $draw->width($this->referenceLineXWidth);
-            $draw->color($this->referenceLineXColor);
-        });
+        $this->image->line(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->width($this->referenceLineXWidth);
+                $draw->color($this->referenceLineXColor);
+            }
+        );
         return $this;
     }
 
@@ -488,15 +583,23 @@ class Plotter extends Analyzer
      */
     public function plotReferenceLineY()
     {
-        if (!$this->referenceLineY) return;
+        if (!$this->referenceLineY) {
+            return;
+        }
         $x1 = (int) $this->pX($this->gridXMin);
         $y1 = (int) $this->pY($this->referenceLineYValue);
         $x2 = (int) $this->pX($this->gridXMax);
         $y2 = (int) $y1;
-        $this->image->line($x1, $y1, $x2, $y2, function ($draw) {
-            $draw->width($this->referenceLineYWidth);
-            $draw->color($this->referenceLineYColor);
-        });
+        $this->image->line(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->width($this->referenceLineYWidth);
+                $draw->color($this->referenceLineYColor);
+            }
+        );
         return $this;
     }
 
@@ -507,23 +610,37 @@ class Plotter extends Analyzer
      */
     public function plotSpecificationLimitX()
     {
-        if (!$this->specificationLimitX) return;
+        if (!$this->specificationLimitX) {
+            return;
+        }
         // lower limit
         $x1 = (int) $this->pX($this->specificationLimitXLower);
         $y1 = (int) $this->pY($this->gridYMax);
         $x2 = (int) $x1;
         $y2 = (int) $this->pY($this->gridYMin);
-        $this->image->line($x1, $y1, $x2, $y2, function ($draw) {
-            $draw->width($this->specificationLimitXWidth);
-            $draw->color($this->specificationLimitXColor);
-        });
+        $this->image->line(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->width($this->specificationLimitXWidth);
+                $draw->color($this->specificationLimitXColor);
+            }
+        );
         // upper limit
         $x1 = (int) $this->pX($this->specificationLimitXUpper);
         $x2 = (int) $x1;
-        $this->image->line($x1, $y1, $x2, $y2, function ($draw) {
-            $draw->width($this->specificationLimitXWidth);
-            $draw->color($this->specificationLimitXColor);
-        });
+        $this->image->line(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->width($this->specificationLimitXWidth);
+                $draw->color($this->specificationLimitXColor);
+            }
+        );
         return $this;
     }
 
@@ -534,23 +651,37 @@ class Plotter extends Analyzer
      */
     public function plotSpecificationLimitY()
     {
-        if (!$this->specificationLimitY) return;
+        if (!$this->specificationLimitY) {
+            return;
+        }
         // lower limit
         $x1 = (int) $this->pX($this->gridXMin);
         $y1 = (int) $this->pY($this->specificationLimitYLower);
         $x2 = (int) $this->pX($this->gridXMax);
         $y2 = (int) $y1;
-        $this->image->line($x1, $y1, $x2, $y2, function ($draw) {
-            $draw->width($this->specificationLimitYWidth);
-            $draw->color($this->specificationLimitYColor);
-        });
+        $this->image->line(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->width($this->specificationLimitYWidth);
+                $draw->color($this->specificationLimitYColor);
+            }
+        );
         // upper limit
         $y1 = (int) $this->pY($this->specificationLimitYUpper);
         $y2 = (int) $y1;
-        $this->image->line($x1, $y1, $x2, $y2, function ($draw) {
-            $draw->width($this->specificationLimitYWidth);
-            $draw->color($this->specificationLimitYColor);
-        });
+        $this->image->line(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->width($this->specificationLimitYWidth);
+                $draw->color($this->specificationLimitYColor);
+            }
+        );
         return $this;
     }
 
@@ -561,17 +692,25 @@ class Plotter extends Analyzer
      */
     public function plotLegend()
     {
-        if (!$this->legend) return;
+        if (!$this->legend) {
+            return;
+        }
         $baseX = $this->canvasWidth * (3 + $this->frameXRatio) / 4 - $this->legendWidth;
         $baseY = 10;
         $x1 = $baseX;
         $y1 = $baseY;
         $x2 = $x1 + $this->legendWidth;
         $y2 = $y1 + $this->legendFontSize * 1.2 * $this->legendCount + 8;
-        $this->image->rectangle($x1, $y1, $x2, $y2, function ($draw) {
-            $draw->background($this->canvasBackgroundColor);
-            $draw->border($this->axisWidth, $this->axisColor);
-        });
+        $this->image->rectangle(
+            $x1,
+            $y1,
+            $x2,
+            $y2,
+            function ($draw) {
+                $draw->background($this->canvasBackgroundColor);
+                $draw->border($this->axisWidth, $this->axisColor);
+            }
+        );
         for ($i = 0; $i < $this->legendCount; $i++) {
             if (empty($this->legends[$i])) {
                 $label = 'unknown ' . $i;
@@ -582,19 +721,30 @@ class Plotter extends Analyzer
             $y1 = (int) ($baseY + $i * $this->legendFontSize * 1.2 + 4);
             $x2 = (int) ($x1 + 20);
             $y2 = (int) ($y1 + $this->legendFontSize);
-            $this->image->rectangle($x1, $y1, $x2, $y2, function ($draw) use($i) {
-                $draw->background($this->colors[$i]);
-                $draw->border(1, $this->axisColor);
-            });
+            $this->image->rectangle(
+                $x1,
+                $y1,
+                $x2,
+                $y2,
+                function ($draw) use ($i) {
+                    $draw->background($this->colors[$i]);
+                    $draw->border(1, $this->axisColor);
+                }
+            );
             $x = $x2 + 4;
             $y = $y1;
-            $this->image->text($label, $x, $y, function ($font) {
-                $font->file($this->fontPath);
-                $font->size($this->legendFontSize);
-                $font->color($this->fontColor);
-                $font->align('left');
-                $font->valign('top');
-            });
+            $this->image->text(
+                $label,
+                $x,
+                $y,
+                function ($font) {
+                    $font->file($this->fontPath);
+                    $font->size($this->legendFontSize);
+                    $font->color($this->fontColor);
+                    $font->align('left');
+                    $font->valign('top');
+                }
+            );
         }
         return $this;
     }
@@ -606,8 +756,12 @@ class Plotter extends Analyzer
      */
     public function create($filePath)
     {
-        if (!is_string($filePath)) return;
-        if (strlen($filePath) == 0) return;
+        if (!is_string($filePath)) {
+            return;
+        }
+        if (strlen($filePath) == 0) {
+            return;
+        }
         $this->setProperties();
         $this->plotLabelX();
         $this->plotLabelY();
