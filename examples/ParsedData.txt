@@ -1,4 +1,4 @@
-/home/macocci7/php/PHP-Scatterplot/example/ParsedData.php:20:
+/home/macocci7/php/PHP-Scatterplot/examples/ParsedData.php:20:
 array(2) {
   'John' =>
   array(6) {

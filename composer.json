@@ -17,7 +17,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "intervention/image": "^2.7",
+        "intervention/image": "^3.4",
         "macocci7/php-frequency-table": "^1.2",
         "macocci7/php-csv": "^1.0",
         "macocci7/php-combination": "^1.0",

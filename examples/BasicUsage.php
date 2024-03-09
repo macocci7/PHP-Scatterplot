@@ -4,15 +4,14 @@ require('../vendor/autoload.php');
 
 use Macocci7\PhpScatterplot\Scatterplot;
 
-$sp = new Scatterplot();
-
 $layers = [
     [
-        'x' => [1,2,3,4,5,6,7,8,9,10,11],
-        'y' => [1,2,3,4,5,8,4,7,11,9,1],
+        'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+        'y' => [ 1, 2, 3, 4, 5, 8, 4, 7, 11, 9, 1, ],
     ],
 ];
 
+$sp = new Scatterplot();
 $sp->layers($layers)
    ->create('img/BasicUsage.png');
 

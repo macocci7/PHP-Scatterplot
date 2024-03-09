@@ -7,6 +7,12 @@ use Macocci7\PhpScatterplot\Plotter;
 
 /**
  * Class for management of scatter plot
+ * @author  macocci7 <macocci7@yahoo.co.jp>
+ * @license MIT
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Scatterplot extends Plotter
 {
@@ -32,7 +38,6 @@ class Scatterplot extends Plotter
         $props = [
             'CANVAS_WIDTH_LIMIT_LOWER',
             'CANVAS_HEIGHT_LIMIT_LOWER',
-            'validConfig',
         ];
         foreach (Config::get('props') as $prop => $value) {
             if (in_array($prop, $props, true)) {
@@ -72,13 +77,16 @@ class Scatterplot extends Plotter
 
     /**
      * sets layers
-     * @param array $layers
-     * @return self
+     * @param   array<int|string, array<string, list<int|float>>>   $layers
+     * @return  self
      */
-    public function layers($layers)
+    public function layers(array $layers)
     {
         if (!self::isValidLayers($layers)) {
-            return;
+            throw new \Exception(
+                "Invalid layers specified. "
+                . "array<int|string, array<string, list<int|float>>> expected."
+            );
         }
         $this->layers = $layers;
         return $this;

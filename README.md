@@ -1,37 +1,63 @@
 # PHP-Scatterplot
 
-PHP-Scatterplot is a tool for creating scatter plots.
+## 1. Features
+
+`PHP-Scatterplot` is a PHP library for creating scatter plots easily.
 
 You can also retrieve parsed data:
 
-Mean, Variance, Standard Deviation, Covariance,
+`Mean`, `Variance`, `Standard Deviation`, `Covariance`,
  
-Correlation Coefficient and Regression Line Formula.
+`Correlation Coefficient` and `Regression Line Formula`.
 
-<img src="example/img/ChangingProperties.png" width="400" />
+`Reference Line` and `Specification Limits` are supported.
+
+`Multiple Layers (Data Sets)` are supported.
+
+<img src="examples/img/ChangingProperties.png" width="400" />
 
 ## Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-    - [Basic Usage](#basic-usage)
-    - [Using Layers](#using-layers)
-    - [Changing Properties](#changing-properties)
-    - [Parsed Data](#parsed-data)
-- [Example](#example)
-- [License](#license)
+- [1. Features](#1-features)
+- 2\. Contents
+- [3. Requirements](#3-requirements)
+- [4. Installation](#4-installation)
+- [5. Usage](#5-usage)
+    - [5.1. Basic Usage](#51-basic-usage)
+    - [5.2. Using Layers](#52-using-layers)
+    - [5.3. Adjusting the Display By Methods](#53-adjusting-the-display-by-methods)
+    - [5.4. Adjusting the Display By Neon File](#54-adjusting-the-display-by-neon-file)
+    - [5.5. Adjusting the Display By Array](#55-adjusting-the-display-by-array)
+    - [5.6. Transparent Background](#56-transparent-background)
+    - [5.7. Parsed Data](#57-parsed-data)
+- [6. Examples](#6-examples)
+- [7. License](#7-license)
 
-## Installation
+## 3. Requirements
+
+- PHP 8.1 or later
+- Imagick PHP Extension
+- Composer
+
+## 4. Installation
 
 ```bash
 composer require macocci7/php-scatterplot
 ```
 
-## Usage
+## 5. Usage
 
-### Basic Usage
+- [5.1. Basic Usage](#51-basic-usage)
+- [5.2. Using Layers](#52-using-layers)
+- [5.3. Adjusting the Display By Methods](#53-adjusting-the-display-by-methods)
+- [5.4. Adjusting the Display By Neon File](#54-adjusting-the-display-by-neon-file)
+- [5.5. Adjusting the Display By Array](#55-adjusting-the-display-by-array)
+- [5.6. Transparent Background](#56-transparent-background)
+- [5.7. Parsed Data](#57-parsed-data)
 
-- PHP
+### 5.1. Basic Usage
+
+- PHP: [examples/BasicUsage.php](examples/BasicUsage.php)
 
     ```php
     <?php
@@ -39,126 +65,454 @@ composer require macocci7/php-scatterplot
 
     use Macocci7\PhpScatterplot\Scatterplot;
 
-    $sp = new Scatterplot();
-
     $layers = [
         [
-            'x' => [1,2,3,4,5,6,7,8,9,10,11],
-            'y' => [1,2,3,4,5,8,4,7,11,9,1],
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 1, 2, 3, 4, 5, 8, 4, 7, 11, 9, 1, ],
         ],
     ];
 
+    $sp = new Scatterplot();
     $sp->layers($layers)
         ->create('img/BasicUsage.png');
     ```
 
 - Result
 
-    <img src="example/img/BasicUsage.png" width="400" />
+    <img src="examples/img/BasicUsage.png" width="400" />
 
-### Using Layers
+- Details:
+    - Import Autoloader: `require_once('../vendor/autoload.php')`
+    - Declare: `use Macocci7\PhpScatterplot`
+    - Prepare Data: `$layers = [ $layer ]`
+        - `$layers`: `array<int|string, array<string, list<int|float>>>`
+        - `$layer`: `array<string, list<int|float>>`
+        - `$layer` must have hash keys of `x` and `y`.
+        - Hash arrays `x` and `y` must have the same number of elements.
+    - Instantiate: `new Scatterplot()`
+    - Set Data: `layers($layers)`
+    - Craete Image: `create($path)`
 
-- PHP
+### 5.2. Using Layers
+
+- PHP:
 
     ```php
     <?php
+
     require('../vendor/autoload.php');
 
     use Macocci7\PhpScatterplot\Scatterplot;
 
-    $sp = new Scatterplot();
-
     $layers = [
         'John' => [
-            'x' => [1,2,3,4,5,6,7,8,9,10,11],
-            'y' => [1,2,3,4,5,8,4,7,11,9,1],
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 1, 2, 3, 4, 5, 8, 4, 7, 11, 9, 1, ],
         ],
         'Jake' => [
-            'x' => [1,2,3,4,5,6,7,8,9,10,11],
-            'y' => [11,8,10,7,9,6,5,3,4,2,1],
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 11, 8, 10, 7, 9, 6, 5, 3, 4, 2, 1, ],
         ],
         'Hugo' => [
-            'x' => [1,2,3,4,5,6,7,8,9,10,11],
-            'y' => [4,8,10,1,9,6,5,3,7,1,11],
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 4, 8, 10, 1, 9, 6, 5, 3, 7, 1, 11, ],
         ],
         'Alex' => [
-            'x' => [1,2,3,4,5,6,7,8,9,10,11],
-            'y' => [3,5,11,4,8,2,9,10,1,11,7],
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 3, 5, 11, 4, 8, 2, 9, 10, 1, 11, 7, ],
         ],
     ];
 
     $legends = array_keys($layers);
 
+    $sp = new Scatterplot();
     $sp->layers($layers)
-        ->create('img/UsingLayers.png');
+       ->plotSize(6)
+       ->legends($legends)
+       ->labelX('Data X')
+       ->labelY('Data Y')
+       ->caption('Using Layers')
+       ->create('img/UsingLayers.png');
     ```
 
 - Result
 
-    <img src="example/img/UsingLayers.png" width="400" />
+    <img src="examples/img/UsingLayers.png" width="400" />
 
-### Changing Properties
+- Details:
+    - Change Plot Size (Diameter): `plotSize(int $pixSize)`
+    - Set Legend Labels: `legends(string[] $legends)`
+    - Set Label for X Axis: `labelX(string $labelX)`
+    - Set Label for Y Axis: `labelY(string $labelY)`
+    - Set Caption: `caption(string $caption)`
 
-- PHP
+### 5.3. Adjusting the Display By Methods
+
+- PHP:
 
     ```php
     <?php
+
     require('../vendor/autoload.php');
 
     use Macocci7\PhpScatterplot\Scatterplot;
 
-    $sp = new Scatterplot();
-
     $layers = [
         'John' => [
-            'x' => [1,2,3,4,5,6,7,8,9,10,11],
-            'y' => [1,2,3,4,5,8,4,7,11,9,1],
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 1, 2, 3, 4, 5, 8, 4, 7, 11, 9, 1, ],
         ],
         'Jake' => [
-            'x' => [1,2,3,4,5,6,7,8,9,10,11],
-            'y' => [11,8,10,7,9,6,5,3,4,2,1],
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 11, 8, 10, 7, 9, 6, 5, 3, 4, 2, 1, ],
         ],
         'Hugo' => [
-            'x' => [1,2,3,4,5,6,7,8,9,10,11],
-            'y' => [4,8,10,1,9,6,5,3,7,1,11],
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 4, 8, 10, 1, 9, 6, 5, 3, 7, 1, 11, ],
         ],
         'Alex' => [
-            'x' => [1,2,3,4,5,6,7,8,9,10,11],
-            'y' => [3,5,11,4,8,2,9,10,1,11,7],
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 3, 5, 11, 4, 8, 2, 9, 10, 1, 11, 7, ],
         ],
     ];
 
     $legends = array_keys($layers);
 
+    $sp = new Scatterplot();
     $sp->layers($layers)
-        ->limitX(0, 12)
-        ->limitY(0, 12)
-        ->gridXPitch(2)
-        ->gridYPitch(2)
-        ->bgcolor('#ccccff')
-        ->colors(['#ffffff'])
-        ->plotSize(4)
-        ->fontColor('#333333')
-        ->grid(1, '#999999')
-        ->gridXOn()
-        ->gridYOn()
-        ->regressionLine(3, ['#666666', '#cc2222', '#2222cc', '#22cc22'])
-        ->referenceLineX(1.5, 1, '#00ccff')
-        ->referenceLineY(1.5, 1, '#00ccff')
-        ->specificationLimitX(0.5, 11.5, 1, '#ff00ff')
-        ->specificationLimitY(0.5, 11.5, 1, '#ff00ff')
-        ->labelX('DATA X')
-        ->labelY('DATA Y')
-        ->caption('SCATTER PLOT')
-        ->legends($legends)
-        ->create('img/ChangingProperties.png');
+       ->limitX(0, 12)
+       ->limitY(0, 12)
+       ->gridXPitch(2)
+       ->gridYPitch(2)
+       ->bgcolor('#ccccff')
+       ->colors(['#ffffff'])
+       ->plotSize(4)
+       ->fontColor('#333333')
+       ->grid(1, '#999999')
+       ->gridXOn()
+       ->gridYOn()
+       ->regressionLine(3, [ '#666666', '#cc2222', '#2222cc', '#22cc22', ])
+       ->referenceLineX(1.5, 1, '#00ccff')
+       ->referenceLineY(1.5, 1, '#00ccff')
+       ->specificationLimitX(0.5, 11.5, 1, '#ff00ff')
+       ->specificationLimitY(0.5, 11.5, 1, '#ff00ff')
+       ->labelX('DATA X')
+       ->labelY('DATA Y')
+       ->caption('SCATTER PLOT')
+       ->legends($legends)
+       ->create('img/AdjustDisplayByMethods.png');
     ```
 
 - Result
 
-    <img src="example/img/ChangingProperties.png" width="400" />
+    <img src="examples/img/ChangingProperties.png" width="400" />
 
-### Parsed Data
+- Details:
+    <table>
+    <tr><th>Available Method</th></tr>
+    <tr><td>limitX(int|float $lower, int|float $upper)</td></tr>
+    <tr><td>limitY(int|float $lower, int|float $upper)</td></tr>
+    <tr><td>resize(int $width, int $height)</td></tr>
+    <tr><td>frame($xRatio, $yRatio)</td></tr>
+    <tr><td>bgcolor(string|null $color = null)</td></tr>
+    <tr><td>axis(int $width, string|null $color = null)</td></tr>
+    <tr><td>grid(int $width, string|null $color = null)</td></tr>
+    <tr><td>gridXPitch(int|float $pitch)</td></tr>
+    <tr><td>gridYPitch(int|float $pitch)</td></tr>
+    <tr><td>colors(array $colors)</td></tr>
+    <tr><td>plotSize(int $size)</td></tr>
+    <tr><td>fontPath(string $path)</td></tr>
+    <tr><td>fontSize(int|float $size)</td></tr>
+    <tr><td>fontColor(string $color)</td></tr>
+    <tr><td>referenceLineX(int|float $x, int $width = 1, string $color = '#0000ff')</td></tr>
+    <tr><td>referenceLineY(int|float $y, int $width = 1, string $color = '#0000ff')</td></tr>
+    <tr><td>specificationLimitX(int|float $lower, int|float $upper, int $width = 1, string $color = '#ff00ff')</td></tr>
+    <tr><td>specificationLimitY(int|float $lower, int|float $upper, int $width = 1, string $color = '#ff00ff')</td></tr>
+    <tr><td>regressionLine(int $width, array $colors)</td></tr>
+    <tr><td>labelX(string $label)</td></tr>
+    <tr><td>labelY(string $label)</td></tr>
+    <tr><td>caption(string $caption)</td></tr>
+    <tr><td>legends(array $legends)</td></tr>
+    <tr><td>gridXOn()</td></tr>
+    <tr><td>gridXOff()</td></tr>
+    <tr><td>gridYOn()</td></tr>
+    <tr><td>gridYOff()</td></tr>
+    <tr><td>referenceLineXOff()</td></tr>
+    <tr><td>referenceLineYOff()</td></tr>
+    <tr><td>referenceLinesOff()</td></tr>
+    <tr><td>specificationLimitXOff()</td></tr>
+    <tr><td>specificationLimitYOff()</td></tr>
+    <tr><td>specificationLimitsOff()</td></tr>
+    <tr><td>regressionLineOn()</td></tr>
+    <tr><td>regressionLineOff()</td></tr>
+    <tr><td>legendOff()</td></tr>
+    </table>
+
+### 5.4. Adjusting the Display By Neon File
+
+First, prepare a Neon file like this:
+
+- Neon:
+
+    ```neon
+    #canvasWidth: 600
+    #canvasHeight: 500
+    canvasBackgroundColor: '#ccccff'
+    #frameXRatio: 0.8
+    #frameYRatio: 0.7
+    #axisColor: '#666666'
+    #axisWidth: 1
+    gridColor: '#999999'
+    #gridWidth: 1
+    gridXPitch: 2
+    gridYPitch: 2
+    gridX: true
+    gridY: true
+    xLimitUpper: 12
+    xLimitLower: 0
+    yLimitUpper: 12
+    yLimitLower: 0
+    plotDiameter: 6
+    #fontPath: 'fonts/ipaexg.ttf' # IPA ex Gothic 00401
+    #fontSize: 16
+    #fontColor: '#333333'
+    referenceLineX: true
+    referenceLineXValue: 1.5
+    referenceLineXWidth: 1
+    referenceLineXColor: '#009933'
+    referenceLineY: true
+    referenceLineYValue: 1.5
+    referenceLineYWidth: 1
+    referenceLineYColor: '#009933'
+    specificationLimitX: true
+    specificationLimitXLower: 0.5
+    specificationLimitXUpper: 11.5
+    specificationLimitXWidth: 1
+    specificationLimitXColor: '#ff00ff'
+    specificationLimitY: true
+    specificationLimitYLower: 0.5
+    specificationLimitYUpper: 11.5
+    specificationLimitYWidth: 1
+    specificationLimitYColor: '#ff00ff'
+    regressionLine: true
+    regressionLineWidth: 3
+    labelX: 'DATA X'
+    labelY: 'DATA Y'
+    caption: 'Adjusting the Display By Neon File'
+    legend: true
+    legends: [ 'John', 'Jake', 'Hugo', 'Alex', ]
+    legendWidth: 100
+    legendFontSize: 10
+    colors:
+        - '#3333cc'
+        - '#cc3333'
+        - '#339933'
+        - '#33cccc'
+        - '#cc3333'
+        - '#ffcc33'
+        - '#cccc33'
+        - '#cc33cc'
+    regressionLineColors:
+        - '#2222cc'
+        - '#cc2222'
+        - '#22cc22'
+        - '#22cccc'
+    ```
+
+Second, Code PHP like this:
+
+- PHP:
+
+    ```php
+    <?php
+
+    require('../vendor/autoload.php');
+
+    use Macocci7\PhpScatterplot\Scatterplot;
+
+    $layers = [
+        'John' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 1, 2, 3, 4, 5, 8, 4, 7, 11, 9, 1, ],
+        ],
+        'Jake' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 11, 8, 10, 7, 9, 6, 5, 3, 4, 2, 1, ],
+        ],
+        'Hugo' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 4, 8, 10, 1, 9, 6, 5, 3, 7, 1, 11, ],
+        ],
+        'Alex' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 3, 5, 11, 4, 8, 2, 9, 10, 1, 11, 7, ],
+        ],
+    ];
+
+    $sp = new Scatterplot();
+    $sp->layers($layers)
+       ->config('AdjustDisplayByNeon.neon')
+       ->create('img/AdjustDisplayByNeon.png');
+    ```
+
+Then, run the PHP code.
+
+- Result:
+
+    <img src="examples/img/AdjustDisplayByNeon.png" width="400" />
+
+### 5.5. Adjusting the Display By Array
+
+- PHP:
+
+    ```php
+    <?php
+
+    require('../vendor/autoload.php');
+
+    use Macocci7\PhpScatterplot\Scatterplot;
+
+    $layers = [
+        'John' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 1, 2, 3, 4, 5, 8, 4, 7, 11, 9, 1, ],
+        ],
+        'Jake' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 11, 8, 10, 7, 9, 6, 5, 3, 4, 2, 1, ],
+        ],
+        'Hugo' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 4, 8, 10, 1, 9, 6, 5, 3, 7, 1, 11, ],
+        ],
+        'Alex' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 3, 5, 11, 4, 8, 2, 9, 10, 1, 11, 7, ],
+        ],
+    ];
+
+    $conf = [
+        //'canvasWidth' => 600,
+        //'canvasHeight' => 500,
+        'canvasBackgroundColor' => '#ccccff',
+        //'frameXRatio' => 0.8,
+        //'frameYRatio' => 0.7,
+        //'axisColor' => '#666666',
+        //'axisWidth' => 1,
+        'gridColor' => '#999999',
+        //'gridWidth' => 1,
+        'gridXPitch' => 2,
+        'gridYPitch' => 2,
+        'gridX' => true,
+        'gridY' => true,
+        'xLimitUpper' => 12,
+        'xLimitLower' => 0,
+        'yLimitUpper' => 12,
+        'yLimitLower' => 0,
+        'plotDiameter' => 6,
+        //'fontPath' => 'fonts/ipaexg.ttf', // IPA ex Gothic 00401
+        //'fontSize' => 16,
+        //'fontColor' => '#333333',
+        'referenceLineX' => true,
+        'referenceLineXValue' => 1.5,
+        'referenceLineXWidth' => 1,
+        'referenceLineXColor' => '#009933',
+        'referenceLineY' => true,
+        'referenceLineYValue' => 1.5,
+        'referenceLineYWidth' => 1,
+        'referenceLineYColor' => '#009933',
+        'specificationLimitX' => true,
+        'specificationLimitXLower' => 0.5,
+        'specificationLimitXUpper' => 11.5,
+        'specificationLimitXWidth' => 1,
+        'specificationLimitXColor' => '#ff00ff',
+        'specificationLimitY' => true,
+        'specificationLimitYLower' => 0.5,
+        'specificationLimitYUpper' => 11.5,
+        'specificationLimitYWidth' => 1,
+        'specificationLimitYColor' => '#ff00ff',
+        'regressionLine' => true,
+        'regressionLineWidth' => 3,
+        'labelX' => 'DATA X',
+        'labelY' => 'DATA Y',
+        'caption' => 'Adjusting the Display By Neon File',
+        'legend' => true,
+        'legends' => [ 'John', 'Jake', 'Hugo', 'Alex', ],
+        'legendWidth' => 100,
+        'legendFontSize' => 10,
+        'colors' => [
+            '#3333cc',
+            '#cc3333',
+            '#339933',
+            '#33cccc',
+            '#cc3333',
+            '#ffcc33',
+            '#cccc33',
+            '#cc33cc',
+        ],
+        'regressionLineColors' => [
+            '#2222cc',
+            '#cc2222',
+            '#22cc22',
+            '#22cccc',
+        ],
+    ];
+
+    $sp = new Scatterplot();
+    $sp->layers($layers)
+       ->config($conf)
+       ->create('img/AdjustDisplayByArray.png');
+    ```
+
+- Result:
+
+    <img src="examples/img/AdjustDisplayByArray.png" width="400" />
+
+### 5.6. Transparent Background
+
+- PHP:
+
+    ```php
+    <?php
+
+    require('../vendor/autoload.php');
+
+    use Macocci7\PhpScatterplot\Scatterplot;
+
+    $layers = [
+        'John' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 1, 2, 3, 4, 5, 8, 4, 7, 11, 9, 1, ],
+        ],
+        'Jake' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 11, 8, 10, 7, 9, 6, 5, 3, 4, 2, 1, ],
+        ],
+        'Hugo' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 4, 8, 10, 1, 9, 6, 5, 3, 7, 1, 11, ],
+        ],
+        'Alex' => [
+            'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+            'y' => [ 3, 5, 11, 4, 8, 2, 9, 10, 1, 11, 7, ],
+        ],
+    ];
+
+    $sp = new Scatterplot();
+    $sp->layers($layers)
+       ->config('AdjustDisplayByNeon.neon')
+       ->config([
+           // This results in transparent backgournd
+           'canvasBackgroundColor' => null,
+       ])
+       ->create('img/TransparentBackground.png');
+    ```
+
+- Result:
+
+    <img src="examples/img/TransparentBackground.png" width="400" />
+
+### 5.7. Parsed Data
 
 - PHP
 
@@ -275,15 +629,27 @@ composer require macocci7/php-scatterplot
     }
     ```
 
-## Example
+## 6. Examples
 
-- [BasicUsage.php](example/BasicUsage.php) >> results in [BasicUsage.md](example/BasicUsage.md)
-- [UsingLayers.php](example/UsingLayers.php) >> results in [UsingLayers.md](example/UsingLayers.md)
-- [ChangingProperties.php](example/ChangingProperties.php) >> results in [ChangingProperties.md](example/ChangingProperties.md)
+- [BasicUsage.php](examples/BasicUsage.php) >> results in [BasicUsage.md](examples/BasicUsage.md)
+- [UsingLayers.php](examples/UsingLayers.php) >> results in [UsingLayers.md](examples/UsingLayers.md)
+- [AdjustDisplayByMethods.php](examples/AdjustDisplayByMethods.php) >> results in [AdjustDisplayByMethods.md](examples/AdjustDisplayByMethods.md)
+- [AdjustDisplayByNeon.php](examples/AdjustDisplayByNeon.php) >> results in:
+
+    <a href="examples/img/AdjustDisplayByNeon.png"><img src="examples/img/AdjustDisplayByNeon.png" width="300" /></a>
+
+- [AdjustDisplayByArray.php](examples/AdjustDisplayByArray.php) >> results in:
+
+    <a href="examples/img/AdjustDisplayByArray.png"><img src="examples/img/AdjustDisplayByArray.png" width="300" /></a>
+
+- [TransparentBackground.php](examples/TransparentBackground.php) >> results in:
+
+    <a href="examples/img/TransparentBackground.png"><img src="examples/img/TransparentBackground.png" width="300" /></a>
+
 - [ParsedData.php](example/ParsedData.php) >> results in [ParsedData.txt](example/ParsedData.txt)
 - [Matrix.php](example/Matrix.php) >> results in [Matrix.md](example/Matrix.md)
 
-## License
+## 7. License
 
 [MIT](LICENSE)
 
@@ -291,6 +657,6 @@ composer require macocci7/php-scatterplot
 
 *Document written: 2023/06/06*
 
-*Document updated: 2023/06/10*
+*Document updated: 2024/03/10*
 
-Copyright 2023 macocci7.
+Copyright 2023 - 2024 macocci7.

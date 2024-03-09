@@ -199,28 +199,4 @@ trait JudgeTrait
         }
         return true;
     }
-
-    /**
-     * judges if the $data are consecutive integer or not
-     * @param   mxied[] $data
-     * @return  bool
-     */
-    public static function isConsecutiveInt(array $data): bool
-    {
-        if (empty($data)) {
-            return false;
-        }
-        $items = array_values($data);
-        foreach ($items as $index => $item) {
-            if (!is_int($item)) {
-                return false;
-            }
-            if ($index > 0) {
-                if (!($item === $items[$index - 1] + 1)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 }

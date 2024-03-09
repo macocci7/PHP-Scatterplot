@@ -416,15 +416,15 @@ final class JudgeTraitTest extends TestCase
             [
                 'layers' => [
                     'hoge' => [ 'x' => [ 1, 2.3, ], 'y' => [ 1, 2.3, ], ],
-                    'hoge' => [ 'x' => [ 1, 2.3, ], 'y' => [ 1, 2.3, ], ],
+                    'huga' => [ 'x' => [ 1, 2.3, ], 'y' => [ 1, 2.3, ], ],
                 ],
                 'expect' => true,
             ],
             [
                 'layers' => [
                     'hoge' => [ 'x' => [ 1, 2.3, ], 'y' => [ 1, 2.3, ], ],
-                    'hoge' => [ 'x' => [ 1, 2.3, ], 'y' => [ 1, 2.3, ], ],
-                    'hoge' => [ 'x' => [ 1, 2.3, ], 'y' => [ 1, 2.3, 4, ], ],
+                    'huga' => [ 'x' => [ 1, 2.3, ], 'y' => [ 1, 2.3, ], ],
+                    'piyo' => [ 'x' => [ 1, 2.3, ], 'y' => [ 1, 2.3, 4, ], ],
                 ],
                 'expect' => false,
             ],
@@ -437,42 +437,5 @@ final class JudgeTraitTest extends TestCase
     public function test_isValidLayers_can_judge_correctly(array $layers, bool $expect): void
     {
         $this->assertSame($expect, self::isValidLayers($layers));
-    }
-
-    public static function provide_isConsecutiveInt_can_judge_correctly(): array
-    {
-        return [
-            [ 'data' => [], 'expect' => false, ],
-            [ 'data' => [null], 'expect' => false, ],
-            [ 'data' => [true], 'expect' => false, ],
-            [ 'data' => [false], 'expect' => false, ],
-            [ 'data' => ['1'], 'expect' => false, ],
-            [ 'data' => [[]], 'expect' => false, ],
-            [ 'data' => [1], 'expect' => true, ],
-            [ 'data' => [1.2], 'expect' => false, ],
-            [ 'data' => [ 1, null, ], 'expect' => false, ],
-            [ 'data' => [ 1, true, ], 'expect' => false, ],
-            [ 'data' => [ 1, false, ], 'expect' => false, ],
-            [ 'data' => [ 1, '2', ], 'expect' => false, ],
-            [ 'data' => [ 1, 2.3, ], 'expect' => false, ],
-            [ 'data' => [ 1, [], ], 'expect' => false, ],
-            [ 'data' => [ 1, 2, ], 'expect' => true, ],
-            [ 'data' => [ 1, 3, ], 'expect' => false, ],
-            [ 'data' => [ 1, 2, 3, ], 'expect' => true, ],
-            [ 'data' => [ 1, 2, 4, ], 'expect' => false, ],
-            [ 'data' => [ -3, -2, -1, ], 'expect' => true, ],
-            [ 'data' => [ -3, -2, -0, ], 'expect' => false, ],
-            [ 'data' => [ -1, 0, 1, ], 'expect' => true, ],
-            [ 'data' => [ 0, 1, 2, ], 'expect' => true, ],
-            [ 'data' => [ 3, 2, 1, ], 'expect' => false, ],
-        ];
-    }
-
-    /**
-     * @dataProvider provide_isConsecutiveInt_can_judge_correctly
-     */
-    public function test_isConsecutiveInt_can_judge_correctly(array $data, bool $expect): void
-    {
-        $this->assertSame($expect, self::isConsecutiveInt($data));
     }
 }

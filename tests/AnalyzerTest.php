@@ -9,11 +9,15 @@ require_once('vendor/autoload.php');
 use PHPUnit\Framework\TestCase;
 use Macocci7\PhpScatterplot\Analyzer;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 final class AnalyzerTest extends TestCase
 {
-    public function test_mean_can_retrun_mean_correctly(): void
+    public static function provide_mean_can_return_mean_correctly(): array
     {
-        $cases = [
+        return [
             ['data' => [], 'expect' => null, ],
             ['data' => [[]], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
@@ -27,16 +31,20 @@ final class AnalyzerTest extends TestCase
             ['data' => [1,2,3], 'expect' => 2, ],
             ['data' => [1.5,2.5,3.5,4.5], 'expect' => 3.0, ],
         ];
-        $a = new Analyzer();
-
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->mean($case['data']));
-        }
     }
 
-    public function test_variance_can_return_variance_correctly(): void
+    /**
+     * @dataProvider provide_mean_can_return_mean_correctly
+     */
+    public function test_mean_can_retrun_mean_correctly(array $data, int|float|null $expect): void
     {
-        $cases = [
+        $a = new Analyzer();
+        $this->assertSame($expect, $a->mean($data));
+    }
+
+    public static function provide_variance_can_return_variance_correctly(): array
+    {
+        return [
             ['data' => [], 'expect' => null, ],
             ['data' => [[]], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
@@ -49,16 +57,20 @@ final class AnalyzerTest extends TestCase
             ['data' => [1,2], 'expect' => 0.25, ],
             ['data' => [-1,1,3,5], 'expect' => 5, ],
         ];
-        $a = new Analyzer();
-
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->variance($case['data']));
-        }
     }
 
-    public function test_covariance_can_return_covariance_correctly(): void
+    /**
+     * @dataProvider provide_variance_can_return_variance_correctly
+     */
+    public function test_variance_can_return_variance_correctly(array $data, int|float|null $expect): void
     {
-        $cases = [
+        $a = new Analyzer();
+        $this->assertSame($expect, $a->variance($data));
+    }
+
+    public static function provide_covariance_can_return_covariance_correctly(): array
+    {
+        return [
             ['x' => [], 'y' => [1], 'expect' => null, ],
             ['x' => [null], 'y' => [1], 'expect' => null, ],
             ['x' => [true], 'y' => [1], 'expect' => null, ],
@@ -76,16 +88,20 @@ final class AnalyzerTest extends TestCase
             ['x' => [1,2], 'y' => [1], 'expect' => null, ],
             ['x' => [1,2,3], 'y' => [4,5,6], 'expect' => 2 / 3, ],
         ];
-        $a = new Analyzer();
-
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->covariance($case['x'], $case['y']));
-        }
     }
 
-    public function test_standardDeviation_can_return_standard_deviation_correctly(): void
+    /**
+     * @dataProvider provide_covariance_can_return_covariance_correctly
+     */
+    public function test_covariance_can_return_covariance_correctly(array $x, array $y, int|float|null $expect): void
     {
-        $cases = [
+        $a = new Analyzer();
+        $this->assertSame($expect, $a->covariance($x, $y));
+    }
+
+    public static function provide_standardDeviation_can_return_standard_deviation_correctly(): array
+    {
+        return [
             ['data' => [], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
             ['data' => [true], 'expect' => null, ],
@@ -97,16 +113,20 @@ final class AnalyzerTest extends TestCase
             ['data' => [1,2,'3'], 'expect' => null, ],
             ['data' => [-2,-1,0,1,2], 'expect' => sqrt(2), ],
         ];
-        $a = new Analyzer();
-
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->standardDeviation($case['data']));
-        }
     }
 
-    public function test_correlationCoefficient_can_return_correlation_coefficient_correctly(): void
+    /**
+     * @dataProvider provide_standardDeviation_can_return_standard_deviation_correctly
+     */
+    public function test_standardDeviation_can_return_standard_deviation_correctly(array $data, float|null $expect): void
     {
-        $cases = [
+        $a = new Analyzer();
+        $this->assertSame($expect, $a->standardDeviation($data));
+    }
+
+    public static function provide_correlationCoefficient_can_return_correlation_coefficient_correctly(): array
+    {
+        return [
             ['x' => [], 'y' => [1], 'expect' => null, ],
             ['x' => [null], 'y' => [1], 'expect' => null, ],
             ['x' => [true], 'y' => [1], 'expect' => null, ],
@@ -125,16 +145,20 @@ final class AnalyzerTest extends TestCase
             ['x' => [1,2,3,4], 'y' => [3,1,4,2], 'expect' => 0.0, ],
             ['x' => [1,2], 'y' => [2,1], 'expect' => -1.0, ],
         ];
-        $a = new Analyzer();
-
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->correlationCoefficient($case['x'], $case['y']));
-        }
     }
 
-    public function test_regressionLineFormula_can_return_values_correctly(): void
+    /**
+     * @dataProvider provide_correlationCoefficient_can_return_correlation_coefficient_correctly
+     */
+    public function test_correlationCoefficient_can_return_correlation_coefficient_correctly(array $x, array $y, float|null $expect): void
     {
-        $cases = [
+        $a = new Analyzer();
+        $this->assertSame($expect, $a->correlationCoefficient($x, $y));
+    }
+
+    public static function provide_regressionLineFormula_can_return_values_correctly(): array
+    {
+        return [
             ['x' => [], 'y' => [1], 'expect' => null, ],
             ['x' => [null], 'y' => [1], 'expect' => null, ],
             ['x' => [true], 'y' => [1], 'expect' => null, ],
@@ -153,16 +177,20 @@ final class AnalyzerTest extends TestCase
             ['x' => [1,2], 'y' => [1,2], 'expect' => ['a' => 1.0, 'b' => 0.0], ],
             ['x' => [1,2], 'y' => [1,2,3], 'expect' => null, ],
         ];
-        $a = new Analyzer();
-
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->regressionLineFormula($case['x'], $case['y']));
-        }
     }
 
-    public function test_getUcl_can_return_ucl_correctly(): void
+    /**
+     * @dataProvider provide_regressionLineFormula_can_return_values_correctly
+     */
+    public function test_regressionLineFormula_can_return_values_correctly(array $x, array $y, array|null $expect): void
     {
-        $cases = [
+        $a = new Analyzer();
+        $this->assertSame($expect, $a->regressionLineFormula($x, $y));
+    }
+
+    public static function provide_getUcl_can_return_ucl_correctly(): array
+    {
+        return [
             ['data' => [], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
             ['data' => [true], 'expect' => null, ],
@@ -173,16 +201,20 @@ final class AnalyzerTest extends TestCase
             ['data' => [1,2], 'expect' => 3.5, ],
             ['data' => [1,2,3,4,5], 'expect' => 9.0, ],
         ];
-        $a = new Analyzer();
-
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->getUcl($case['data']));
-        }
     }
 
-    public function test_getLcl_can_return_lcl_correctly(): void
+    /**
+     * @dataProvider provide_getUcl_can_return_ucl_correctly
+     */
+    public function test_getUcl_can_return_ucl_correctly(array $data, float|null $expect): void
     {
-        $cases = [
+        $a = new Analyzer();
+        $this->assertSame($expect, $a->getUcl($data));
+    }
+
+    public static function provide_getLcl_can_return_lcl_correctly(): array
+    {
+        return [
             ['data' => [], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
             ['data' => [true], 'expect' => null, ],
@@ -193,16 +225,20 @@ final class AnalyzerTest extends TestCase
             ['data' => [1,2], 'expect' => -0.5, ],
             ['data' => [1,2,3,4,5], 'expect' => -3.0, ],
         ];
-        $a = new Analyzer();
-
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->getLcl($case['data']));
-        }
     }
 
-    public function test_outliers_can_return_outliers_correctly(): void
+    /**
+     * @dataProvider provide_getLcl_can_return_lcl_correctly
+     */
+    public function test_getLcl_can_return_lcl_correctly(array $data, float|null $expect): void
     {
-        $cases = [
+        $a = new Analyzer();
+        $this->assertSame($expect, $a->getLcl($data));
+    }
+
+    public static function provide_outliers_can_return_outliers_correctly(): array
+    {
+        return [
             ['data' => [], 'expect' => null, ],
             ['data' => [null], 'expect' => null, ],
             ['data' => [true], 'expect' => null, ],
@@ -215,10 +251,14 @@ final class AnalyzerTest extends TestCase
             ['data' => [1,90,92,94,96,98,100], 'expect' => [1], ],
             ['data' => [1,50,51,52,53,54,55,100], 'expect' => [1,100], ],
         ];
-        $a = new Analyzer();
+    }
 
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->outliers($case['data']));
-        }
+    /**
+     * @dataProvider provide_outliers_can_return_outliers_correctly
+     */
+    public function test_outliers_can_return_outliers_correctly(array $data, array|null $expect): void
+    {
+        $a = new Analyzer();
+        $this->assertSame($expect, $a->outliers($data));
     }
 }

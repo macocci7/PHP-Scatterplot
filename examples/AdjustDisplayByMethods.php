@@ -4,29 +4,28 @@ require('../vendor/autoload.php');
 
 use Macocci7\PhpScatterplot\Scatterplot;
 
-$sp = new Scatterplot();
-
 $layers = [
     'John' => [
-        'x' => [1,2,3,4,5,6,7,8,9,10,11],
-        'y' => [1,2,3,4,5,8,4,7,11,9,1],
+        'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+        'y' => [ 1, 2, 3, 4, 5, 8, 4, 7, 11, 9, 1, ],
     ],
     'Jake' => [
-        'x' => [1,2,3,4,5,6,7,8,9,10,11],
-        'y' => [11,8,10,7,9,6,5,3,4,2,1],
+        'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+        'y' => [ 11, 8, 10, 7, 9, 6, 5, 3, 4, 2, 1, ],
     ],
     'Hugo' => [
-        'x' => [1,2,3,4,5,6,7,8,9,10,11],
-        'y' => [4,8,10,1,9,6,5,3,7,1,11],
+        'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+        'y' => [ 4, 8, 10, 1, 9, 6, 5, 3, 7, 1, 11, ],
     ],
     'Alex' => [
-        'x' => [1,2,3,4,5,6,7,8,9,10,11],
-        'y' => [3,5,11,4,8,2,9,10,1,11,7],
+        'x' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ],
+        'y' => [ 3, 5, 11, 4, 8, 2, 9, 10, 1, 11, 7, ],
     ],
 ];
 
 $legends = array_keys($layers);
 
+$sp = new Scatterplot();
 $sp->layers($layers)
    ->limitX(0, 12)
    ->limitY(0, 12)
@@ -39,7 +38,7 @@ $sp->layers($layers)
    ->grid(1, '#999999')
    ->gridXOn()
    ->gridYOn()
-   ->regressionLine(3, ['#666666', '#cc2222', '#2222cc', '#22cc22'])
+   ->regressionLine(3, [ '#666666', '#cc2222', '#2222cc', '#22cc22', ])
    ->referenceLineX(1.5, 1, '#00ccff')
    ->referenceLineY(1.5, 1, '#00ccff')
    ->specificationLimitX(0.5, 11.5, 1, '#ff00ff')
@@ -48,12 +47,12 @@ $sp->layers($layers)
    ->labelY('DATA Y')
    ->caption('SCATTER PLOT')
    ->legends($legends)
-   ->create('img/ChangingProperties.png');
+   ->create('img/AdjustDisplayByMethods.png');
 
 // Markdown -------------------------------------
 
 // Headline
-echo "# PHP-Scatterplot : Changing Properties\n\n";
+echo "# Adjusting the Display By Methods\n\n";
 
 // Layers
 echo "<details><summary>Layers</summary>\n\n";

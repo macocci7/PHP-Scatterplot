@@ -9,6 +9,9 @@ define("LIMIT_LAYERS", 8);
 
 /**
  * Class for analysis
+ * @author  macocci7 <macocci7@yahoo.co.jp>
+ * @license MIT
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Analyzer
 {
@@ -17,17 +20,15 @@ class Analyzer
     /**
      * Frequency Table
      */
-    public $ft;
+    public FrequencyTable $ft;
 
     /**
-     * parsed data
+     * @var mixed[] $parsed
      */
-    public $parsed;
+    public array $parsed;
 
     /**
      * constructor
-     * @param
-     * @return
      */
     public function __construct()
     {

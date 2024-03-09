@@ -49,16 +49,10 @@ validConfig:
         type: number
     fontColor:
         type: colorCode|null
-    outlierDiameter:
-        type: int
-    outlierColor:
-        type: colorCode|null
-    mean:
+    regressionLine:
         type: bool
-    meanColor:
-        type: colorCode|null
-    labels:
-        type: array
+    regressionLineWidth:
+        type: int
     labelX:
         type: string
     labelY:
@@ -71,9 +65,47 @@ validConfig:
         type: int
     legends:
         type: array
+    referenceLineX:
+        type: bool
+    referenceLineXValue:
+        type: number
+    referenceLineXWidth:
+        type: int
+    referenceLineXColor:
+        type: colorCode|null
+    referenceLineY:
+        type: bool
+    referenceLineYValue:
+        type: number
+    referenceLineYWidth:
+        type: int
+    referenceLineYColor:
+        type: colorCode
+    specificationLimitX:
+        type: bool
+    specificationLimitXLower:
+        type: number
+    specificationLimitXUpper:
+        type: number
+    specificationLimitXWidth:
+        type: int
+    specificationLimitXColor:
+        type: colorCode|null
+    specificationLimitY:
+        type: bool
+    specificationLimitYLower:
+        type: number
+    specificationLimitYUpper:
+        type: number
+    specificationLimitYWidth:
+        type: int
+    specificationLimitYColor:
+        type: colorCode|null
     legendWidth:
         type: int
     legendFontSize:
         type: number
     colors:
+        type: colorCodes
+    regressionLineColors:
         type: colorCodes

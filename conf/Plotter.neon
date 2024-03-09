@@ -1,6 +1,7 @@
 # Configuration for Macocci7\PhpScatterplot\Plotter
 
 props:
+    imageDriver: 'imagick'
     layers: []
     canvasWidth: 600
     canvasHeight: 500
@@ -11,8 +12,8 @@ props:
     axisWidth: 1
     gridColor: '#dddddd'
     gridWidth: 1
-    #gridXPitch:
-    #gridYPitch:
+    gridXPitch: null
+    gridYPitch: null
     #gridXMax:
     #gridXMin:
     #gridYMax:
@@ -26,7 +27,7 @@ props:
     #yLimitUpper:
     #yLimitLower:
     plotDiameter: 2
-    plotColors: '#000000'
+    plotColor: '#000000'
     fontPath: 'fonts/ipaexg.ttf' # IPA ex Gothic 00401
     #fontPath: 'fonts/ipaexm.ttf' # IPA ex Mincho 00401
     fontSize: 16

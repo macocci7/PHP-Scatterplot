@@ -1,4 +1,4 @@
-# PHP-Scatterplot : Changing Properties
+# Adjusting the Display By Methods
 
 <details><summary>Layers</summary>
 
