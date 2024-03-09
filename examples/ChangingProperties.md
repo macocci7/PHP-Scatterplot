@@ -32,10 +32,6 @@
 |gridWidth|1|
 |gridXPitch|2|
 |gridYPitch|2|
-|gridXMax|12|
-|gridXMin|0|
-|gridYMax|12|
-|gridYMin|0|
 |gridX|`true`|
 |gridY|`true`|
 |xLimitUpper|12|

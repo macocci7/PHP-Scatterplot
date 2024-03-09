@@ -11,27 +11,6 @@ use Macocci7\PhpScatterplot\Analyzer;
 
 final class AnalyzerTest extends TestCase
 {
-    public function test_isValid_can_return_bool_correctly(): void
-    {
-        $cases = [
-            ['data' => [], 'expect' => false, ],
-            ['data' => [[]], 'expect' => false, ],
-            ['data' => [null], 'expect' => false, ],
-            ['data' => [true], 'expect' => false, ],
-            ['data' => [false], 'expect' => false, ],
-            ['data' => [0], 'expect' => true, ],
-            ['data' => [1.2], 'expect' => true, ],
-            ['data' => ['0'], 'expect' => false, ],
-            ['data' => [0,1.2], 'expect' => true, ],
-            ['data' => [0,1.2,'3'], 'expect' => false, ],
-        ];
-        $a = new Analyzer();
-
-        foreach ($cases as $index => $case) {
-            $this->assertSame($case['expect'], $a->isValid($case['data']));
-        }
-    }
-
     public function test_mean_can_retrun_mean_correctly(): void
     {
         $cases = [

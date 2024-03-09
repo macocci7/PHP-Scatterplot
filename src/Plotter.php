@@ -2,6 +2,8 @@
 
 namespace Macocci7\PhpScatterplot;
 
+use Macocci7\PhpScatterplot\Helpers\Config;
+use Macocci7\PhpScatterplot\Traits\JudgeTrait;
 use Macocci7\PhpScatterplot\Analyzer;
 use Macocci7\PhpFrequencyTable\FrequencyTable;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -11,6 +13,9 @@ use Intervention\Image\ImageManagerStatic as Image;
  */
 class Plotter extends Analyzer
 {
+    use JudgeTrait;
+
+    protected $imageDriver = 'imagick';
     protected $layers;
     protected $image;
     protected $canvasWidth = 600;
@@ -107,12 +112,97 @@ class Plotter extends Analyzer
      */
     public function __construct()
     {
+        parent::__construct();
+        $this->loadConf();
         Image::configure(['driver' => 'imagick']);
     }
 
     /**
+     * loads config.
+     * @return  void
+     */
+    private function loadConf()
+    {
+        Config::load();
+        $props = [
+            'imageDriver',
+            'layers',
+            'canvasWidth',
+            'canvasHeight',
+            'canvasBackgroundColor',
+            'frameXRatio',
+            'frameYRatio',
+            'axisColor',
+            'axisWidth',
+            'gridColor',
+            'gridWidth',
+            'gridXPitch',
+            'gridYPitch',
+            'gridXMax',
+            'gridXMin',
+            'gridYMax',
+            'gridYMin',
+            'gridX',
+            'gridY',
+            'pixPitchX',
+            'pixPitchY',
+            'xLimitUpper',
+            'xLimitLower',
+            'yLimitUpper',
+            'yLimitLower',
+            'plotDiameter',
+            'plotColors',
+            'fontPath',
+            '#fontPath',
+            'fontSize',
+            'fontColor',
+            'outlier',
+            'outlierDiameter',
+            'outlierColor',
+            'mean',
+            'meanColor',
+            'referenceLineX',
+            'referenceLineXValue',
+            'referenceLineXWidth',
+            'referenceLineXColor',
+            'referenceLineY',
+            'referenceLineYValue',
+            'referenceLineYWidth',
+            'referenceLineYColor',
+            'specificationLimitX',
+            'specificationLimitXLower',
+            'specificationLimitXUpper',
+            'specificationLimitXWidth',
+            'specificationLimitXColor',
+            'specificationLimitY',
+            'specificationLimitYLower',
+            'specificationLimitYUpper',
+            'specificationLimitYWidth',
+            'specificationLimitYColor',
+            'regressionLine',
+            'regressionLineWidth',
+            'regressionLineColor',
+            'labels',
+            'labelX',
+            'labelY',
+            'caption',
+            'legend',
+            'legendCount',
+            'legends',
+            'legendWidth',
+            'legendFontSize',
+            'colors',
+            'regressionLineColors',
+        ];
+        foreach (Config::get('props') as $prop => $value) {
+            if (in_array($prop, $props, true)) {
+                $this->{$prop} = $value;
+            }
+        }
+    }
+
+    /**
      * sets properties for preparation
-     * @param
      * @return self
      */
     protected function setProperties()
@@ -191,45 +281,28 @@ class Plotter extends Analyzer
     }
 
     /**
-     * judges wheter $color is in supported color code format or not
-     * @param string $color
-     * @return bool
-     */
-    public function isColorCode($color)
-    {
-        if (!is_string($color)) {
-            return false;
-        }
-        return preg_match('/^#[A-Fa-f0-9]{3}$|^#[A-Fa-f0-9]{6}$/', $color)
-               ? true
-               : false
-               ;
-    }
-
-    /**
      * calculates the x-coordinate in pixels
-     * @param float $x
-     * @return integer
+     * @param   float   $x
+     * @return  int
      */
-    public function pX($x)
+    public function pX(float $x)
     {
         return (int) ($this->baseX + ($x - $this->gridXMin) * $this->pixPitchX);
     }
 
     /**
      * calculates the y-coordinate in pixels
-     * @param float $y
-     * @return integer
+     * @param   float   $y
+     * @return  int
      */
-    public function pY($y)
+    public function pY(float $y)
     {
         return (int) ($this->baseY - ($y - $this->gridYMin) * $this->pixPitchY);
     }
 
     /**
      * plots axis
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotAxis()
     {
@@ -268,13 +341,12 @@ class Plotter extends Analyzer
 
     /**
      * plots x-grids
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotGridsX()
     {
         if (!$this->gridX) {
-            return;
+            return $this;
         }
         for ($i = $this->gridXMin; $i <= $this->gridXMax; $i += $this->gridXPitch) {
             $x1 = (int) $this->pX($i);
@@ -297,13 +369,12 @@ class Plotter extends Analyzer
 
     /**
      * plots y-grids
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotGridsY()
     {
         if (!$this->gridY) {
-            return;
+            return $this;
         }
         for ($i = $this->gridYMin; $i <= $this->gridYMax; $i += $this->gridYPitch) {
             $x1 = (int) $this->pX($this->gridXMin);
@@ -326,8 +397,7 @@ class Plotter extends Analyzer
 
     /**
      * plots grid values of x
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotGridValuesX()
     {
@@ -352,8 +422,7 @@ class Plotter extends Analyzer
 
     /**
      * plots grid values of y
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotGridValuesY()
     {
@@ -378,8 +447,7 @@ class Plotter extends Analyzer
 
     /**
      * plots x-label
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotLabelX()
     {
@@ -402,8 +470,7 @@ class Plotter extends Analyzer
 
     /**
      * plots y-label
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotLabelY()
     {
@@ -431,8 +498,7 @@ class Plotter extends Analyzer
 
     /**
      * plots caption
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotCaption()
     {
@@ -450,17 +516,17 @@ class Plotter extends Analyzer
                 $font->valign('bottom');
             }
         );
+        return $this;
     }
 
     /**
      * plots layers
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotLayers()
     {
-        if (!$this->isValidLayers($this->layers)) {
-            return;
+        if (!self::isValidLayers($this->layers)) {
+            return $this;
         }
         $i = 0;
         foreach ($this->layers as $layer => $data) {
@@ -475,10 +541,10 @@ class Plotter extends Analyzer
 
     /**
      * plots layer
-     * @param array $data
-     * @return self
+     * @param   array<string, array<int|float>> $data
+     * @return  self
      */
-    public function plotLayer($data)
+    public function plotLayer(array $data)
     {
         $count = count($data['x']);
         for ($i = 0; $i < $count; $i++) {
@@ -489,17 +555,14 @@ class Plotter extends Analyzer
 
     /**
      * plots a dot
-     * @param float $x
-     * @param float $y
-     * @return self
+     * @param   int|float   $x
+     * @param   int|float   $y
+     * @return  self
      */
-    public function plotXY($x, $y)
+    public function plotXY(int|float $x, int|float $y)
     {
-        if (!is_int($x) && !is_float($x)) {
-            return;
-        }
-        if (!is_int($y) && !is_float($y)) {
-            return;
+        if (!self::isNumber($x) || !self::isNumber($y)) {
+            return $this;
         }
         $px = $this->pX($x);
         $py = $this->pY($y);
@@ -516,16 +579,16 @@ class Plotter extends Analyzer
 
     /**
      * plots a regression line
-     * @param array $layer
-     * @return self
+     * @param   array<int|string, array<string, array<int|float>>>   $layer
+     * @return  self
      */
-    public function plotRegressionLine($layer)
+    public function plotRegressionLine(array $layer)
     {
         if (!$this->regressionLine) {
-            return;
+            return $this;
         }
-        if (!$this->isValidLayer($layer)) {
-            return;
+        if (!self::isValidLayer($layer)) {
+            return $this;
         }
         $formula = $this->regressionLineFormula($layer['x'], $layer['y']);
         $a = $formula['a'];
@@ -551,13 +614,12 @@ class Plotter extends Analyzer
 
     /**
      * plots a reference line of x
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotReferenceLineX()
     {
         if (!$this->referenceLineX) {
-            return;
+            return $this;
         }
         $x1 = (int) $this->pX($this->referenceLineXValue);
         $y1 = (int) $this->pY($this->gridYMax);
@@ -578,13 +640,12 @@ class Plotter extends Analyzer
 
     /**
      * plots a reference line of Y
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotReferenceLineY()
     {
         if (!$this->referenceLineY) {
-            return;
+            return $this;
         }
         $x1 = (int) $this->pX($this->gridXMin);
         $y1 = (int) $this->pY($this->referenceLineYValue);
@@ -605,13 +666,12 @@ class Plotter extends Analyzer
 
     /**
      * plots specification limit lines of X
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotSpecificationLimitX()
     {
         if (!$this->specificationLimitX) {
-            return;
+            return $this;
         }
         // lower limit
         $x1 = (int) $this->pX($this->specificationLimitXLower);
@@ -646,13 +706,12 @@ class Plotter extends Analyzer
 
     /**
      * plots specification limit lines of y
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotSpecificationLimitY()
     {
         if (!$this->specificationLimitY) {
-            return;
+            return $this;
         }
         // lower limit
         $x1 = (int) $this->pX($this->gridXMin);
@@ -687,13 +746,12 @@ class Plotter extends Analyzer
 
     /**
      * plots legends
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotLegend()
     {
         if (!$this->legend) {
-            return;
+            return $this;
         }
         $baseX = $this->canvasWidth * (3 + $this->frameXRatio) / 4 - $this->legendWidth;
         $baseY = 10;
@@ -751,16 +809,14 @@ class Plotter extends Analyzer
 
     /**
      * creates a scatter plot image and save it
-     * @param string $filePath
-     * @return self
+     * @param   string  $filePath
+     * @return  self
+     * @thrown  \Exception
      */
-    public function create($filePath)
+    public function create(string $filePath)
     {
-        if (!is_string($filePath)) {
-            return;
-        }
         if (strlen($filePath) == 0) {
-            return;
+            throw new \Exception("Empty string specified for file path.");
         }
         $this->setProperties();
         $this->plotLabelX();

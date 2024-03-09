@@ -1,0 +1,87 @@
+/home/macocci7/php/PHP-Scatterplot/example/ParsedData.php:20:
+array(2) {
+  'John' =>
+  array(6) {
+    'count' =>
+    int(11)
+    'x' =>
+    array(5) {
+      'Mean' =>
+      int(6)
+      'Max' =>
+      int(11)
+      'Min' =>
+      int(1)
+      'Variance' =>
+      int(10)
+      'StandardDeviation' =>
+      double(3.1622776601684)
+    }
+    'y' =>
+    array(5) {
+      'Mean' =>
+      int(5)
+      'Max' =>
+      int(11)
+      'Min' =>
+      int(1)
+      'Variance' =>
+      double(10.181818181818)
+      'StandardDeviation' =>
+      double(3.1908961408699)
+    }
+    'Covariance' =>
+    double(5.1818181818182)
+    'CorrelationCoefficient' =>
+    double(0.51353435373647)
+    'RegressionLineFormula' =>
+    array(2) {
+      'a' =>
+      double(0.51818181818182)
+      'b' =>
+      double(1.8909090909091)
+    }
+  }
+  'Jake' =>
+  array(6) {
+    'count' =>
+    int(11)
+    'x' =>
+    array(5) {
+      'Mean' =>
+      int(6)
+      'Max' =>
+      int(11)
+      'Min' =>
+      int(1)
+      'Variance' =>
+      int(10)
+      'StandardDeviation' =>
+      double(3.1622776601684)
+    }
+    'y' =>
+    array(5) {
+      'Mean' =>
+      int(6)
+      'Max' =>
+      int(11)
+      'Min' =>
+      int(1)
+      'Variance' =>
+      int(10)
+      'StandardDeviation' =>
+      double(3.1622776601684)
+    }
+    'Covariance' =>
+    double(-9.4545454545455)
+    'CorrelationCoefficient' =>
+    double(-0.94545454545455)
+    'RegressionLineFormula' =>
+    array(2) {
+      'a' =>
+      double(-0.94545454545455)
+      'b' =>
+      double(11.672727272727)
+    }
+  }
+}

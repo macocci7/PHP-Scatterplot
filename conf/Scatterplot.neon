@@ -1,0 +1,79 @@
+# Configuration for Macocci7\PhpScatterplot\Scatterplot
+
+props:
+    CANVAS_WIDTH_LIMIT_LOWER: 100
+    CANVAS_HEIGHT_LIMIT_LOWER: 100
+
+validConfig:
+    canvasWidth:
+        type: int
+    canvasHeight:
+        type: int
+    canvasBackgroundColor:
+        type: colorCode|null
+    frameXRatio:
+        type: float
+    frameYRatio:
+        type: float
+    axisColor:
+        type: colorCode|null
+    axisWidth:
+        type: int
+    gridColor:
+        type: colorCode|null
+    gridWidth:
+        type: int
+    gridXPitch:
+        type: number
+    gridYPitch:
+        type: number
+    gridX:
+        type: bool
+    gridY:
+        type: bool
+    xLimitUpper:
+        type: number
+    xLimitLower:
+        type: number
+    yLimitUpper:
+        type: number
+    yLimitLower:
+        type: number
+    plotDiameter:
+        type: int
+    plotColor:
+        type: colorCode|null
+    fontPath:
+        type: string
+    fontSize:
+        type: number
+    fontColor:
+        type: colorCode|null
+    outlierDiameter:
+        type: int
+    outlierColor:
+        type: colorCode|null
+    mean:
+        type: bool
+    meanColor:
+        type: colorCode|null
+    labels:
+        type: array
+    labelX:
+        type: string
+    labelY:
+        type: string
+    caption:
+        type: string
+    legend:
+        type: bool
+    legendCount:
+        type: int
+    legends:
+        type: array
+    legendWidth:
+        type: int
+    legendFontSize:
+        type: number
+    colors:
+        type: colorCodes
