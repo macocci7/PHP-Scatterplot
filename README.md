@@ -77,9 +77,9 @@ composer require macocci7/php-scatterplot
         ->create('img/BasicUsage.png');
     ```
 
-- Result
+- Result: [examples/img/BasicUsage.png](examples/img/BasicUsage.png)
 
-    <img src="examples/img/BasicUsage.png" width="400" />
+    <a href="examples/img/BasicUsage.png"><img src="examples/img/BasicUsage.png" width="400" /></a>
 
 - Details:
     - Import Autoloader: `require_once('../vendor/autoload.php')`
@@ -95,7 +95,7 @@ composer require macocci7/php-scatterplot
 
 ### 5.2. Using Layers
 
-- PHP:
+- PHP: [examples/UsingLayers.php](examples/UsingLayers.php)
 
     ```php
     <?php
@@ -135,9 +135,9 @@ composer require macocci7/php-scatterplot
        ->create('img/UsingLayers.png');
     ```
 
-- Result
+- Result: [examples/img/UsingLayers.png](examples/img/UsingLayers.png)
 
-    <img src="examples/img/UsingLayers.png" width="400" />
+    <a href="examples/img/UsingLayers.png"><img src="examples/img/UsingLayers.png" width="400" /></a>
 
 - Details:
     - Change Plot Size (Diameter): `plotSize(int $pixSize)`
@@ -148,7 +148,7 @@ composer require macocci7/php-scatterplot
 
 ### 5.3. Adjusting the Display By Methods
 
-- PHP:
+- PHP: [examples/AdjustDisplayByMethods.php](examples/AdjustDisplayByMethods.php)
 
     ```php
     <?php
@@ -203,9 +203,9 @@ composer require macocci7/php-scatterplot
        ->create('img/AdjustDisplayByMethods.png');
     ```
 
-- Result
+- Result: [examples/img/AdjustDisplayByMethods.png](examples/img/AdjustDisplayByMethods.png)
 
-    <img src="examples/img/ChangingProperties.png" width="400" />
+    <a href="examples/img/AdjustDisplayByMethods.png"><img src="examples/img/AdjustDisplayByMethods.png" width="400" /></a>
 
 - Details:
     <table>
