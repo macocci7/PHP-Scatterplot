@@ -14,7 +14,7 @@ You can also retrieve parsed data:
 
 `Multiple Layers (Data Sets)` are supported.
 
-<img src="examples/img/ChangingProperties.png" width="400" />
+<img src="examples/img/AdjustDisplayByMethods.png" width="400" />
 
 ## Contents
 
