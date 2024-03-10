@@ -2,79 +2,91 @@
 
 namespace Macocci7\PhpScatterplot;
 
+use Macocci7\PhpScatterplot\Helpers\Config;
 use Macocci7\PhpScatterplot\Plotter;
 
 /**
  * Class for management of scatter plot
+ * @author  macocci7 <macocci7@yahoo.co.jp>
+ * @license MIT
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Scatterplot extends Plotter
 {
-    private $validConfig = [
-        'canvasWidth',
-        'canvasHeight',
-        'canvasBackgroundColor',
-        'frameXRatio',
-        'frameYRatio',
-        'axisColor',
-        'axisWidth',
-        'gridColor',
-        'gridWidth',
-        'gridXPitch',
-        'gridYPitch',
-        'gridXMax',
-        'gridXMin',
-        'gridYMax',
-        'gridYMin',
-        'gridX',
-        'gridY',
-        'xLimitUpper',
-        'xLimitLower',
-        'yLimitUpper',
-        'yLimitLower',
-        'plotDiameter',
-        'plotColor',
-        'fontPath',
-        'fontSize',
-        'fontColor',
-        'outlierDiameter',
-        'outlierColor',
-        'mean',
-        'meanColor',
-        'labels',
-        'labelX',
-        'labelY',
-        'caption',
-        'legend',
-        'legendCount',
-        'legends',
-        'legendWidth',
-        'legendFontSize',
-        'colors',
-    ];
+    private int $CANVAS_WIDTH_LIMIT_LOWER;
+    private int $CANVAS_HEIGHT_LIMIT_LOWER;
+
+    /**
+     * constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->loadConf();
+    }
+
+    /**
+     * loads config.
+     * @return  void
+     */
+    private function loadConf()
+    {
+        Config::load();
+        $props = [
+            'CANVAS_WIDTH_LIMIT_LOWER',
+            'CANVAS_HEIGHT_LIMIT_LOWER',
+        ];
+        foreach (Config::get('props') as $prop => $value) {
+            if (in_array($prop, $props, true)) {
+                $this->{$prop} = $value;
+            }
+        }
+    }
+
+    /**
+     * set config from specified resource
+     * @param   string|mixed[]  $configResource
+     * @return  self
+     */
+    public function config(string|array $configResource)
+    {
+        foreach (Config::filter($configResource) as $key => $value) {
+            $this->{$key} = $value;
+            if (strcmp('dataSet', $key) === 0 && empty($this->legends)) {
+                $this->legends = array_keys($value);
+            }
+        }
+        return $this;
+    }
 
     /**
      * sets a layer
-     * @param array $layer
-     * @return self
+     * @param   array<string, array<int|float>> $layer
+     * @return  self
      */
-    public function layer($layer)
+    public function layer(array $layer)
     {
-        if (!$this->isValidLayer($layer)) {
-            return;
+        if (self::isValidLayer($layer)) {
+            $this->layers[] = $layer;
         }
-        $this->layers[] = $layer;
         return $this;
     }
 
     /**
      * sets layers
-     * @param array $layers
-     * @return self
+     * @param   array<int|string, array<string, list<int|float>>>   $layers
+     * @return  self
      */
-    public function layers($layers)
+    public function layers(array $layers)
     {
-        if (!$this->isValidLayers($layers)) {
-            return;
+        if (!self::isValidLayers($layers)) {
+            throw new \Exception(
+                "Invalid layers specified. "
+                . "array<int|string, array<string, list<int|float>>> expected."
+            );
         }
         $this->layers = $layers;
         return $this;
@@ -82,20 +94,15 @@ class Scatterplot extends Plotter
 
     /**
      * sets limits of x
-     * @param float $lower
-     * @param float $upper
-     * @return self
+     * @param   int|float   $lower
+     * @param   int|float   $upper
+     * @return  self
+     * @thrown  \Exception
      */
-    public function limitX($lower, $upper)
+    public function limitX(int|float $lower, int|float $upper)
     {
-        if (!is_int($lower) && !s_float($lower)) {
-            return;
-        }
-        if (!is_int($upper) && !is_float($upper)) {
-            return;
-        }
         if ($lower >= $upper) {
-            return;
+            throw new \Exception("lower limit must be less than upper limit.");
         }
         $this->xLimitUpper = $upper;
         $this->xLimitLower = $lower;
@@ -104,20 +111,15 @@ class Scatterplot extends Plotter
 
     /**
      * sets limits of y
-     * @param float $lower
-     * @param float $upper
-     * @return self
+     * @param   int|float   $lower
+     * @param   int|float   $upper
+     * @return  self
+     * @thrown  \Exception
      */
-    public function limitY($lower, $upper)
+    public function limitY(int|float $lower, int|float $upper)
     {
-        if (!is_int($lower) && !s_float($lower)) {
-            return;
-        }
-        if (!is_int($upper) && !is_float($upper)) {
-            return;
-        }
         if ($lower >= $upper) {
-            return;
+            throw new \Exception("lower limit must be less than upper limit.");
         }
         $this->yLimitUpper = $upper;
         $this->yLimitLower = $lower;
@@ -126,17 +128,24 @@ class Scatterplot extends Plotter
 
     /**
      * sets the width and height of the canvas
-     * @param integer $width
-     * @param integer $height
-     * @return self
+     * @param   int     $width
+     * @param   int     $height
+     * @return  self
+     * @thrown  \Exception
      */
-    public function resize($width, $height)
+    public function resize(int $width, int $height)
     {
-        if (!is_int($width) || !is_int($height)) {
-            return;
+        if ($width < $this->CANVAS_WIDTH_LIMIT_LOWER) {
+            throw new \Exception(
+                "width is below the lower limit "
+                . $this->CANVAS_WIDTH_LIMIT_LOWER
+            );
         }
-        if ($width < 100 || $height < 100) {
-            return;
+        if ($height < $this->CANVAS_HEIGHT_LIMIT_LOWER) {
+            throw new \Exception(
+                "height is below the lower limit "
+                . $this->CANVAS_HEIGHT_LIMIT_LOWER
+            );
         }
         $this->canvasWidth = $width;
         $this->canvasHeight = $height;
@@ -145,20 +154,18 @@ class Scatterplot extends Plotter
 
     /**
      * sets the frame (plot area) ratio
-     * @param float $xRatio
-     * @param float $yRatio
-     * @return self
+     * @param   float   $xRatio (0.0 < $xRatio < 1.0)
+     * @param   float   $yRatio (0.0 < $yRatio < 1.0)
+     * @return  self
+     * @thrown  \Exception
      */
     public function frame($xRatio, $yRatio)
     {
-        if (!is_float($xRatio) || !is_float($yRatio)) {
-            return;
-        }
         if ($xRatio <= 0.0 || $xRatio > 1.0) {
-            return;
+            throw new \Exception("Ratio must be: 0.0 < ratio <= 1.0.");
         }
         if ($yRatio <= 0.0 || $yRatio > 1.0) {
-            return;
+            throw new \Exception("Ratio must be: 0.0 < ratio <= 1.0.");
         }
         $this->frameXRatio = $xRatio;
         $this->frameYRatio = $yRatio;
@@ -167,13 +174,13 @@ class Scatterplot extends Plotter
 
     /**
      * sets the background color of the canvas
-     * @param string $color
-     * @return self
+     * @param   string|null $color = null (null results in transparent)
+     * @return  self
      */
-    public function bgcolor($color)
+    public function bgcolor(string|null $color = null)
     {
-        if (!$this->isColorCode($color)) {
-            return;
+        if (!self::isColorCode($color) && !is_null($color)) {
+            throw new \Exception("param must be null or color code (in '#rgb' or '#rrggbb' format).");
         }
         $this->canvasBackgroundColor = $color;
         return $this;
@@ -181,20 +188,18 @@ class Scatterplot extends Plotter
 
     /**
      * sets the width and color of the axis
-     * @param integer $width
-     * @param string $color
-     * @return self
+     * @param   int         $width
+     * @param   string|null $color
+     * @return  self
+     * @thrown  \Exception
      */
-    public function axis($width, $color = null)
+    public function axis(int $width, string|null $color = null)
     {
-        if (!is_int($width)) {
-            return;
-        }
         if ($width < 1) {
-            return;
+            throw new \Exception("width must be positive integer.");
         }
-        if (null !== $color && !$this->isColorCode($color)) {
-            return;
+        if (!is_null($color) && !self::isColorCode($color)) {
+            throw new \Exception("color code must be null or string (in '#rgb' or '#rrggbb' format).");
         }
         $this->axisWidth = $width;
         if (null !== $color) {
@@ -205,20 +210,18 @@ class Scatterplot extends Plotter
 
     /**
      * sets the width and color of the grids
-     * @param integer $width
-     * @param string $color
-     * @return self
+     * @param   int         $width
+     * @param   string|null $color
+     * @return  self
+     * @thrown  \Exception
      */
-    public function grid($width, $color = null)
+    public function grid(int $width, string|null $color = null)
     {
-        if (!is_int($width)) {
-            return;
-        }
         if ($width < 1) {
-            return;
+            throw new \Exception("width must be positive integer.");
         }
-        if (null !== $color && !$this->isColorCode($color)) {
-            return;
+        if (!is_null($color) && !self::isColorCode($color)) {
+            throw new \Exception("color code must be null or string (in '#rgb' or '#rrggbb' format).");
         }
         $this->gridWidth = $width;
         if (null !== $color) {
@@ -229,16 +232,13 @@ class Scatterplot extends Plotter
 
     /**
      * sets the grid pitch of x
-     * @param float $pitch
-     * @return self
+     * @param   int|float   $pitch
+     * @return  self
      */
-    public function gridXPitch($pitch)
+    public function gridXPitch(int|float $pitch)
     {
-        if (!is_int($pitch) && !is_float($pitch)) {
-            return;
-        }
         if ($pitch <= 0) {
-            return;
+            throw new \Exception("specify positive integer.");
         }
         $this->gridXPitch = $pitch;
         return $this;
@@ -246,16 +246,13 @@ class Scatterplot extends Plotter
 
     /**
      * sets the grid pitch of y
-     * @param float $pitch
-     * @return self
+     * @param   int|float   $pitch
+     * @return  self
      */
-    public function gridYPitch($pitch)
+    public function gridYPitch(int|float $pitch)
     {
-        if (!is_int($pitch) && !is_float($pitch)) {
-            return;
-        }
         if ($pitch <= 0) {
-            return;
+            throw new \Exception("specify positive integer.");
         }
         $this->gridYPitch = $pitch;
         return $this;
@@ -263,41 +260,33 @@ class Scatterplot extends Plotter
 
     /**
      * sets the color of dots
-     * @param array $color
-     * @return self
+     * @param   string[]    $colors
+     * @return  self
+     * @thrown  \Exception
      */
-    public function colors($colors)
+    public function colors(array $colors)
     {
-        if (!is_array($colors)) {
-            return;
+        if (!self::isColorCodesAll($colors)) {
+            throw new \Exception("color codes must be in '#rgb' or '#rrggbb' format.");
         }
-        foreach ($colors as $index => $color) {
-            if (!is_int($index)) {
-                return;
-            }
-            if ($index < 0 || $index > LIMIT_LAYERS) {
-                return;
-            }
-            if (!$this->isColorCode($color)) {
-                return;
-            }
-            $this->colors[$index] = $color;
+        foreach (
+            array_slice(array_values($colors), 0, LIMIT_LAYERS) as $i => $color
+        ) {
+            $this->colors[$i] = $color;
         }
         return $this;
     }
 
     /**
      * sets the size (diameter) of dots in pixels
-     * @param integer $size
-     * @return self
+     * @param   int     $size
+     * @return  self
+     * @thrown  \Exception
      */
-    public function plotSize($size)
+    public function plotSize(int $size)
     {
-        if (!is_int($size)) {
-            return;
-        }
         if ($size < 1) {
-            return;
+            throw new \Exception("size must be positive integer.");
         }
         $this->plotDiameter = $size;
         return $this;
@@ -305,23 +294,21 @@ class Scatterplot extends Plotter
 
     /**
      * sets the font path
-     * @param string $path
-     * @return self
+     * @param   string  $path
+     * @return  self
+     * @thrown  \Exception
      */
-    public function fontPath($path)
+    public function fontPath(string $path)
     {
-        if (!is_string($path)) {
-            return;
-        }
-        if (strlen($path) < 5) {
-            return;
-        }
         if (!file_exists($path)) {
-            return;
+            throw new \Exception("File does not exists.");
+        }
+        if (!is_readable($path)) {
+            throw new \Exception("Cannot read the file.");
         }
         $pathinfo = pathinfo($path);
         if (0 !== strcmp("ttf", strtolower($pathinfo['extension']))) {
-            return;
+            throw new \Exception("Specify .ttf file.");
         }
         $this->fontPath = $path;
         return $this;
@@ -329,16 +316,14 @@ class Scatterplot extends Plotter
 
     /**
      * sets the font size
-     * @param integer $size
-     * @return self
+     * @param   int|float   $size
+     * @return  self
+     * @thrown  \Exception
      */
-    public function fontSize($size)
+    public function fontSize(int|float $size)
     {
-        if (!is_int($size)) {
-            return;
-        }
         if ($size < 6) {
-            return;
+            throw new \Exception("Size must be 6 or above.");
         }
         $this->fontSize = $size;
         return $this;
@@ -346,13 +331,14 @@ class Scatterplot extends Plotter
 
     /**
      * sets the font color
-     * @param string $color
-     * @return self
+     * @param   string  $color
+     * @return  self
+     * @thrown  \Exception
      */
-    public function fontColor($color)
+    public function fontColor(string $color)
     {
-        if (!$this->isColorCode($color)) {
-            return;
+        if (!self::isColorCode($color)) {
+            throw new \Exception("Color code must be in '#rgb' or '#rrggbb' format.");
         }
         $this->fontColor = $color;
         return $this;
@@ -360,24 +346,19 @@ class Scatterplot extends Plotter
 
     /**
      * sets x, width and color of the reference line of x
-     * @param float $x
-     * @param integer $width
-     * @param string $color
-     * @return self
+     * @param   int|float   $x
+     * @param   int         $width
+     * @param   string      $color = '#0000ff'
+     * @return  self
+     * @thrown  \Exception
      */
-    public function referenceLineX($x, $width = 1, $color = '#0000ff')
+    public function referenceLineX(int|float $x, int $width = 1, string $color = '#0000ff')
     {
-        if (!is_int($x) && !is_float($x)) {
-            return;
-        }
-        if (!is_int($width)) {
-            return;
-        }
         if ($width < 1) {
-            return;
+            throw new \Exception("Width must be positive integer.");
         }
-        if (!$this->isColorCode($color)) {
-            return;
+        if (!self::isColorCode($color)) {
+            throw new \Exception("Color code must be in '#rgb' or '#rrggbb' format.");
         }
         $this->referenceLineX = true;
         $this->referenceLineXValue = $x;
@@ -388,24 +369,19 @@ class Scatterplot extends Plotter
 
     /**
      * sets y, width and color of the reference line of y
-     * @param float $y
-     * @param integer $width
-     * @param string $color
-     * @return self
+     * @param   int|float   $y
+     * @param   int         $width
+     * @param   string      $color = '#0000ff'
+     * @return  self
+     * @thrown  \Exception
      */
-    public function referenceLineY($y, $width = 1, $color = '#0000ff')
+    public function referenceLineY(int|float $y, int $width = 1, string $color = '#0000ff')
     {
-        if (!is_int($y) && !is_float($y)) {
-            return;
-        }
-        if (!is_int($width)) {
-            return;
-        }
         if ($width < 1) {
-            return;
+            throw new \Exception("Width must be positive integer.");
         }
-        if (!$this->isColorCode($color)) {
-            return;
+        if (!self::isColorCode($color)) {
+            throw new \Exception("Color code must be in '#rgb' or '#rrggbb' format.");
         }
         $this->referenceLineY = true;
         $this->referenceLineYValue = $y;
@@ -416,31 +392,23 @@ class Scatterplot extends Plotter
 
     /**
      * sets the specification limits of x
-     * @param float $lower
-     * @param float $upper
-     * @param integer $width
-     * @param string $color
-     * @return self
+     * @param   int|float   $lower
+     * @param   int|float   $upper
+     * @param   int         $width = 1
+     * @param   string      $color = '#ff00ff'
+     * @return  self
+     * @thrown  \Exception
      */
-    public function specificationLimitX($lower, $upper, $width = 1, $color = '#ff00ff')
+    public function specificationLimitX(int|float $lower, int|float $upper, int $width = 1, string $color = '#ff00ff')
     {
-        if (!is_int($lower) && !is_float($lower)) {
-            return;
-        }
-        if (!is_int($upper) && !is_float($upper)) {
-            return;
-        }
         if ($lower >= $upper) {
-            return;
-        }
-        if (!is_int($width)) {
-            return;
+            throw new \Exception("The lower and upper limits are opposite in size.");
         }
         if ($width < 1) {
-            return;
+            throw new \Exception("Width must be positive integer.");
         }
-        if (!$this->isColorCode($color)) {
-            return;
+        if (!self::isColorCode($color)) {
+            throw new \Exception("Color code msut be in '#rgb' or '#rrggbb' format.");
         }
         $this->specificationLimitX = true;
         $this->specificationLimitXLower = $lower;
@@ -452,31 +420,23 @@ class Scatterplot extends Plotter
 
     /**
      * sets the specification limits of y
-     * @param float $lower
-     * @param float $upper
-     * @param integer $width
-     * @param string $color
-     * @return self
+     * @param   int|float   $lower
+     * @param   int|float   $upper
+     * @param   int         $width = 1
+     * @param   string      $color = '#ff00ff'
+     * @return  self
+     * @thrown  \Exception
      */
-    public function specificationLimitY($lower, $upper, $width = 1, $color = '#ff00ff')
+    public function specificationLimitY(int|float $lower, int|float $upper, int $width = 1, string $color = '#ff00ff')
     {
-        if (!is_int($lower) && !is_float($lower)) {
-            return;
-        }
-        if (!is_int($upper) && !is_float($upper)) {
-            return;
-        }
         if ($lower >= $upper) {
-            return;
-        }
-        if (!is_int($width)) {
-            return;
+            throw new \Exception("The lower and upper limits are opposite in size.");
         }
         if ($width < 1) {
-            return;
+            throw new \Exception("Width must be positive integer.");
         }
-        if (!$this->isColorCode($color)) {
-            return;
+        if (!self::isColorCode($color)) {
+            throw new \Exception("Color code msut be in '#rgb' or '#rrggbb' format.");
         }
         $this->specificationLimitY = true;
         $this->specificationLimitYLower = $lower;
@@ -488,33 +448,24 @@ class Scatterplot extends Plotter
 
     /**
      * sets the width and color of the regression line
-     * @param integer $width
-     * @param array $color
-     * @return self
+     * @param   int         $width
+     * @param   string[]    $colors
+     * @return  self
+     * @thrown  \Exception
      */
-    public function regressionLine($width, $colors)
+    public function regressionLine(int $width, array $colors)
     {
-        if (!is_int($width)) {
-            return;
-        }
         if ($width < 1) {
-            return;
+            throw new \Exception("Width must be positive integer.");
         }
-        if (!is_array($colors)) {
-            return;
+        if (!self::isColorCodesAll($colors)) {
+            throw new \Exception("Color codes must be in '#rgb' or '#rrggbb' format.");
         }
-        foreach ($colors as $index => $color) {
-            if (!is_int($index)) {
-                return;
-            }
-            if ($index < 0 || $index > LIMIT_LAYERS) {
-                return;
-            }
-            if (!$this->isColorCode($color)) {
-                return;
-            }
-            $this->regressionLineColors[$index] = $color;
-        }
+        $this->regressionLineColors = array_slice(
+            array_values($colors),
+            0,
+            LIMIT_LAYERS
+        );
         $this->regressionLine = true;
         $this->regressionLineWidth = $width;
         return $this;
@@ -522,55 +473,46 @@ class Scatterplot extends Plotter
 
     /**
      * sets the label of x
-     * @param string $label
-     * @return self
+     * @param   string  $label
+     * @return  self
      */
-    public function labelX($label)
+    public function labelX(string $label)
     {
-        if (!is_string($label)) {
-            return;
-        }
         $this->labelX = $label;
         return $this;
     }
 
     /**
      * sets the label of y
-     * @param string $label
-     * @return self
+     * @param   string  $label
+     * @return  self
      */
-    public function labelY($label)
+    public function labelY(string $label)
     {
-        if (!is_string($label)) {
-            return;
-        }
         $this->labelY = $label;
         return $this;
     }
 
     /**
      * sets the caption
-     * @param string $caption
-     * @return self
+     * @param   string  $caption
+     * @return  self
      */
-    public function caption($caption)
+    public function caption(string $caption)
     {
-        if (!is_string($caption)) {
-            return;
-        }
         $this->caption = $caption;
         return $this;
     }
 
     /**
      * sets the legends
-     * @param array $legends
-     * @return self
+     * @param   string[]    $legends
+     * @return  self
      */
-    public function legends($legends)
+    public function legends(array $legends)
     {
-        if (!is_array($legends)) {
-            return;
+        if (!self::isStringsAll($legends)) {
+            throw new \Exception("Each elements of legends must be type of string.");
         }
         $this->legends = $legends;
         $this->legend = true;
@@ -579,19 +521,19 @@ class Scatterplot extends Plotter
 
     /**
      * returns the config values
-     * @param string $key
-     * @return mixed
+     * @param   string|null $key = null
+     * @return  mixed
      */
-    public function getConfig($key = null)
+    public function getConfig(string|null $key = null)
     {
-        if (null === $key) {
+        if (is_null($key)) {
             $config = [];
-            foreach ($this->validConfig as $key) {
+            foreach (array_keys(Config::get('validConfig')) as $key) {
                 $config[$key] = $this->{$key};
             }
             return $config;
         }
-        if (in_array($key, $this->validConfig)) {
+        if (in_array($key, array_keys(Config::get('validConfig')))) {
             return $this->{$key};
         }
         return null;
@@ -599,8 +541,7 @@ class Scatterplot extends Plotter
 
     /**
      * sets grid of x on
-     * @param
-     * @return self
+     * @return  self
      */
     public function gridXOn()
     {
@@ -610,7 +551,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets grid of x off
-     * @param
      * @return self
      */
     public function gridXOff()
@@ -621,7 +561,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets grid of y on
-     * @param
      * @return self
      */
     public function gridYOn()
@@ -632,7 +571,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets grid of y off
-     * @param
      * @return self
      */
     public function gridYOff()
@@ -643,7 +581,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets reference line of x off
-     * @param
      * @return self
      */
     public function referenceLineXOff()
@@ -654,7 +591,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets reference line of y off
-     * @param
      * @return self
      */
     public function referenceLineYOff()
@@ -665,7 +601,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets reference lines off
-     * @param
      * @return self
      */
     public function referenceLinesOff()
@@ -677,7 +612,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets specification limit of x off
-     * @param
      * @return self
      */
     public function specificationLimitXOff()
@@ -688,7 +622,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets specification limit of y off
-     * @param
      * @return self
      */
     public function specificationLimitYOff()
@@ -699,7 +632,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets specification limits off
-     * @param
      * @return self
      */
     public function specificationLimitsOff()
@@ -711,6 +643,7 @@ class Scatterplot extends Plotter
 
     /**
      * sets regression line on
+     * @return  self
      */
     public function regressionLineOn()
     {
@@ -720,7 +653,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets regression line off
-     * @param
      * @return self
      */
     public function regressionLineOff()
@@ -731,7 +663,6 @@ class Scatterplot extends Plotter
 
     /**
      * sets legend off
-     * @param
      * @return self
      */
     public function legendOff()

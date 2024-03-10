@@ -2,84 +2,115 @@
 
 namespace Macocci7\PhpScatterplot;
 
+use Macocci7\PhpScatterplot\Helpers\Config;
+use Macocci7\PhpScatterplot\Traits\JudgeTrait;
 use Macocci7\PhpScatterplot\Analyzer;
 use Macocci7\PhpFrequencyTable\FrequencyTable;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Geometry\Factories\LineFactory;
+use Intervention\Image\Typography\FontFactory;
+use Intervention\Image\Geometry\Factories\RectangleFactory;
+use Intervention\Image\Geometry\Factories\CircleFactory;
 
 /**
  * Class for plotting
+ * @author  macocci7 <macocci7@yahoo.co.jp>
+ * @license MIT
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 class Plotter extends Analyzer
 {
-    protected $layers;
-    protected $image;
-    protected $canvasWidth = 600;
-    protected $canvasHeight = 500;
-    protected $canvasBackgroundColor = '#ffffff';
-    protected $frameXRatio = 0.8;
-    protected $frameYRatio = 0.7;
-    protected $axisColor = '#666666';
-    protected $axisWidth = 1;
-    protected $gridColor = '#dddddd';
-    protected $gridWidth = 1;
-    protected $gridXPitch;
-    protected $gridYPitch;
-    protected $gridXMax;
-    protected $gridXMin;
-    protected $gridYMax;
-    protected $gridYMin;
-    protected $gridX = false;
-    protected $gridY = false;
-    protected $pixPitchX;
-    protected $pixPitchY;
-    protected $xLimitUpper;
-    protected $xLimitLower;
-    protected $yLimitUpper;
-    protected $yLimitLower;
-    protected $plotDiameter = 2;
-    protected $plotColors = '#000000';
-    protected $fontPath = 'fonts/ipaexg.ttf'; // IPA ex Gothic 00401
-    //protected $fontPath = 'fonts/ipaexm.ttf'; // IPA ex Mincho 00401
-    protected $fontSize = 16;
-    protected $fontColor = '#333333';
-    protected $baseX;
-    protected $baseY;
-    protected $outlier = true;
-    protected $outlierDiameter = 2;
-    protected $outlierColor = '#ff0000';
-    protected $mean = false;
-    protected $meanColor = '#0000ff';
-    protected $referenceLineX = false;
-    protected $referenceLineXValue;
-    protected $referenceLineXWidth = 1;
-    protected $referenceLineXColor = '#0000ff';
-    protected $referenceLineY = false;
-    protected $referenceLineYValue;
-    protected $referenceLineYWidth = 1;
-    protected $referenceLineYColor = '#0000ff';
-    protected $specificationLimitX = false;
-    protected $specificationLimitXLower;
-    protected $specificationLimitXUpper;
-    protected $specificationLimitXWidth = 1;
-    protected $specificationLimitXColor = '#ff0000';
-    protected $specificationLimitY = false;
-    protected $specificationLimitYLower;
-    protected $specificationLimitYUpper;
-    protected $specificationLimitYWidth = 1;
-    protected $specificationLimitYColor = '#ff0000';
-    protected $regressionLine = false;
-    protected $regressionLineWidth = 2;
-    protected $regressionLineColor = '#00cc00';
-    protected $labels;
-    protected $labelX;
-    protected $labelY;
-    protected $caption;
-    protected $legend = false;
-    protected $legendCount;
-    protected $legends;
-    protected $legendWidth = 100;
-    protected $legendFontSize = 10;
-    protected $colors = [
+    use JudgeTrait;
+
+    protected string $imageDriver = 'imagick';
+    protected ImageManager $imageManager;
+    protected ImageInterface $image;
+    /**
+     * @var array<int|string, array<string, list<int|float>>>   $layers
+     */
+    protected array $layers;
+    protected int $canvasWidth = 600;
+    protected int $canvasHeight = 500;
+    protected string|null $canvasBackgroundColor = '#ffffff';
+    protected float $frameXRatio = 0.8;
+    protected float $frameYRatio = 0.7;
+    protected string|null $axisColor = '#666666';
+    protected int $axisWidth = 1;
+    protected string|null $gridColor = '#dddddd';
+    protected int $gridWidth = 1;
+    protected int|float|null $gridXPitch;
+    protected int|float|null $gridYPitch;
+    protected int|float $gridXMax;
+    protected int|float $gridXMin;
+    protected int|float $gridYMax;
+    protected int|float $gridYMin;
+    protected bool $gridX = false;
+    protected bool $gridY = false;
+    protected int|float $pixPitchX;
+    protected int|float $pixPitchY;
+    protected int|float $xLimitUpper;
+    protected int|float $xLimitLower;
+    protected int|float $yLimitUpper;
+    protected int|float $yLimitLower;
+    protected int $plotDiameter = 2;
+    protected string|null $plotColor = '#000000';
+    protected string $fontPath = 'fonts/ipaexg.ttf'; // IPA ex Gothic 00401
+    //protected string  $fontPath = 'fonts/ipaexm.ttf'; // IPA ex Mincho 00401
+    protected int|float $fontSize = 16;
+    protected string|null $fontColor = '#333333';
+    protected int|float $baseX;
+    protected int|float $baseY;
+    protected bool $outlier = true;
+    protected int $outlierDiameter = 2;
+    protected string|null $outlierColor = '#ff0000';
+    protected bool $mean = false;
+    protected string|null $meanColor = '#0000ff';
+    protected bool $referenceLineX = false;
+    protected int|float $referenceLineXValue;
+    protected int $referenceLineXWidth = 1;
+    protected string|null $referenceLineXColor = '#0000ff';
+    protected bool $referenceLineY = false;
+    protected int|float $referenceLineYValue;
+    protected int $referenceLineYWidth = 1;
+    protected string|null $referenceLineYColor = '#0000ff';
+    protected bool $specificationLimitX = false;
+    protected int|float $specificationLimitXLower;
+    protected int|float $specificationLimitXUpper;
+    protected int $specificationLimitXWidth = 1;
+    protected string|null $specificationLimitXColor = '#ff0000';
+    protected bool $specificationLimitY = false;
+    protected int|float $specificationLimitYLower;
+    protected int|float $specificationLimitYUpper;
+    protected int $specificationLimitYWidth = 1;
+    protected string|null $specificationLimitYColor = '#ff0000';
+    protected bool $regressionLine = false;
+    protected int $regressionLineWidth = 2;
+    protected string|null $regressionLineColor = '#00cc00';
+    /**
+     * @var string[]    $labels
+     */
+    protected array $labels;
+    protected string $labelX;
+    protected string $labelY;
+    protected string $caption;
+    protected bool $legend = false;
+    protected int $legendCount;
+    /**
+     * @var string[]    $legends
+     */
+    protected array $legends;
+    protected int $legendWidth = 100;
+    protected int|float $legendFontSize = 10;
+    /**
+     * @var string[]    $colors
+     */
+    protected array $colors = [
         '#3333cc',
         '#cc3333',
         '#339933',
@@ -89,7 +120,10 @@ class Plotter extends Analyzer
         '#cccc33',
         '#cc33cc',
     ];
-    protected $regressionLineColors = [
+    /**
+     * @var string[]    $regressionLineColors
+     */
+    protected array $regressionLineColors = [
         '#ff0000',
         '#ff6666',
         '#ff9933',
@@ -102,17 +136,99 @@ class Plotter extends Analyzer
 
     /**
      * constructor
-     * @param
-     * @return
      */
     public function __construct()
     {
-        Image::configure(['driver' => 'imagick']);
+        parent::__construct();
+        $this->loadConf();
+        $this->imageManager = ImageManager::{$this->imageDriver}();
+    }
+
+    /**
+     * loads config.
+     * @return  void
+     */
+    private function loadConf()
+    {
+        Config::load();
+        $props = [
+            'imageDriver',
+            'layers',
+            'canvasWidth',
+            'canvasHeight',
+            'canvasBackgroundColor',
+            'frameXRatio',
+            'frameYRatio',
+            'axisColor',
+            'axisWidth',
+            'gridColor',
+            'gridWidth',
+            'gridXPitch',
+            'gridYPitch',
+            'gridXMax',
+            'gridXMin',
+            'gridYMax',
+            'gridYMin',
+            'gridX',
+            'gridY',
+            'pixPitchX',
+            'pixPitchY',
+            'xLimitUpper',
+            'xLimitLower',
+            'yLimitUpper',
+            'yLimitLower',
+            'plotDiameter',
+            'plotColor',
+            'fontPath',
+            'fontSize',
+            'fontColor',
+            'outlier',
+            'outlierDiameter',
+            'outlierColor',
+            'mean',
+            'meanColor',
+            'referenceLineX',
+            'referenceLineXValue',
+            'referenceLineXWidth',
+            'referenceLineXColor',
+            'referenceLineY',
+            'referenceLineYValue',
+            'referenceLineYWidth',
+            'referenceLineYColor',
+            'specificationLimitX',
+            'specificationLimitXLower',
+            'specificationLimitXUpper',
+            'specificationLimitXWidth',
+            'specificationLimitXColor',
+            'specificationLimitY',
+            'specificationLimitYLower',
+            'specificationLimitYUpper',
+            'specificationLimitYWidth',
+            'specificationLimitYColor',
+            'regressionLine',
+            'regressionLineWidth',
+            'regressionLineColor',
+            'labels',
+            'labelX',
+            'labelY',
+            'caption',
+            'legend',
+            'legendCount',
+            'legends',
+            'legendWidth',
+            'legendFontSize',
+            'colors',
+            'regressionLineColors',
+        ];
+        foreach (Config::get('props') as $prop => $value) {
+            if (in_array($prop, $props, true)) {
+                $this->{$prop} = $value;
+            }
+        }
     }
 
     /**
      * sets properties for preparation
-     * @param
      * @return self
      */
     protected function setProperties()
@@ -123,7 +239,6 @@ class Plotter extends Analyzer
         foreach ($this->layers as $values) {
             $counts[] = count($values);
         }
-        $this->boxCount = max($counts);
         $this->baseX = (int) ($this->canvasWidth * (1 - $this->frameXRatio) * 3 / 4);
         $this->baseY = (int) ($this->canvasHeight * (1 + $this->frameYRatio) / 2);
         list($xMax, $yMax) = $this->layerMax($this->layers);
@@ -175,11 +290,10 @@ class Plotter extends Analyzer
             }
         }
         // Creating an instance of intervention/image.
-        $this->image = Image::canvas(
-            $this->canvasWidth,
-            $this->canvasHeight,
-            $this->canvasBackgroundColor
-        );
+        $this->image = $this->imageManager->create($this->canvasWidth, $this->canvasHeight);
+        if (self::isColorCode($this->canvasBackgroundColor)) {
+            $this->image = $this->image->fill($this->canvasBackgroundColor);
+        }
         // Note:
         // - If $this->labels has values, those values takes precedence.
         // - The values of $this->labels may be set by the function labels().
@@ -191,45 +305,28 @@ class Plotter extends Analyzer
     }
 
     /**
-     * judges wheter $color is in supported color code format or not
-     * @param string $color
-     * @return bool
-     */
-    public function isColorCode($color)
-    {
-        if (!is_string($color)) {
-            return false;
-        }
-        return preg_match('/^#[A-Fa-f0-9]{3}$|^#[A-Fa-f0-9]{6}$/', $color)
-               ? true
-               : false
-               ;
-    }
-
-    /**
      * calculates the x-coordinate in pixels
-     * @param float $x
-     * @return integer
+     * @param   float   $x
+     * @return  int
      */
-    public function pX($x)
+    public function pX(float $x)
     {
         return (int) ($this->baseX + ($x - $this->gridXMin) * $this->pixPitchX);
     }
 
     /**
      * calculates the y-coordinate in pixels
-     * @param float $y
-     * @return integer
+     * @param   float   $y
+     * @return  int
      */
-    public function pY($y)
+    public function pY(float $y)
     {
         return (int) ($this->baseY - ($y - $this->gridYMin) * $this->pixPitchY);
     }
 
     /**
      * plots axis
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotAxis()
     {
@@ -238,14 +335,12 @@ class Plotter extends Analyzer
         $y1 = (int) $this->pY($this->gridYMin);
         $x2 = (int) $this->pX($this->gridXMax);
         $y2 = (int) $y1;
-        $this->image->line(
-            $x1,
-            $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->color($this->axisColor);
-                $draw->width($this->axisWidth);
+        $this->image->drawLine(
+            function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                $line->from($x1, $y1);
+                $line->to($x2, $y2);
+                $line->color($this->axisColor);
+                $line->width($this->axisWidth);
             }
         );
         // vertical axis
@@ -253,14 +348,12 @@ class Plotter extends Analyzer
         $y1 = (int) $this->pY($this->gridYMax);
         $x2 = (int) $x1;
         $y2 = (int) $this->pY($this->gridYMin);
-        $this->image->line(
-            $x1,
-            $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->color($this->axisColor);
-                $draw->width($this->axisWidth);
+        $this->image->drawLine(
+            function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                $line->from($x1, $y1);
+                $line->to($x2, $y2);
+                $line->color($this->axisColor);
+                $line->width($this->axisWidth);
             }
         );
         return $this;
@@ -268,27 +361,24 @@ class Plotter extends Analyzer
 
     /**
      * plots x-grids
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotGridsX()
     {
         if (!$this->gridX) {
-            return;
+            return $this;
         }
         for ($i = $this->gridXMin; $i <= $this->gridXMax; $i += $this->gridXPitch) {
             $x1 = (int) $this->pX($i);
             $y1 = (int) $this->pY($this->gridYMax);
             $x2 = (int) $x1;
             $y2 = (int) $this->pY($this->gridYMin);
-            $this->image->line(
-                $x1,
-                $y1,
-                $x2,
-                $y2,
-                function ($draw) {
-                    $draw->color($this->gridColor);
-                    $draw->width($this->gridWidth);
+            $this->image->drawLine(
+                function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                    $line->from($x1, $y1);
+                    $line->to($x2, $y2);
+                    $line->color($this->gridColor);
+                    $line->width($this->gridWidth);
                 }
             );
         }
@@ -297,27 +387,24 @@ class Plotter extends Analyzer
 
     /**
      * plots y-grids
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotGridsY()
     {
         if (!$this->gridY) {
-            return;
+            return $this;
         }
         for ($i = $this->gridYMin; $i <= $this->gridYMax; $i += $this->gridYPitch) {
             $x1 = (int) $this->pX($this->gridXMin);
             $y1 = (int) $this->pY($i);
             $x2 = (int) $this->pX($this->gridXMax);
             $y2 = (int) $y1;
-            $this->image->line(
-                $x1,
-                $y1,
-                $x2,
-                $y2,
-                function ($draw) {
-                    $draw->color($this->gridColor);
-                    $draw->width($this->gridWidth);
+            $this->image->drawLine(
+                function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                    $line->from($x1, $y1);
+                    $line->to($x2, $y2);
+                    $line->color($this->gridColor);
+                    $line->width($this->gridWidth);
                 }
             );
         }
@@ -326,20 +413,19 @@ class Plotter extends Analyzer
 
     /**
      * plots grid values of x
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotGridValuesX()
     {
         for ($i = $this->gridXMin; $i <= $this->gridXMax; $i += $this->gridXPitch) {
             $x = $this->pX($i);
-            $y = $this->baseY + $this->fontSize * 1.2;
+            $y = (int) ($this->baseY + $this->fontSize * 1.2);
             $this->image->text(
                 (string) $i,
                 $x,
                 $y,
-                function ($font) {
-                    $font->file($this->fontPath);
+                function (FontFactory $font) {
+                    $font->filename($this->fontPath);
                     $font->size($this->fontSize);
                     $font->color($this->fontColor);
                     $font->align('center');
@@ -352,20 +438,19 @@ class Plotter extends Analyzer
 
     /**
      * plots grid values of y
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotGridValuesY()
     {
         for ($i = $this->gridYMin; $i <= $this->gridYMax; $i += $this->gridYPitch) {
-            $x = $this->baseX - $this->fontSize * 0.4;
-            $y = $this->pY($i) + $this->fontSize * 0.4;
+            $x = (int) ($this->baseX - $this->fontSize * 0.4);
+            $y = (int) ($this->pY($i) + $this->fontSize * 0.4);
             $this->image->text(
                 (string) $i,
                 $x,
                 $y,
-                function ($font) {
-                    $font->file($this->fontPath);
+                function (FontFactory $font) {
+                    $font->filename($this->fontPath);
                     $font->size($this->fontSize);
                     $font->color($this->fontColor);
                     $font->align('right');
@@ -378,19 +463,18 @@ class Plotter extends Analyzer
 
     /**
      * plots x-label
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotLabelX()
     {
-        $x = (int) $this->canvasWidth / 2;
-        $y = $this->baseY + (1 - $this->frameYRatio) * $this->canvasHeight / 3 ;
+        $x = (int) ($this->canvasWidth / 2);
+        $y = (int) ($this->baseY + (1 - $this->frameYRatio) * $this->canvasHeight / 3);
         $this->image->text(
             (string) $this->labelX,
             $x,
             $y,
-            function ($font) {
-                $font->file($this->fontPath);
+            function (FontFactory $font) {
+                $font->filename($this->fontPath);
                 $font->size($this->fontSize);
                 $font->color($this->fontColor);
                 $font->align('center');
@@ -402,22 +486,21 @@ class Plotter extends Analyzer
 
     /**
      * plots y-label
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotLabelY()
     {
         $width = $this->canvasHeight;
         $height = (int) ($this->canvasWidth * (1 - $this->frameXRatio) / 3);
-        $image = Image::canvas($width, $height, $this->canvasBackgroundColor);
-        $x = $width / 2;
-        $y = ($height + $this->fontSize) / 2;
+        $image = $this->imageManager->create($width, $height);
+        $x = (int) ($width / 2);
+        $y = (int) (($height + $this->fontSize) / 2);
         $image->text(
             (string) $this->labelY,
             $x,
             $y,
-            function ($font) {
-                $font->file($this->fontPath);
+            function (FontFactory $font) {
+                $font->filename($this->fontPath);
                 $font->size($this->fontSize);
                 $font->color($this->fontColor);
                 $font->align('center');
@@ -425,45 +508,44 @@ class Plotter extends Analyzer
             }
         );
         $image->rotate(90);
-        $this->image->insert($image, 'left');
+        $this->image->place($image, 'left');
         return $this;
     }
 
     /**
      * plots caption
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotCaption()
     {
-        $x = $this->canvasWidth / 2;
-        $y = $this->canvasHeight * (1 - $this->frameYRatio) / 3;
+        $x = (int) ($this->canvasWidth / 2);
+        $y = (int) ($this->canvasHeight * (1 - $this->frameYRatio) / 3);
         $this->image->text(
             (string) $this->caption,
             $x,
             $y,
-            function ($font) {
-                $font->file($this->fontPath);
+            function (FontFactory $font) {
+                $font->filename($this->fontPath);
                 $font->size($this->fontSize);
                 $font->color($this->fontColor);
                 $font->align('center');
                 $font->valign('bottom');
             }
         );
+        return $this;
     }
 
     /**
      * plots layers
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotLayers()
     {
-        if (!$this->isValidLayers($this->layers)) {
-            return;
+        if (!self::isValidLayers($this->layers)) {
+            return $this;
         }
         $i = 0;
-        foreach ($this->layers as $layer => $data) {
+        foreach ($this->layers as $data) {
             $this->plotColor = $this->colors[$i];
             $this->regressionLineColor = $this->regressionLineColors[$i];
             $this->plotLayer($data);
@@ -475,10 +557,10 @@ class Plotter extends Analyzer
 
     /**
      * plots layer
-     * @param array $data
-     * @return self
+     * @param   array<string, array<int|float>> $data
+     * @return  self
      */
-    public function plotLayer($data)
+    public function plotLayer(array $data)
     {
         $count = count($data['x']);
         for ($i = 0; $i < $count; $i++) {
@@ -489,26 +571,23 @@ class Plotter extends Analyzer
 
     /**
      * plots a dot
-     * @param float $x
-     * @param float $y
-     * @return self
+     * @param   int|float   $x
+     * @param   int|float   $y
+     * @return  self
      */
-    public function plotXY($x, $y)
+    public function plotXY(int|float $x, int|float $y)
     {
-        if (!is_int($x) && !is_float($x)) {
-            return;
-        }
-        if (!is_int($y) && !is_float($y)) {
-            return;
+        if (!self::isNumber($x) || !self::isNumber($y)) {
+            return $this;
         }
         $px = $this->pX($x);
         $py = $this->pY($y);
-        $this->image->circle(
-            $this->plotDiameter,
+        $this->image->drawCircle(
             $px,
             $py,
-            function ($draw) {
-                $draw->background($this->plotColor);
+            function (CircleFactory $circle) {
+                $circle->radius((int) ($this->plotDiameter / 2));
+                $circle->background($this->plotColor);
             }
         );
         return $this;
@@ -516,16 +595,16 @@ class Plotter extends Analyzer
 
     /**
      * plots a regression line
-     * @param array $layer
-     * @return self
+     * @param   array<string, array<int|float>>   $layer
+     * @return  self
      */
-    public function plotRegressionLine($layer)
+    public function plotRegressionLine(array $layer)
     {
         if (!$this->regressionLine) {
-            return;
+            return $this;
         }
-        if (!$this->isValidLayer($layer)) {
-            return;
+        if (!self::isValidLayer($layer)) {
+            return $this;
         }
         $formula = $this->regressionLineFormula($layer['x'], $layer['y']);
         $a = $formula['a'];
@@ -536,14 +615,12 @@ class Plotter extends Analyzer
         $y1 = $this->pY($a * $xMin + $b);
         $x2 = $this->pX($xMax);
         $y2 = $this->pY($a * $xMax + $b);
-        $this->image->line(
-            $x1,
-            $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->width($this->regressionLineWidth);
-                $draw->color($this->regressionLineColor);
+        $this->image->drawLine(
+            function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                $line->from($x1, $y1);
+                $line->to($x2, $y2);
+                $line->width($this->regressionLineWidth);
+                $line->color($this->regressionLineColor);
             }
         );
         return $this;
@@ -551,26 +628,23 @@ class Plotter extends Analyzer
 
     /**
      * plots a reference line of x
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotReferenceLineX()
     {
         if (!$this->referenceLineX) {
-            return;
+            return $this;
         }
         $x1 = (int) $this->pX($this->referenceLineXValue);
         $y1 = (int) $this->pY($this->gridYMax);
         $x2 = (int) $x1;
         $y2 = (int) $this->pY($this->gridYMin);
-        $this->image->line(
-            $x1,
-            $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->width($this->referenceLineXWidth);
-                $draw->color($this->referenceLineXColor);
+        $this->image->drawLine(
+            function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                $line->from($x1, $y1);
+                $line->to($x2, $y2);
+                $line->width($this->referenceLineXWidth);
+                $line->color($this->referenceLineXColor);
             }
         );
         return $this;
@@ -578,26 +652,23 @@ class Plotter extends Analyzer
 
     /**
      * plots a reference line of Y
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotReferenceLineY()
     {
         if (!$this->referenceLineY) {
-            return;
+            return $this;
         }
         $x1 = (int) $this->pX($this->gridXMin);
         $y1 = (int) $this->pY($this->referenceLineYValue);
         $x2 = (int) $this->pX($this->gridXMax);
         $y2 = (int) $y1;
-        $this->image->line(
-            $x1,
-            $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->width($this->referenceLineYWidth);
-                $draw->color($this->referenceLineYColor);
+        $this->image->drawLine(
+            function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                $line->from($x1, $y1);
+                $line->to($x2, $y2);
+                $line->width($this->referenceLineYWidth);
+                $line->color($this->referenceLineYColor);
             }
         );
         return $this;
@@ -605,40 +676,35 @@ class Plotter extends Analyzer
 
     /**
      * plots specification limit lines of X
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotSpecificationLimitX()
     {
         if (!$this->specificationLimitX) {
-            return;
+            return $this;
         }
         // lower limit
         $x1 = (int) $this->pX($this->specificationLimitXLower);
         $y1 = (int) $this->pY($this->gridYMax);
         $x2 = (int) $x1;
         $y2 = (int) $this->pY($this->gridYMin);
-        $this->image->line(
-            $x1,
-            $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->width($this->specificationLimitXWidth);
-                $draw->color($this->specificationLimitXColor);
+        $this->image->drawLine(
+            function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                $line->from($x1, $y1);
+                $line->to($x2, $y2);
+                $line->width($this->specificationLimitXWidth);
+                $line->color($this->specificationLimitXColor);
             }
         );
         // upper limit
         $x1 = (int) $this->pX($this->specificationLimitXUpper);
         $x2 = (int) $x1;
-        $this->image->line(
-            $x1,
-            $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->width($this->specificationLimitXWidth);
-                $draw->color($this->specificationLimitXColor);
+        $this->image->drawLine(
+            function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                $line->from($x1, $y1);
+                $line->to($x2, $y2);
+                $line->width($this->specificationLimitXWidth);
+                $line->color($this->specificationLimitXColor);
             }
         );
         return $this;
@@ -646,40 +712,35 @@ class Plotter extends Analyzer
 
     /**
      * plots specification limit lines of y
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotSpecificationLimitY()
     {
         if (!$this->specificationLimitY) {
-            return;
+            return $this;
         }
         // lower limit
         $x1 = (int) $this->pX($this->gridXMin);
         $y1 = (int) $this->pY($this->specificationLimitYLower);
         $x2 = (int) $this->pX($this->gridXMax);
         $y2 = (int) $y1;
-        $this->image->line(
-            $x1,
-            $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->width($this->specificationLimitYWidth);
-                $draw->color($this->specificationLimitYColor);
+        $this->image->drawLine(
+            function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                $line->from($x1, $y1);
+                $line->to($x2, $y2);
+                $line->width($this->specificationLimitYWidth);
+                $line->color($this->specificationLimitYColor);
             }
         );
         // upper limit
         $y1 = (int) $this->pY($this->specificationLimitYUpper);
         $y2 = (int) $y1;
-        $this->image->line(
-            $x1,
-            $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->width($this->specificationLimitYWidth);
-                $draw->color($this->specificationLimitYColor);
+        $this->image->drawLine(
+            function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
+                $line->from($x1, $y1);
+                $line->to($x2, $y2);
+                $line->width($this->specificationLimitYWidth);
+                $line->color($this->specificationLimitYColor);
             }
         );
         return $this;
@@ -687,28 +748,26 @@ class Plotter extends Analyzer
 
     /**
      * plots legends
-     * @param
-     * @return self
+     * @return  self
      */
     public function plotLegend()
     {
         if (!$this->legend) {
-            return;
+            return $this;
         }
-        $baseX = $this->canvasWidth * (3 + $this->frameXRatio) / 4 - $this->legendWidth;
+        $baseX = (int) ($this->canvasWidth * (3 + $this->frameXRatio) / 4 - $this->legendWidth);
         $baseY = 10;
         $x1 = $baseX;
         $y1 = $baseY;
         $x2 = $x1 + $this->legendWidth;
-        $y2 = $y1 + $this->legendFontSize * 1.2 * $this->legendCount + 8;
-        $this->image->rectangle(
+        $y2 = (int) ($y1 + $this->legendFontSize * 1.2 * $this->legendCount + 8);
+        $this->image->drawRectangle(
             $x1,
             $y1,
-            $x2,
-            $y2,
-            function ($draw) {
-                $draw->background($this->canvasBackgroundColor);
-                $draw->border($this->axisWidth, $this->axisColor);
+            function (RectangleFactory $rectangle) use ($x1, $y1, $x2, $y2) {
+                $rectangle->size($x2 - $x1, $y2 - $y1);
+                $rectangle->background($this->canvasBackgroundColor);
+                $rectangle->border($this->axisColor, $this->axisWidth);
             }
         );
         for ($i = 0; $i < $this->legendCount; $i++) {
@@ -721,24 +780,23 @@ class Plotter extends Analyzer
             $y1 = (int) ($baseY + $i * $this->legendFontSize * 1.2 + 4);
             $x2 = (int) ($x1 + 20);
             $y2 = (int) ($y1 + $this->legendFontSize);
-            $this->image->rectangle(
+            $this->image->drawRectangle(
                 $x1,
                 $y1,
-                $x2,
-                $y2,
-                function ($draw) use ($i) {
-                    $draw->background($this->colors[$i]);
-                    $draw->border(1, $this->axisColor);
+                function (RectangleFactory $rectangle) use ($i, $x1, $y1, $x2, $y2) {
+                    $rectangle->size($x2 - $x1, $y2 - $y1);
+                    $rectangle->background($this->colors[$i]);
+                    $rectangle->border($this->axisColor, 1);
                 }
             );
             $x = $x2 + 4;
             $y = $y1;
             $this->image->text(
-                $label,
+                (string) $label,
                 $x,
                 $y,
-                function ($font) {
-                    $font->file($this->fontPath);
+                function (FontFactory $font) {
+                    $font->filename($this->fontPath);
                     $font->size($this->legendFontSize);
                     $font->color($this->fontColor);
                     $font->align('left');
@@ -751,16 +809,14 @@ class Plotter extends Analyzer
 
     /**
      * creates a scatter plot image and save it
-     * @param string $filePath
-     * @return self
+     * @param   string  $filePath
+     * @return  self
+     * @thrown  \Exception
      */
-    public function create($filePath)
+    public function create(string $filePath)
     {
-        if (!is_string($filePath)) {
-            return;
-        }
         if (strlen($filePath) == 0) {
-            return;
+            throw new \Exception("Empty string specified for file path.");
         }
         $this->setProperties();
         $this->plotLabelX();
