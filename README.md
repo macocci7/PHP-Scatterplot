@@ -91,7 +91,7 @@ composer require macocci7/php-scatterplot
         - Hash arrays `x` and `y` must have the same number of elements.
     - Instantiate: `new Scatterplot()`
     - Set Data: `layers($layers)`
-    - Craete Image: `create($path)`
+    - Create Image: `create($path)`
 
 ### 5.2. Using Layers
 
@@ -252,7 +252,7 @@ composer require macocci7/php-scatterplot
 
 First, prepare a Neon file like this:
 
-- Neon:
+- Neon: [examples/AdjustDisplayByNeon.neon](examples/AdjustDisplayByNeon.neon)
 
     ```neon
     #canvasWidth: 600
@@ -321,7 +321,7 @@ First, prepare a Neon file like this:
 
 Second, Code PHP like this:
 
-- PHP:
+- PHP: [examples/AdjustDisplayByNeon.php](examples/AdjustDisplayByNeon.php)
 
     ```php
     <?php
@@ -357,13 +357,13 @@ Second, Code PHP like this:
 
 Then, run the PHP code.
 
-- Result:
+- Result: [examples/img/AdjustDisplayByNeon.png](examples/img/AdjustDisplayByNeon.png)
 
-    <img src="examples/img/AdjustDisplayByNeon.png" width="400" />
+    <a href="examples/img/AdjustDisplayByNeon.png"><img src="examples/img/AdjustDisplayByNeon.png" width="400" /></a>
 
 ### 5.5. Adjusting the Display By Array
 
-- PHP:
+- PHP: [examples/AdjustDisplayByArray.php](examples/AdjustDisplayByArray.php)
 
     ```php
     <?php
@@ -464,13 +464,13 @@ Then, run the PHP code.
        ->create('img/AdjustDisplayByArray.png');
     ```
 
-- Result:
+- Result: [examples/img/AdjustDisplayByArray.png](examples/img/AdjustDisplayByArray.png)
 
-    <img src="examples/img/AdjustDisplayByArray.png" width="400" />
+    <a href="examples/img/AdjustDisplayByArray.png"><img src="examples/img/AdjustDisplayByArray.png" width="400" /></a>
 
 ### 5.6. Transparent Background
 
-- PHP:
+- PHP: [examples/TransparentBackground.php](examples/TransparentBackground.php)
 
     ```php
     <?php
@@ -508,13 +508,13 @@ Then, run the PHP code.
        ->create('img/TransparentBackground.png');
     ```
 
-- Result:
+- Result: [examples/img/TransparentBackground.png](examples/img/TransparentBackground.png)
 
-    <img src="examples/img/TransparentBackground.png" width="400" />
+    <a href="examples/img/TransparentBackground.png"><img src="examples/img/TransparentBackground.png" width="400" /></a>
 
 ### 5.7. Parsed Data
 
-- PHP
+- PHP: [examples/ParsedData.php](examples/ParsedData.php)
 
     ```php
     <?php
@@ -538,7 +538,7 @@ Then, run the PHP code.
     var_dump($a->parse($layers));
     ```
 
-- Result
+- Result: [examples/ParsedData.txt](examples/ParsedData.txt)
 
     ```bash
     array(2) {
