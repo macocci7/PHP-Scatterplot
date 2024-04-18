@@ -21,7 +21,6 @@ use Intervention\Image\Geometry\Factories\CircleFactory;
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.ElseExpression)
  * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 class Plotter extends Analyzer

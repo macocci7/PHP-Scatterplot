@@ -288,7 +288,7 @@ class Analyzer
                     'Min' => min($layer['x']),
                     'Variance' => $this->variance($layer['x']),
                     'StandardDeviation'
-                    => $this->standardDeviation($layer['x']),
+                        => $this->standardDeviation($layer['x']),
                 ],
                 'y' => [
                     'Mean' => $this->mean($layer['y']),
@@ -296,13 +296,13 @@ class Analyzer
                     'Min' => min($layer['y']),
                     'Variance' => $this->variance($layer['y']),
                     'StandardDeviation'
-                    => $this->standardDeviation($layer['y']),
+                        => $this->standardDeviation($layer['y']),
                 ],
                 'Covariance' => $this->covariance($layer['x'], $layer['y']),
                 'CorrelationCoefficient'
-                => $this->correlationCoefficient($layer['x'], $layer['y']),
+                    => $this->correlationCoefficient($layer['x'], $layer['y']),
                 'RegressionLineFormula'
-                => $this->regressionLineFormula($layer['x'], $layer['y']),
+                    => $this->regressionLineFormula($layer['x'], $layer['y']),
             ];
         }
         return $parsed;

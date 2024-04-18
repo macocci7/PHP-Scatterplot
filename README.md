@@ -61,7 +61,8 @@ composer require macocci7/php-scatterplot
 
     ```php
     <?php
-    require('../vendor/autoload.php');
+
+    require_once __DIR__ . '/../vendor/autoload.php';
 
     use Macocci7\PhpScatterplot\Scatterplot;
 
@@ -82,7 +83,7 @@ composer require macocci7/php-scatterplot
     <a href="examples/img/BasicUsage.png"><img src="examples/img/BasicUsage.png" width="400" /></a>
 
 - Details:
-    - Import Autoloader: `require_once('../vendor/autoload.php')`
+    - Import Autoloader: `require_once __DIR__ . '/../vendor/autoload.php'`
     - Declare: `use Macocci7\PhpScatterplot`
     - Prepare Data: `$layers = [ $layer ]`
         - `$layers`: `array<int|string, array<string, list<int|float>>>`
@@ -100,7 +101,7 @@ composer require macocci7/php-scatterplot
     ```php
     <?php
 
-    require('../vendor/autoload.php');
+    require_once __DIR__ . '/../vendor/autoload.php';
 
     use Macocci7\PhpScatterplot\Scatterplot;
 
@@ -153,7 +154,7 @@ composer require macocci7/php-scatterplot
     ```php
     <?php
 
-    require('../vendor/autoload.php');
+    require_once __DIR__ . '/../vendor/autoload.php';
 
     use Macocci7\PhpScatterplot\Scatterplot;
 
@@ -326,7 +327,7 @@ Second, Code PHP like this:
     ```php
     <?php
 
-    require('../vendor/autoload.php');
+    require_once __DIR__ . '/../vendor/autoload.php';
 
     use Macocci7\PhpScatterplot\Scatterplot;
 
@@ -368,7 +369,7 @@ Then, run the PHP code.
     ```php
     <?php
 
-    require('../vendor/autoload.php');
+    require_once __DIR__ . '/../vendor/autoload.php';
 
     use Macocci7\PhpScatterplot\Scatterplot;
 
@@ -475,7 +476,7 @@ Then, run the PHP code.
     ```php
     <?php
 
-    require('../vendor/autoload.php');
+    require_once __DIR__ . '/../vendor/autoload.php';
 
     use Macocci7\PhpScatterplot\Scatterplot;
 
@@ -518,7 +519,8 @@ Then, run the PHP code.
 
     ```php
     <?php
-    require('../vendor/autoload.php');
+
+    require_once __DIR__ . '/../vendor/autoload.php';
 
     use Macocci7\PhpScatterplot\Analyzer;
 
@@ -657,6 +659,6 @@ Then, run the PHP code.
 
 *Document written: 2023/06/06*
 
-*Document updated: 2024/03/10*
+*Document updated: 2024/04/18*
 
 Copyright 2023 - 2024 macocci7.

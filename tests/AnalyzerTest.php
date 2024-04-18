@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Macocci7\PhpScatterplot;
 
-require_once('vendor/autoload.php');
-
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Macocci7\PhpScatterplot\Analyzer;
 
@@ -33,9 +32,7 @@ final class AnalyzerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_mean_can_return_mean_correctly
-     */
+    #[DataProvider('provide_mean_can_return_mean_correctly')]
     public function test_mean_can_retrun_mean_correctly(array $data, int|float|null $expect): void
     {
         $a = new Analyzer();
@@ -59,9 +56,7 @@ final class AnalyzerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_variance_can_return_variance_correctly
-     */
+    #[DataProvider('provide_variance_can_return_variance_correctly')]
     public function test_variance_can_return_variance_correctly(array $data, int|float|null $expect): void
     {
         $a = new Analyzer();
@@ -90,9 +85,7 @@ final class AnalyzerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_covariance_can_return_covariance_correctly
-     */
+    #[DataProvider('provide_covariance_can_return_covariance_correctly')]
     public function test_covariance_can_return_covariance_correctly(array $x, array $y, int|float|null $expect): void
     {
         $a = new Analyzer();
@@ -115,9 +108,7 @@ final class AnalyzerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_standardDeviation_can_return_standard_deviation_correctly
-     */
+    #[DataProvider('provide_standardDeviation_can_return_standard_deviation_correctly')]
     public function test_standardDeviation_can_return_standard_deviation_correctly(array $data, float|null $expect): void
     {
         $a = new Analyzer();
@@ -147,9 +138,7 @@ final class AnalyzerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_correlationCoefficient_can_return_correlation_coefficient_correctly
-     */
+    #[DataProvider('provide_correlationCoefficient_can_return_correlation_coefficient_correctly')]
     public function test_correlationCoefficient_can_return_correlation_coefficient_correctly(array $x, array $y, float|null $expect): void
     {
         $a = new Analyzer();
@@ -179,9 +168,7 @@ final class AnalyzerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_regressionLineFormula_can_return_values_correctly
-     */
+    #[DataProvider('provide_regressionLineFormula_can_return_values_correctly')]
     public function test_regressionLineFormula_can_return_values_correctly(array $x, array $y, array|null $expect): void
     {
         $a = new Analyzer();
@@ -203,9 +190,7 @@ final class AnalyzerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_getUcl_can_return_ucl_correctly
-     */
+    #[DataProvider('provide_getUcl_can_return_ucl_correctly')]
     public function test_getUcl_can_return_ucl_correctly(array $data, float|null $expect): void
     {
         $a = new Analyzer();
@@ -227,9 +212,7 @@ final class AnalyzerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_getLcl_can_return_lcl_correctly
-     */
+    #[DataProvider('provide_getLcl_can_return_lcl_correctly')]
     public function test_getLcl_can_return_lcl_correctly(array $data, float|null $expect): void
     {
         $a = new Analyzer();
@@ -253,9 +236,7 @@ final class AnalyzerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_outliers_can_return_outliers_correctly
-     */
+    #[DataProvider('provide_outliers_can_return_outliers_correctly')]
     public function test_outliers_can_return_outliers_correctly(array $data, array|null $expect): void
     {
         $a = new Analyzer();

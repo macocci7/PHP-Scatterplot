@@ -1,10 +1,10 @@
 <?php
 
-require('../vendor/autoload.php');
+require_once __DIR__ . '/../vendor/autoload.php';
 
-use Macocci7\PhpScatterplot\Scatterplot;
-use Macocci7\PhpCsv\Csv;
 use Macocci7\PhpCombination\Combination;
+use Macocci7\PhpCsv\Csv;
+use Macocci7\PhpScatterplot\Scatterplot;
 
 $cu = new Csv('csv/weather_tokyo.csv');
 $cb = new Combination();
