@@ -1,6 +1,6 @@
 <?php
 
-require('../vendor/autoload.php');
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Macocci7\PhpScatterplot\Scatterplot;
 
@@ -100,4 +100,4 @@ foreach ($layers as $name => $layer) {
 echo "</details>\n\n";
 
 // Scatter plot
-echo "![ChangingProperties.png](img/ChangingProperties.png)\n";
+echo "![AdjustDisplayByMethods.png](img/AdjustDisplayByMethods.png)\n";

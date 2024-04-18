@@ -43,20 +43,36 @@
 |fontPath|fonts/ipaexg.ttf|
 |fontSize|16|
 |fontColor|#333333|
-|outlierDiameter|2|
-|outlierColor|#ff0000|
-|mean|`false`|
-|meanColor|#0000ff|
-|labels|[x, y]|
+|regressionLine|`true`|
+|regressionLineWidth|3|
 |labelX|DATA X|
 |labelY|DATA Y|
 |caption|SCATTER PLOT|
 |legend|`true`|
 |legendCount|4|
 |legends|[John, Jake, Hugo, Alex]|
+|referenceLineX|`true`|
+|referenceLineXValue|1.5|
+|referenceLineXWidth|1|
+|referenceLineXColor|#00ccff|
+|referenceLineY|`true`|
+|referenceLineYValue|1.5|
+|referenceLineYWidth|1|
+|referenceLineYColor|#00ccff|
+|specificationLimitX|`true`|
+|specificationLimitXLower|0.5|
+|specificationLimitXUpper|11.5|
+|specificationLimitXWidth|1|
+|specificationLimitXColor|#ff00ff|
+|specificationLimitY|`true`|
+|specificationLimitYLower|0.5|
+|specificationLimitYUpper|11.5|
+|specificationLimitYWidth|1|
+|specificationLimitYColor|#ff00ff|
 |legendWidth|100|
 |legendFontSize|10|
 |colors|[#ffffff, #cc3333, #339933, #33cccc, #cc3333, #ffcc33, #cccc33, #cc33cc]|
+|regressionLineColors|[#666666, #cc2222, #2222cc, #22cc22]|
 </details>
 
 <details><summary>Regression Line Formula</summary>
@@ -67,4 +83,4 @@
 - Alex: y = 0.24545454545455 x + 4.9818181818182
 </details>
 
-![ChangingProperties.png](img/ChangingProperties.png)
+![AdjustDisplayByMethods.png](img/AdjustDisplayByMethods.png)

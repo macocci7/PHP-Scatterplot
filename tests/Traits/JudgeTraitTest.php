@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Macocci7\PhpScatterplot\Traits;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Macocci7\PhpScatterplot\Traits\JudgeTrait;
 use Nette\Neon\Neon;
 
 /**
- * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  */
@@ -40,9 +40,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isIntAll_can_judge_correctly
-     */
+    #[DataProvider('provide_isIntAll_can_judge_correctly')]
     public function test_isIntAll_can_judge_correctly(array $items, bool $expect): void
     {
         $this->assertSame($expect, self::isIntAll($items));
@@ -71,9 +69,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isNumber_can_judge_correctly
-     */
+    #[DataProvider('provide_isNumber_can_judge_correctly')]
     public function test_isNumber_can_judge_correctly(mixed $item, bool $expect): void
     {
         $this->assertSame($expect, self::isNumber($item));
@@ -102,9 +98,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isNumbersAll_can_judge_correctly
-     */
+    #[DataProvider('provide_isNumbersAll_can_judge_correctly')]
     public function test_isNumbersAll_can_judge_correctly(mixed $items, bool $expect): void
     {
         $this->assertSame($expect, self::isNumbersAll($items));
@@ -137,9 +131,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isStringsAll_can_judge_correctly
-     */
+    #[DataProvider('provide_isStringsAll_can_judge_correctly')]
     public function test_isStringsAll_can_judge_correctly(mixed $items, bool $expect): void
     {
         $this->assertSame($expect, self::isStringsAll($items));
@@ -170,9 +162,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isColorCode_can_judge_correctly
-     */
+    #[DataProvider('provide_isColorCode_can_judge_correctly')]
     public function test_isColorCode_can_judge_correctly(string $color, bool $expect): void
     {
         $this->assertSame($expect, self::isColorCode($color));
@@ -194,9 +184,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isColorCodesAll_can_judge_correctly
-     */
+    #[DataProvider('provide_isColorCodesAll_can_judge_correctly')]
     public function test_isColorCodesAll_can_judge_correctly(array $params, bool $expect): void
     {
         $this->assertSame($expect, self::isColorCodesAll($params));
@@ -298,9 +286,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isValidType_can_judge_correctly
-     */
+    #[DataProvider('provide_isValidType_can_judge_correctly')]
     public function test_isValidType_can_judge_correctly(mixed $input, string $def, bool $expect): void
     {
         $this->assertSame($expect, self::isValidType($input, $def));
@@ -329,9 +315,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isValidData_can_judge_correctly
-     */
+    #[DataProvider('provide_isValidData_can_judge_correctly')]
     public function test_isValidData_can_judge_correctly(mixed $data, bool $expect): void
     {
         $this->assertSame($expect, self::isValidData($data));
@@ -397,9 +381,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isValidLayer_can_judge_correctly
-     */
+    #[DataProvider('provide_isValidLayer_can_judge_correctly')]
     public function test_isValidLayer_can_judge_correctly(array $layer, bool $expect): void
     {
         $this->assertSame($expect, self::isValidLayer($layer));
@@ -431,9 +413,7 @@ final class JudgeTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provide_isValidLayers_can_judge_correctly
-     */
+    #[DataProvider('provide_isValidLayers_can_judge_correctly')]
     public function test_isValidLayers_can_judge_correctly(array $layers, bool $expect): void
     {
         $this->assertSame($expect, self::isValidLayers($layers));
