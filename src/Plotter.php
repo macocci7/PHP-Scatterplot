@@ -2,30 +2,32 @@
 
 namespace Macocci7\PhpScatterplot;
 
-use Macocci7\PhpScatterplot\Helpers\Config;
-use Macocci7\PhpScatterplot\Traits\JudgeTrait;
-use Macocci7\PhpScatterplot\Analyzer;
-use Macocci7\PhpFrequencyTable\FrequencyTable;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
-use Intervention\Image\Geometry\Factories\LineFactory;
-use Intervention\Image\Typography\FontFactory;
-use Intervention\Image\Geometry\Factories\RectangleFactory;
 use Intervention\Image\Geometry\Factories\CircleFactory;
+use Intervention\Image\Geometry\Factories\LineFactory;
+use Intervention\Image\Geometry\Factories\RectangleFactory;
+use Intervention\Image\Typography\FontFactory;
+use Macocci7\PhpFrequencyTable\FrequencyTable;
+use Macocci7\PhpScatterplot\Helpers\Config;
+use Macocci7\PhpScatterplot\Analyzer;
 
 /**
  * Class for plotting
  * @author  macocci7 <macocci7@yahoo.co.jp>
  * @license MIT
- * @SuppressWarnings(PHPMD.TooManyFields)
- * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 class Plotter extends Analyzer
 {
-    use JudgeTrait;
+    use Traits\JudgeTrait;
+    use Traits\AttributeTrait;
+    use Traits\StyleCoreTrait;
+    use Traits\StyleAppendixTrait;
+    use Traits\VisibilityCoreTrait;
+    use Traits\VisibilityAppendixTrait;
 
     protected string $imageDriver = 'imagick';
     protected ImageManager $imageManager;
@@ -34,104 +36,19 @@ class Plotter extends Analyzer
      * @var array<int|string, array<string, list<int|float>>>   $layers
      */
     protected array $layers;
-    protected int $canvasWidth = 600;
-    protected int $canvasHeight = 500;
-    protected string|null $canvasBackgroundColor = '#ffffff';
-    protected float $frameXRatio = 0.8;
-    protected float $frameYRatio = 0.7;
-    protected string|null $axisColor = '#666666';
-    protected int $axisWidth = 1;
-    protected string|null $gridColor = '#dddddd';
-    protected int $gridWidth = 1;
-    protected int|float|null $gridXPitch;
-    protected int|float|null $gridYPitch;
     protected int|float $gridXMax;
     protected int|float $gridXMin;
     protected int|float $gridYMax;
     protected int|float $gridYMin;
-    protected bool $gridX = false;
-    protected bool $gridY = false;
     protected int|float $pixPitchX;
     protected int|float $pixPitchY;
-    protected int|float $xLimitUpper;
-    protected int|float $xLimitLower;
-    protected int|float $yLimitUpper;
-    protected int|float $yLimitLower;
-    protected int $plotDiameter = 2;
-    protected string|null $plotColor = '#000000';
-    protected string $fontPath = 'fonts/ipaexg.ttf'; // IPA ex Gothic 00401
-    //protected string  $fontPath = 'fonts/ipaexm.ttf'; // IPA ex Mincho 00401
-    protected int|float $fontSize = 16;
-    protected string|null $fontColor = '#333333';
     protected int|float $baseX;
     protected int|float $baseY;
-    protected bool $outlier = true;
-    protected int $outlierDiameter = 2;
-    protected string|null $outlierColor = '#ff0000';
-    protected bool $mean = false;
-    protected string|null $meanColor = '#0000ff';
-    protected bool $referenceLineX = false;
-    protected int|float $referenceLineXValue;
-    protected int $referenceLineXWidth = 1;
-    protected string|null $referenceLineXColor = '#0000ff';
-    protected bool $referenceLineY = false;
-    protected int|float $referenceLineYValue;
-    protected int $referenceLineYWidth = 1;
-    protected string|null $referenceLineYColor = '#0000ff';
-    protected bool $specificationLimitX = false;
-    protected int|float $specificationLimitXLower;
-    protected int|float $specificationLimitXUpper;
-    protected int $specificationLimitXWidth = 1;
-    protected string|null $specificationLimitXColor = '#ff0000';
-    protected bool $specificationLimitY = false;
-    protected int|float $specificationLimitYLower;
-    protected int|float $specificationLimitYUpper;
-    protected int $specificationLimitYWidth = 1;
-    protected string|null $specificationLimitYColor = '#ff0000';
-    protected bool $regressionLine = false;
-    protected int $regressionLineWidth = 2;
-    protected string|null $regressionLineColor = '#00cc00';
     /**
      * @var string[]    $labels
      */
     protected array $labels;
-    protected string $labelX;
-    protected string $labelY;
-    protected string $caption;
-    protected bool $legend = false;
     protected int $legendCount;
-    /**
-     * @var string[]    $legends
-     */
-    protected array $legends;
-    protected int $legendWidth = 100;
-    protected int|float $legendFontSize = 10;
-    /**
-     * @var string[]    $colors
-     */
-    protected array $colors = [
-        '#3333cc',
-        '#cc3333',
-        '#339933',
-        '#33cccc',
-        '#cc3333',
-        '#ffcc33',
-        '#cccc33',
-        '#cc33cc',
-    ];
-    /**
-     * @var string[]    $regressionLineColors
-     */
-    protected array $regressionLineColors = [
-        '#ff0000',
-        '#ff6666',
-        '#ff9933',
-        '#ff0066',
-        '#ff00cc',
-        '#ff6600',
-        '#ffcc00',
-        '#ff00ff',
-    ];
 
     /**
      * constructor
@@ -230,7 +147,7 @@ class Plotter extends Analyzer
      * sets properties for preparation
      * @return self
      */
-    protected function setProperties()
+    private function setProperties()
     {
         $this->ft = new FrequencyTable();
         $this->legendCount = count($this->layers);
@@ -269,7 +186,7 @@ class Plotter extends Analyzer
         $this->ft->setClassRange(1);
         // Note:
         // - If $this->gridXPitch has a value, that value takes precedence.
-        // - The value of $this->girdXPitch may be set by the funciton gridXPitch().
+        // - The value of $this->girdXPitch may be set by the method gridXPitch().
         if (!$this->gridXPitch) {
             $this->gridXPitch = 1;
             if ($this->gridXPitch < 0.125 * $gridXRange) {
@@ -295,7 +212,7 @@ class Plotter extends Analyzer
         }
         // Note:
         // - If $this->labels has values, those values takes precedence.
-        // - The values of $this->labels may be set by the function labels().
+        // - The values of $this->labels may be set by the method labels().
         if (empty($this->labels)) {
             $keys = array_keys($this->layers);
             $this->labels = array_keys($this->layers[$keys[0]]);
@@ -308,7 +225,7 @@ class Plotter extends Analyzer
      * @param   float   $x
      * @return  int
      */
-    public function pX(float $x)
+    private function pX(float $x)
     {
         return (int) ($this->baseX + ($x - $this->gridXMin) * $this->pixPitchX);
     }
@@ -318,7 +235,7 @@ class Plotter extends Analyzer
      * @param   float   $y
      * @return  int
      */
-    public function pY(float $y)
+    private function pY(float $y)
     {
         return (int) ($this->baseY - ($y - $this->gridYMin) * $this->pixPitchY);
     }
@@ -327,7 +244,7 @@ class Plotter extends Analyzer
      * plots axis
      * @return  self
      */
-    public function plotAxis()
+    private function plotAxis()
     {
         // horizontal axis
         $x1 = (int) $this->pX($this->gridXMin);
@@ -362,7 +279,7 @@ class Plotter extends Analyzer
      * plots x-grids
      * @return  self
      */
-    public function plotGridsX()
+    private function plotGridsX()
     {
         if (!$this->gridX) {
             return $this;
@@ -388,7 +305,7 @@ class Plotter extends Analyzer
      * plots y-grids
      * @return  self
      */
-    public function plotGridsY()
+    private function plotGridsY()
     {
         if (!$this->gridY) {
             return $this;
@@ -414,7 +331,7 @@ class Plotter extends Analyzer
      * plots grid values of x
      * @return  self
      */
-    public function plotGridValuesX()
+    private function plotGridValuesX()
     {
         for ($i = $this->gridXMin; $i <= $this->gridXMax; $i += $this->gridXPitch) {
             $x = $this->pX($i);
@@ -439,7 +356,7 @@ class Plotter extends Analyzer
      * plots grid values of y
      * @return  self
      */
-    public function plotGridValuesY()
+    private function plotGridValuesY()
     {
         for ($i = $this->gridYMin; $i <= $this->gridYMax; $i += $this->gridYPitch) {
             $x = (int) ($this->baseX - $this->fontSize * 0.4);
@@ -464,7 +381,7 @@ class Plotter extends Analyzer
      * plots x-label
      * @return  self
      */
-    public function plotLabelX()
+    private function plotLabelX()
     {
         $x = (int) ($this->canvasWidth / 2);
         $y = (int) ($this->baseY + (1 - $this->frameYRatio) * $this->canvasHeight / 3);
@@ -487,7 +404,7 @@ class Plotter extends Analyzer
      * plots y-label
      * @return  self
      */
-    public function plotLabelY()
+    private function plotLabelY()
     {
         $width = $this->canvasHeight;
         $height = (int) ($this->canvasWidth * (1 - $this->frameXRatio) / 3);
@@ -515,7 +432,7 @@ class Plotter extends Analyzer
      * plots caption
      * @return  self
      */
-    public function plotCaption()
+    private function plotCaption()
     {
         $x = (int) ($this->canvasWidth / 2);
         $y = (int) ($this->canvasHeight * (1 - $this->frameYRatio) / 3);
@@ -538,7 +455,7 @@ class Plotter extends Analyzer
      * plots layers
      * @return  self
      */
-    public function plotLayers()
+    private function plotLayers()
     {
         if (!self::isValidLayers($this->layers)) {
             return $this;
@@ -559,7 +476,7 @@ class Plotter extends Analyzer
      * @param   array<string, array<int|float>> $data
      * @return  self
      */
-    public function plotLayer(array $data)
+    private function plotLayer(array $data)
     {
         $count = count($data['x']);
         for ($i = 0; $i < $count; $i++) {
@@ -574,7 +491,7 @@ class Plotter extends Analyzer
      * @param   int|float   $y
      * @return  self
      */
-    public function plotXY(int|float $x, int|float $y)
+    private function plotXY(int|float $x, int|float $y)
     {
         if (!self::isNumber($x) || !self::isNumber($y)) {
             return $this;
@@ -597,7 +514,7 @@ class Plotter extends Analyzer
      * @param   array<string, array<int|float>>   $layer
      * @return  self
      */
-    public function plotRegressionLine(array $layer)
+    private function plotRegressionLine(array $layer)
     {
         if (!$this->regressionLine) {
             return $this;
@@ -629,7 +546,7 @@ class Plotter extends Analyzer
      * plots a reference line of x
      * @return  self
      */
-    public function plotReferenceLineX()
+    private function plotReferenceLineX()
     {
         if (!$this->referenceLineX) {
             return $this;
@@ -653,7 +570,7 @@ class Plotter extends Analyzer
      * plots a reference line of Y
      * @return  self
      */
-    public function plotReferenceLineY()
+    private function plotReferenceLineY()
     {
         if (!$this->referenceLineY) {
             return $this;
@@ -677,7 +594,7 @@ class Plotter extends Analyzer
      * plots specification limit lines of X
      * @return  self
      */
-    public function plotSpecificationLimitX()
+    private function plotSpecificationLimitX()
     {
         if (!$this->specificationLimitX) {
             return $this;
@@ -713,7 +630,7 @@ class Plotter extends Analyzer
      * plots specification limit lines of y
      * @return  self
      */
-    public function plotSpecificationLimitY()
+    private function plotSpecificationLimitY()
     {
         if (!$this->specificationLimitY) {
             return $this;
@@ -749,7 +666,7 @@ class Plotter extends Analyzer
      * plots legends
      * @return  self
      */
-    public function plotLegend()
+    private function plotLegend()
     {
         if (!$this->legend) {
             return $this;
