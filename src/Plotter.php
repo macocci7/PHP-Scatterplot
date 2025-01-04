@@ -16,9 +16,6 @@ use Macocci7\PhpScatterplot\Analyzer;
  * Class for plotting
  * @author  macocci7 <macocci7@yahoo.co.jp>
  * @license MIT
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 class Plotter extends Analyzer
 {

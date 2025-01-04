@@ -1,87 +1,86 @@
-/home/macocci7/php/PHP-Scatterplot/examples/ParsedData.php:20:
 array(2) {
-  'John' =>
+  ["John"]=>
   array(6) {
-    'count' =>
+    ["count"]=>
     int(11)
-    'x' =>
+    ["x"]=>
     array(5) {
-      'Mean' =>
+      ["Mean"]=>
       int(6)
-      'Max' =>
+      ["Max"]=>
       int(11)
-      'Min' =>
+      ["Min"]=>
       int(1)
-      'Variance' =>
+      ["Variance"]=>
       int(10)
-      'StandardDeviation' =>
-      double(3.1622776601684)
+      ["StandardDeviation"]=>
+      float(3.1622776601683795)
     }
-    'y' =>
+    ["y"]=>
     array(5) {
-      'Mean' =>
+      ["Mean"]=>
       int(5)
-      'Max' =>
+      ["Max"]=>
       int(11)
-      'Min' =>
+      ["Min"]=>
       int(1)
-      'Variance' =>
-      double(10.181818181818)
-      'StandardDeviation' =>
-      double(3.1908961408699)
+      ["Variance"]=>
+      float(10.181818181818182)
+      ["StandardDeviation"]=>
+      float(3.1908961408698624)
     }
-    'Covariance' =>
-    double(5.1818181818182)
-    'CorrelationCoefficient' =>
-    double(0.51353435373647)
-    'RegressionLineFormula' =>
+    ["Covariance"]=>
+    float(5.181818181818182)
+    ["CorrelationCoefficient"]=>
+    float(0.5135343537364686)
+    ["RegressionLineFormula"]=>
     array(2) {
-      'a' =>
-      double(0.51818181818182)
-      'b' =>
-      double(1.8909090909091)
+      ["a"]=>
+      float(0.5181818181818182)
+      ["b"]=>
+      float(1.8909090909090907)
     }
   }
-  'Jake' =>
+  ["Jake"]=>
   array(6) {
-    'count' =>
+    ["count"]=>
     int(11)
-    'x' =>
+    ["x"]=>
     array(5) {
-      'Mean' =>
+      ["Mean"]=>
       int(6)
-      'Max' =>
+      ["Max"]=>
       int(11)
-      'Min' =>
+      ["Min"]=>
       int(1)
-      'Variance' =>
+      ["Variance"]=>
       int(10)
-      'StandardDeviation' =>
-      double(3.1622776601684)
+      ["StandardDeviation"]=>
+      float(3.1622776601683795)
     }
-    'y' =>
+    ["y"]=>
     array(5) {
-      'Mean' =>
+      ["Mean"]=>
       int(6)
-      'Max' =>
+      ["Max"]=>
       int(11)
-      'Min' =>
+      ["Min"]=>
       int(1)
-      'Variance' =>
+      ["Variance"]=>
       int(10)
-      'StandardDeviation' =>
-      double(3.1622776601684)
+      ["StandardDeviation"]=>
+      float(3.1622776601683795)
     }
-    'Covariance' =>
-    double(-9.4545454545455)
-    'CorrelationCoefficient' =>
-    double(-0.94545454545455)
-    'RegressionLineFormula' =>
+    ["Covariance"]=>
+    float(-9.454545454545455)
+    ["CorrelationCoefficient"]=>
+    float(-0.9454545454545453)
+    ["RegressionLineFormula"]=>
     array(2) {
-      'a' =>
-      double(-0.94545454545455)
-      'b' =>
-      double(11.672727272727)
+      ["a"]=>
+      float(-0.9454545454545455)
+      ["b"]=>
+      float(11.672727272727274)
     }
   }
 }
