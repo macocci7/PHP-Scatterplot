@@ -662,8 +662,4 @@ Then, run the PHP code.
 
 ***
 
-*Document written: 2023/06/06*
-
-*Document updated: 2025/01/04*
-
 Copyright 2023 - 2025 macocci7.
