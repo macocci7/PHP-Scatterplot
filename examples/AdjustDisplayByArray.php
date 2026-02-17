@@ -42,7 +42,7 @@ $conf = [
     'yLimitUpper' => 12,
     'yLimitLower' => 0,
     'plotDiameter' => 6,
-    //'fontPath' => 'fonts/ipaexg.ttf', // IPA ex Gothic 00401
+    //'fontPath' => __DIR__ . '/fonts/ipaexg.ttf', // IPA ex Gothic 00401
     //'fontSize' => 16,
     //'fontColor' => '#333333',
     'referenceLineX' => true,
@@ -93,4 +93,4 @@ $conf = [
 $sp = new Scatterplot();
 $sp->layers($layers)
    ->config($conf)
-   ->create('img/AdjustDisplayByArray.png');
+   ->create(__DIR__ . '/img/AdjustDisplayByArray.png');

@@ -32,7 +32,7 @@ $sp->layers($layers)
    ->labelX('Data X')
    ->labelY('Data Y')
    ->caption('Using Layers')
-   ->create('img/UsingLayers.png');
+   ->create(__DIR__ . '/img/UsingLayers.png');
 
 // Markdown -------------------------------------
 

@@ -25,5 +25,5 @@ $layers = [
 
 $sp = new Scatterplot();
 $sp->layers($layers)
-   ->config('AdjustDisplayByNeon.neon')
-   ->create('img/AdjustDisplayByNeon.png');
+   ->config(__DIR__ . '/AdjustDisplayByNeon.neon')
+   ->create(__DIR__ . '/img/AdjustDisplayByNeon.png');

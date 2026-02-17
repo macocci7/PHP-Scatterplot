@@ -92,7 +92,6 @@ class Plotter extends Analyzer
             'yLimitLower',
             'plotDiameter',
             'plotColor',
-            'fontPath',
             'fontSize',
             'fontColor',
             'outlier',

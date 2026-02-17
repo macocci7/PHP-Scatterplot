@@ -13,7 +13,7 @@ $layers = [
 
 $sp = new Scatterplot();
 $sp->layers($layers)
-   ->create('img/BasicUsage.png');
+   ->create(__DIR__ . '/img/BasicUsage.png');
 
 // Markdown -------------------------------------
 

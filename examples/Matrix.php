@@ -6,7 +6,7 @@ use Macocci7\PhpCombination\Combination;
 use Macocci7\PhpCsv\Csv;
 use Macocci7\PhpScatterplot\Scatterplot;
 
-$cu = new Csv('csv/weather_tokyo.csv');
+$cu = new Csv(__DIR__ . '/csv/weather_tokyo.csv');
 $cb = new Combination();
 
 $cu->encode('SJIS', 'UTF-8')
@@ -41,7 +41,7 @@ foreach ($pairs as $index => $pair) {
        ->labelX($dictionary[$heads[$x]])
        ->labelY($dictionary[$heads[$y]])
        ->caption('Weather in Tokyo : ' . $days[0] . '～' . $days[count($days) - 1])
-       ->create(sprintf("img/Matrix%02d.png", $index));
+       ->create(sprintf(__DIR__ . "/img/Matrix%02d.png", $index));
     $parsed[] = $sp->parse($layers);
 }
 
