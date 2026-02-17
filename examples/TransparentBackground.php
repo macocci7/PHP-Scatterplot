@@ -25,9 +25,9 @@ $layers = [
 
 $sp = new Scatterplot();
 $sp->layers($layers)
-   ->config('AdjustDisplayByNeon.neon')
+   ->config(__DIR__ . '/AdjustDisplayByNeon.neon')
    ->config([
-    // This results in transparent backgournd
+    // This results in transparent background
     'canvasBackgroundColor' => null,
    ])
-   ->create('img/TransparentBackground.png');
+   ->create(__DIR__ . '/img/TransparentBackground.png');

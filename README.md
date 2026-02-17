@@ -80,7 +80,7 @@ composer require macocci7/php-scatterplot
 
     $sp = new Scatterplot();
     $sp->layers($layers)
-        ->create('img/BasicUsage.png');
+        ->create(__DIR__ . '/img/BasicUsage.png');
     ```
 
 - Result: [examples/img/BasicUsage.png](examples/img/BasicUsage.png)
@@ -138,7 +138,7 @@ composer require macocci7/php-scatterplot
        ->labelX('Data X')
        ->labelY('Data Y')
        ->caption('Using Layers')
-       ->create('img/UsingLayers.png');
+       ->create(__DIR__ . '/img/UsingLayers.png');
     ```
 
 - Result: [examples/img/UsingLayers.png](examples/img/UsingLayers.png)
@@ -206,7 +206,7 @@ composer require macocci7/php-scatterplot
        ->labelY('DATA Y')
        ->caption('SCATTER PLOT')
        ->legends($legends)
-       ->create('img/AdjustDisplayByMethods.png');
+       ->create(__DIR__ . '/img/AdjustDisplayByMethods.png');
     ```
 
 - Result: [examples/img/AdjustDisplayByMethods.png](examples/img/AdjustDisplayByMethods.png)
@@ -357,8 +357,8 @@ Second, Code PHP like this:
 
     $sp = new Scatterplot();
     $sp->layers($layers)
-       ->config('AdjustDisplayByNeon.neon')
-       ->create('img/AdjustDisplayByNeon.png');
+       ->config(__DIR__ . '/AdjustDisplayByNeon.neon')
+       ->create(__DIR__ . '/img/AdjustDisplayByNeon.png');
     ```
 
 Then, run the PHP code.
@@ -416,7 +416,7 @@ Then, run the PHP code.
         'yLimitUpper' => 12,
         'yLimitLower' => 0,
         'plotDiameter' => 6,
-        //'fontPath' => 'fonts/ipaexg.ttf', // IPA ex Gothic 00401
+        //'fontPath' => __DIR__ . '/fonts/ipaexg.ttf', // IPA ex Gothic 00401
         //'fontSize' => 16,
         //'fontColor' => '#333333',
         'referenceLineX' => true,
@@ -467,7 +467,7 @@ Then, run the PHP code.
     $sp = new Scatterplot();
     $sp->layers($layers)
        ->config($conf)
-       ->create('img/AdjustDisplayByArray.png');
+       ->create(__DIR__ . '/img/AdjustDisplayByArray.png');
     ```
 
 - Result: [examples/img/AdjustDisplayByArray.png](examples/img/AdjustDisplayByArray.png)
@@ -506,12 +506,12 @@ Then, run the PHP code.
 
     $sp = new Scatterplot();
     $sp->layers($layers)
-       ->config('AdjustDisplayByNeon.neon')
+       ->config(__DIR__ . '/AdjustDisplayByNeon.neon')
        ->config([
            // This results in transparent backgournd
            'canvasBackgroundColor' => null,
        ])
-       ->create('img/TransparentBackground.png');
+       ->create(__DIR__ . '/img/TransparentBackground.png');
     ```
 
 - Result: [examples/img/TransparentBackground.png](examples/img/TransparentBackground.png)
@@ -662,4 +662,4 @@ Then, run the PHP code.
 
 ***
 
-Copyright 2023 - 2025 macocci7.
+Copyright 2023 - 2026 macocci7.

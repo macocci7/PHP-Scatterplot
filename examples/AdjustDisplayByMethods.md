@@ -40,7 +40,6 @@
 |yLimitLower|0|
 |plotDiameter|4|
 |plotColor|#33cccc|
-|fontPath|fonts/ipaexg.ttf|
 |fontSize|16|
 |fontColor|#333333|
 |regressionLine|`true`|

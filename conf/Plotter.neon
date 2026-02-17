@@ -28,7 +28,7 @@ props:
     #yLimitLower:
     plotDiameter: 2
     plotColor: '#000000'
-    fontPath: 'fonts/ipaexg.ttf' # IPA ex Gothic 00401
+    #fontPath: 'fonts/ipaexg.ttf' # IPA ex Gothic 00401
     #fontPath: 'fonts/ipaexm.ttf' # IPA ex Mincho 00401
     fontSize: 16
     fontColor: '#333333'

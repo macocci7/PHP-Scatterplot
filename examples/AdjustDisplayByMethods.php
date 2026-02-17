@@ -47,7 +47,7 @@ $sp->layers($layers)
    ->labelY('DATA Y')
    ->caption('SCATTER PLOT')
    ->legends($legends)
-   ->create('img/AdjustDisplayByMethods.png');
+   ->create(__DIR__ . '/img/AdjustDisplayByMethods.png');
 
 // Markdown -------------------------------------
 

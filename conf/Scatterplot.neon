@@ -43,8 +43,6 @@ validConfig:
         type: int
     plotColor:
         type: colorCode|null
-    fontPath:
-        type: string
     fontSize:
         type: number
     fontColor:

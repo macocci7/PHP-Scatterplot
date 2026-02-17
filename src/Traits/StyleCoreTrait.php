@@ -26,8 +26,8 @@ trait StyleCoreTrait
     ];
     protected int $plotDiameter = 2;
     protected string|null $plotColor = '#000000';
-    protected string $fontPath = 'fonts/ipaexg.ttf'; // IPA ex Gothic 00401
-    //protected string  $fontPath = 'fonts/ipaexm.ttf'; // IPA ex Mincho 00401
+    protected string $fontPath = __DIR__ . '/../Fonts/ipaexg.ttf'; // IPA ex Gothic 00401
+    //protected string  $fontPath = __DIR__ . '/Fonts/ipaexm.ttf'; // IPA ex Mincho 00401
     protected int|float $fontSize = 16;
     protected string|null $fontColor = '#333333';
 
