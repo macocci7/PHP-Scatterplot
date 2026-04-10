@@ -6,7 +6,7 @@ use Macocci7\PhpCombination\Combination;
 use Macocci7\PhpCsv\Csv;
 use Macocci7\PhpScatterplot\Scatterplot;
 
-$cu = new Csv(__DIR__ . '/csv/weather_tokyo.csv');
+$cu = new Csv(__DIR__ . '/csv/weather_tokyo_2026mar.csv');
 $cb = new Combination();
 
 $cu->encode('SJIS', 'UTF-8')

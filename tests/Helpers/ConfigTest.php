@@ -2,16 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Macocci7\PhpScatterplot\Helpers;
+namespace Macocci7\PhpScatterplot\Tests\Helpers;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Macocci7\PhpScatterplot\Helpers\Config;
 use Nette\Neon\Neon;
 
-/**
- * @SuppressWarnings(PHPMD.CamelCaseMethodName)
- */
 final class ConfigTest extends TestCase
 {
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps

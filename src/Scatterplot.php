@@ -23,9 +23,8 @@ class Scatterplot extends Plotter
 
     /**
      * loads config.
-     * @return  void
      */
-    private function loadConf()
+    private function loadConf(): void
     {
         Config::load();
         $props = [
@@ -42,9 +41,8 @@ class Scatterplot extends Plotter
     /**
      * set config from specified resource
      * @param   string|mixed[]  $configResource
-     * @return  self
      */
-    public function config(string|array $configResource)
+    public function config(string|array $configResource): self
     {
         foreach (Config::filter($configResource) as $key => $value) {
             $this->{$key} = $value;
@@ -58,9 +56,8 @@ class Scatterplot extends Plotter
     /**
      * sets a layer
      * @param   array<string, array<int|float>> $layer
-     * @return  self
      */
-    public function layer(array $layer)
+    public function layer(array $layer): self
     {
         if (self::isValidLayer($layer)) {
             $this->layers[] = $layer;
@@ -71,9 +68,8 @@ class Scatterplot extends Plotter
     /**
      * sets layers
      * @param   array<int|string, array<string, list<int|float>>>   $layers
-     * @return  self
      */
-    public function layers(array $layers)
+    public function layers(array $layers): self
     {
         if (!self::isValidLayers($layers)) {
             throw new \Exception(
@@ -87,10 +83,8 @@ class Scatterplot extends Plotter
 
     /**
      * returns the config values
-     * @param   string|null $key = null
-     * @return  mixed
      */
-    public function getConfig(string|null $key = null)
+    public function getConfig(string|null $key = null): mixed
     {
         if (is_null($key)) {
             $config = [];

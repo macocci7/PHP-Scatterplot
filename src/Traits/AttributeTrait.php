@@ -25,12 +25,9 @@ trait AttributeTrait
 
     /**
      * sets limits of x
-     * @param   int|float   $lower
-     * @param   int|float   $upper
-     * @return  self
      * @thrown  \Exception
      */
-    public function limitX(int|float $lower, int|float $upper)
+    public function limitX(int|float $lower, int|float $upper): self
     {
         if ($lower >= $upper) {
             throw new \Exception("lower limit must be less than upper limit.");
@@ -42,12 +39,9 @@ trait AttributeTrait
 
     /**
      * sets limits of y
-     * @param   int|float   $lower
-     * @param   int|float   $upper
-     * @return  self
      * @thrown  \Exception
      */
-    public function limitY(int|float $lower, int|float $upper)
+    public function limitY(int|float $lower, int|float $upper): self
     {
         if ($lower >= $upper) {
             throw new \Exception("lower limit must be less than upper limit.");
@@ -59,12 +53,9 @@ trait AttributeTrait
 
     /**
      * sets the width and height of the canvas
-     * @param   int     $width
-     * @param   int     $height
-     * @return  self
      * @thrown  \Exception
      */
-    public function resize(int $width, int $height)
+    public function resize(int $width, int $height): self
     {
         if ($width < $this->CANVAS_WIDTH_LIMIT_LOWER) {
             throw new \Exception(
@@ -85,12 +76,9 @@ trait AttributeTrait
 
     /**
      * sets the frame (plot area) ratio
-     * @param   float   $xRatio (0.0 < $xRatio < 1.0)
-     * @param   float   $yRatio (0.0 < $yRatio < 1.0)
-     * @return  self
      * @thrown  \Exception
      */
-    public function frame($xRatio, $yRatio)
+    public function frame(float $xRatio, float $yRatio): self
     {
         if ($xRatio <= 0.0 || $xRatio > 1.0) {
             throw new \Exception("Ratio must be: 0.0 < ratio <= 1.0.");
@@ -105,10 +93,8 @@ trait AttributeTrait
 
     /**
      * sets the label of x
-     * @param   string  $label
-     * @return  self
      */
-    public function labelX(string $label)
+    public function labelX(string $label): self
     {
         $this->labelX = $label;
         return $this;
@@ -116,10 +102,8 @@ trait AttributeTrait
 
     /**
      * sets the label of y
-     * @param   string  $label
-     * @return  self
      */
-    public function labelY(string $label)
+    public function labelY(string $label): self
     {
         $this->labelY = $label;
         return $this;
@@ -127,10 +111,8 @@ trait AttributeTrait
 
     /**
      * sets the caption
-     * @param   string  $caption
-     * @return  self
      */
-    public function caption(string $caption)
+    public function caption(string $caption): self
     {
         $this->caption = $caption;
         return $this;
@@ -139,9 +121,8 @@ trait AttributeTrait
     /**
      * sets the legends
      * @param   string[]    $legends
-     * @return  self
      */
-    public function legends(array $legends)
+    public function legends(array $legends): self
     {
         if (!self::isStringsAll($legends)) {
             throw new \Exception("Each elements of legends must be type of string.");

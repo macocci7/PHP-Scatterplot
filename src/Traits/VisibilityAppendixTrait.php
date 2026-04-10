@@ -14,9 +14,8 @@ trait VisibilityAppendixTrait
 
     /**
      * sets reference line of x off
-     * @return self
      */
-    public function referenceLineXOff()
+    public function referenceLineXOff(): self
     {
         $this->referenceLineX = false;
         return $this;
@@ -24,9 +23,8 @@ trait VisibilityAppendixTrait
 
     /**
      * sets reference line of y off
-     * @return self
      */
-    public function referenceLineYOff()
+    public function referenceLineYOff(): self
     {
         $this->referenceLineY = false;
         return $this;
@@ -34,9 +32,8 @@ trait VisibilityAppendixTrait
 
     /**
      * sets reference lines off
-     * @return self
      */
-    public function referenceLinesOff()
+    public function referenceLinesOff(): self
     {
         $this->referenceLineXOff();
         $this->referenceLineYOff();
@@ -45,9 +42,8 @@ trait VisibilityAppendixTrait
 
     /**
      * sets specification limit of x off
-     * @return self
      */
-    public function specificationLimitXOff()
+    public function specificationLimitXOff(): self
     {
         $this->specificationLimitX = false;
         return $this;
@@ -55,9 +51,8 @@ trait VisibilityAppendixTrait
 
     /**
      * sets specification limit of y off
-     * @return self
      */
-    public function specificationLimitYOff()
+    public function specificationLimitYOff(): self
     {
         $this->specificationLimitY = false;
         return $this;
@@ -65,9 +60,8 @@ trait VisibilityAppendixTrait
 
     /**
      * sets specification limits off
-     * @return self
      */
-    public function specificationLimitsOff()
+    public function specificationLimitsOff(): self
     {
         $this->specificationLimitXOff();
         $this->specificationLimitYOff();
@@ -76,9 +70,8 @@ trait VisibilityAppendixTrait
 
     /**
      * sets regression line on
-     * @return  self
      */
-    public function regressionLineOn()
+    public function regressionLineOn(): self
     {
         $this->regressionLine = true;
         return $this;
@@ -86,9 +79,8 @@ trait VisibilityAppendixTrait
 
     /**
      * sets regression line off
-     * @return self
      */
-    public function regressionLineOff()
+    public function regressionLineOff(): self
     {
         $this->regressionLine = false;
         return $this;
