@@ -7,7 +7,6 @@ trait JudgeTrait
     /**
      * judges if all items are integer or not
      * @param   array<mixed>    $items
-     * @return  bool
      */
     public static function isIntAll(array $items): bool
     {
@@ -24,8 +23,6 @@ trait JudgeTrait
 
     /**
      * judges if the param is number
-     * @param   mixed   $item
-     * @return  bool
      */
     public static function isNumber(mixed $item): bool
     {
@@ -34,8 +31,6 @@ trait JudgeTrait
 
     /**
      * judges if all items are number or not
-     * @param   mixed   $items
-     * @return  bool
      */
     public static function isNumbersAll(mixed $items): bool
     {
@@ -55,8 +50,6 @@ trait JudgeTrait
 
     /**
      * judges if all items are string or not
-     * @param   mixed   $items
-     * @return  bool
      */
     public static function isStringsAll(mixed $items): bool
     {
@@ -76,8 +69,6 @@ trait JudgeTrait
 
     /**
      * judges if the param is in '#rrggbb' format or not
-     * @param   mixed  $item
-     * @return  bool
      */
     public static function isColorCode(mixed $item): bool
     {
@@ -89,8 +80,6 @@ trait JudgeTrait
 
     /**
      * judges if all of params are colorcode or not
-     * @param   mixed   $colors
-     * @return  bool
      */
     public static function isColorCodesAll(mixed $colors): bool
     {
@@ -110,9 +99,6 @@ trait JudgeTrait
 
     /**
      * judges if type of $input is valid or not
-     * @param   mixed   $input
-     * @param   string  $defs
-     * @return  bool
      */
     public static function isValidType(mixed $input, string $defs): bool
     {
@@ -136,8 +122,6 @@ trait JudgeTrait
 
     /**
      * judgees whether $data is valid or not for analysis
-     * @param   mixed   $data
-     * @return  bool
      */
     public static function isValidData(mixed $data): bool
     {
@@ -156,7 +140,6 @@ trait JudgeTrait
     /**
      * judges whether $layer is valid or not
      * @param   array<string, list<int|float>>  $layer
-     * @return  bool
      */
     public static function isValidLayer(array $layer): bool
     {
@@ -184,7 +167,6 @@ trait JudgeTrait
     /**
      * judges whether $layers is valid or not
      * @param   array<int|string, array<string, list<int|float>>>   $layers
-     * @return  bool
      */
     public static function isValidLayers(array $layers): bool
     {

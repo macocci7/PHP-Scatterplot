@@ -37,9 +37,8 @@ class Analyzer
     /**
      * calculates mean of $data
      * @param   array<int|string, int|float>    $data
-     * @return  float|null
      */
-    public function mean(array $data)
+    public function mean(array $data): ?float
     {
         if (!self::isValidData($data)) {
             return null;
@@ -50,9 +49,8 @@ class Analyzer
     /**
      * calculates variance of $data
      * @param   array<int|string, int|float>    $data
-     * @return  float|null
      */
-    public function variance(array $data)
+    public function variance(array $data): ?float
     {
         if (!self::isValidData($data)) {
             return null;
@@ -69,9 +67,8 @@ class Analyzer
      * calculates covariance of $dataX and $dataY
      * @param   array<int|string, int|float>    $dataX
      * @param   array<int|string, int|float>    $dataY
-     * @return  float|null
      */
-    public function covariance(array $dataX, array $dataY)
+    public function covariance(array $dataX, array $dataY): ?float
     {
         if (!self::isValidData($dataX) || !self::isValidData($dataY)) {
             return null;
@@ -92,9 +89,8 @@ class Analyzer
     /**
      * calculates standard deviation of $data
      * @param   array<int|string, int|float>    $data
-     * @return  float|null
      */
-    public function standardDeviation(array $data)
+    public function standardDeviation(array $data): ?float
     {
         if (!self::isValidData($data)) {
             return null;
@@ -106,9 +102,8 @@ class Analyzer
      * calculates correlation coefficient of $dataX and $dataY
      * @param   array<int|string, int|float> $dataX
      * @param   array<int|string, int|float> $dataY
-     * @return  float|null
      */
-    public function correlationCoefficient(array $dataX, array $dataY)
+    public function correlationCoefficient(array $dataX, array $dataY): ?float
     {
         if (!self::isValidData($dataX) || !self::isValidData($dataY)) {
             return null;
@@ -130,7 +125,7 @@ class Analyzer
      * @param   array<int|string, int|float>    $dataY
      * @return  array<string, int|float>|null
      */
-    public function regressionLineFormula(array $dataX, array $dataY)
+    public function regressionLineFormula(array $dataX, array $dataY): ?array
     {
         if (!self::isValidData($dataX) || !self::isValidData($dataY)) {
             return null;
@@ -161,9 +156,8 @@ class Analyzer
     /**
      * calculates the upper control limit of $data
      * @param   array<int|string, int|float>    $data
-     * @return  float|null
      */
-    public function getUcl(array $data)
+    public function getUcl(array $data): ?float
     {
         if (!self::isValidData($data)) {
             return null;
@@ -183,9 +177,8 @@ class Analyzer
     /**
      * calculates the lower control limit of $data
      * @param   array<int|string, int|float>    $data
-     * @return  float|null
      */
-    public function getLcl(array $data)
+    public function getLcl(array $data): ?float
     {
         if (!self::isValidData($data)) {
             return null;
@@ -207,7 +200,7 @@ class Analyzer
      * @param   array<int|string, int|float>    $data
      * @return  array<int, int|float>|null
      */
-    public function outliers(array $data)
+    public function outliers(array $data): ?array
     {
         if (!self::isValidData($data)) {
             return null;
@@ -234,7 +227,7 @@ class Analyzer
      * @param   array<int|string, array<string, array<int|float>>>  $layers
      * @return  array<int, int|float>|null
      */
-    public function layerMax(array $layers)
+    public function layerMax(array $layers): ?array
     {
         if (!self::isValidLayers($layers)) {
             return null;
@@ -253,7 +246,7 @@ class Analyzer
      * @param   array<int|string, array<string, array<int|string>>> $layers
      * @return  array<int, int|float>|null
      */
-    public function layerMin(array $layers)
+    public function layerMin(array $layers): ?array
     {
         if (!self::isValidLayers($layers)) {
             return null;
@@ -272,7 +265,7 @@ class Analyzer
      * @param   array<int|string, array<string, array<int|float>>>  $layers
      * @return  array<int|string, array<string, mixed>>|null
      */
-    public function parse(array $layers)
+    public function parse(array $layers): ?array
     {
         if (!self::isValidLayers($layers)) {
             return null;

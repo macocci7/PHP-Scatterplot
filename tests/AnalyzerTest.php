@@ -2,16 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Macocci7\PhpScatterplot;
+namespace Macocci7\PhpScatterplot\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Macocci7\PhpScatterplot\Analyzer;
 
-/**
- * @SuppressWarnings(PHPMD.CamelCaseMethodName)
- * @SuppressWarnings(PHPMD.TooManyPublicMethods)
- */
 final class AnalyzerTest extends TestCase
 {
     public static function provide_mean_can_return_mean_correctly(): array
@@ -23,11 +19,11 @@ final class AnalyzerTest extends TestCase
             ['data' => [true], 'expect' => null, ],
             ['data' => [false], 'expect' => null, ],
             ['data' => ['0'], 'expect' => null, ],
-            ['data' => [1], 'expect' => 1, ],
+            ['data' => [1], 'expect' => 1.0, ],
             ['data' => [1,2], 'expect' => 1.5, ],
             ['data' => [1,2,'3'], 'expect' => null, ],
             ['data' => [1.5,2.5,3.5], 'expect' => 2.5, ],
-            ['data' => [1,2,3], 'expect' => 2, ],
+            ['data' => [1,2,3], 'expect' => 2.0, ],
             ['data' => [1.5,2.5,3.5,4.5], 'expect' => 3.0, ],
         ];
     }
@@ -47,12 +43,12 @@ final class AnalyzerTest extends TestCase
             ['data' => [null], 'expect' => null, ],
             ['data' => [true], 'expect' => null, ],
             ['data' => [false], 'expect' => null, ],
-            ['data' => [0], 'expect' => 0, ],
+            ['data' => [0], 'expect' => 0.0, ],
             ['data' => [1.2], 'expect' => 0.0, ],
             ['data' => ['0'], 'expect' => null, ],
-            ['data' => [1], 'expect' => 0, ],
+            ['data' => [1], 'expect' => 0.0, ],
             ['data' => [1,2], 'expect' => 0.25, ],
-            ['data' => [-1,1,3,5], 'expect' => 5, ],
+            ['data' => [-1,1,3,5], 'expect' => 5.0, ],
         ];
     }
 
@@ -78,7 +74,7 @@ final class AnalyzerTest extends TestCase
             ['x' => [1], 'y' => [false], 'expect' => null, ],
             ['x' => [1], 'y' => ['1'], 'expect' => null, ],
             ['x' => [1], 'y' => [[]], 'expect' => null, ],
-            ['x' => [1], 'y' => [1], 'expect' => 0, ],
+            ['x' => [1], 'y' => [1], 'expect' => 0.0, ],
             ['x' => [1.5], 'y' => [1.5], 'expect' => 0.0, ],
             ['x' => [1,2], 'y' => [1], 'expect' => null, ],
             ['x' => [1,2,3], 'y' => [4,5,6], 'expect' => 2 / 3, ],

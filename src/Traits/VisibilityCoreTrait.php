@@ -9,9 +9,8 @@ trait VisibilityCoreTrait
 
     /**
      * sets grid of x on
-     * @return  self
      */
-    public function gridXOn()
+    public function gridXOn(): self
     {
         $this->gridX = true;
         return $this;
@@ -19,9 +18,8 @@ trait VisibilityCoreTrait
 
     /**
      * sets grid of x off
-     * @return self
      */
-    public function gridXOff()
+    public function gridXOff(): self
     {
         $this->gridX = false;
         return $this;
@@ -29,9 +27,8 @@ trait VisibilityCoreTrait
 
     /**
      * sets grid of y on
-     * @return self
      */
-    public function gridYOn()
+    public function gridYOn(): self
     {
         $this->gridY = true;
         return $this;
@@ -39,9 +36,8 @@ trait VisibilityCoreTrait
 
     /**
      * sets grid of y off
-     * @return self
      */
-    public function gridYOff()
+    public function gridYOff(): self
     {
         $this->gridY = false;
         return $this;
@@ -49,9 +45,8 @@ trait VisibilityCoreTrait
 
     /**
      * sets legend off
-     * @return self
      */
-    public function legendOff()
+    public function legendOff(): self
     {
         $this->legend = false;
         return $this;

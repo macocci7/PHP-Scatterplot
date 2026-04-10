@@ -35,14 +35,20 @@ You can also retrieve parsed data:
 
 ## 3. Requirements
 
-- PHP 8.1 or later
+- PHP 8.3 or later
 - Imagick PHP Extension
 
     Check with commands:
     ```php
-    php -i | grep imagick
+    (php -m; php -i) | grep imagick
     ```
-- Composer
+- Mbstring PHP Extension
+
+    Check with commands:
+    ```php
+    (php -m; php -i) | grep mbstring
+    ```
+- [Composer](https://getcomposer.org/)
 
 ## 4. Installation
 
@@ -279,7 +285,7 @@ First, prepare a Neon file like this:
     yLimitUpper: 12
     yLimitLower: 0
     plotDiameter: 6
-    #fontPath: 'fonts/ipaexg.ttf' # IPA ex Gothic 00401
+    #fontPath: '/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf'
     #fontSize: 16
     #fontColor: '#333333'
     referenceLineX: true
@@ -416,7 +422,7 @@ Then, run the PHP code.
         'yLimitUpper' => 12,
         'yLimitLower' => 0,
         'plotDiameter' => 6,
-        //'fontPath' => __DIR__ . '/fonts/ipaexg.ttf', // IPA ex Gothic 00401
+        //'fontPath' => '/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf',
         //'fontSize' => 16,
         //'fontColor' => '#333333',
         'referenceLineX' => true,
@@ -653,13 +659,9 @@ Then, run the PHP code.
 
     <a href="examples/img/TransparentBackground.png"><img src="examples/img/TransparentBackground.png" width="300" /></a>
 
-- [ParsedData.php](example/ParsedData.php) >> results in [ParsedData.txt](example/ParsedData.txt)
-- [Matrix.php](example/Matrix.php) >> results in [Matrix.md](example/Matrix.md)
+- [ParsedData.php](examples/ParsedData.php) >> results in [ParsedData.txt](examples/ParsedData.txt)
+- [Matrix.php](examples/Matrix.php) >> results in [Matrix.md](examples/Matrix.md)
 
 ## 7. License
 
 [MIT](LICENSE)
-
-***
-
-Copyright 2023 - 2026 macocci7.

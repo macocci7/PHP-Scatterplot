@@ -4,11 +4,15 @@ namespace Macocci7\PhpScatterplot;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Interfaces\ImageManagerInterface;
 use Intervention\Image\Geometry\Factories\CircleFactory;
 use Intervention\Image\Geometry\Factories\LineFactory;
 use Intervention\Image\Geometry\Factories\RectangleFactory;
 use Intervention\Image\Typography\FontFactory;
 use Macocci7\PhpFrequencyTable\FrequencyTable;
+use Macocci7\PhpScatterplot\Enums\Align;
+use Macocci7\PhpScatterplot\Enums\ImageDriver;
+use Macocci7\PhpScatterplot\Helpers\Color;
 use Macocci7\PhpScatterplot\Helpers\Config;
 use Macocci7\PhpScatterplot\Analyzer;
 
@@ -27,7 +31,7 @@ class Plotter extends Analyzer
     use Traits\VisibilityAppendixTrait;
 
     protected string $imageDriver = 'imagick';
-    protected ImageManager $imageManager;
+    protected ImageManagerInterface $imageManager;
     protected ImageInterface $image;
     /**
      * @var array<int|string, array<string, list<int|float>>>   $layers
@@ -54,14 +58,14 @@ class Plotter extends Analyzer
     {
         parent::__construct();
         $this->loadConf();
-        $this->imageManager = ImageManager::{$this->imageDriver}();
+        $imageDriver = ImageDriver::tryFrom($this->imageDriver)->classname();
+        $this->imageManager = ImageManager::usingDriver($imageDriver);
     }
 
     /**
      * loads config.
-     * @return  void
      */
-    private function loadConf()
+    private function loadConf(): void
     {
         Config::load();
         $props = [
@@ -141,9 +145,8 @@ class Plotter extends Analyzer
 
     /**
      * sets properties for preparation
-     * @return self
      */
-    private function setProperties()
+    private function setProperties(): self
     {
         $this->ft = new FrequencyTable();
         $this->legendCount = count($this->layers);
@@ -202,7 +205,7 @@ class Plotter extends Analyzer
             }
         }
         // Creating an instance of intervention/image.
-        $this->image = $this->imageManager->create($this->canvasWidth, $this->canvasHeight);
+        $this->image = $this->imageManager->createImage($this->canvasWidth, $this->canvasHeight);
         if (self::isColorCode($this->canvasBackgroundColor)) {
             $this->image = $this->image->fill($this->canvasBackgroundColor);
         }
@@ -218,29 +221,24 @@ class Plotter extends Analyzer
 
     /**
      * calculates the x-coordinate in pixels
-     * @param   float   $x
-     * @return  int
      */
-    private function pX(float $x)
+    private function pX(float $x): int
     {
         return (int) ($this->baseX + ($x - $this->gridXMin) * $this->pixPitchX);
     }
 
     /**
      * calculates the y-coordinate in pixels
-     * @param   float   $y
-     * @return  int
      */
-    private function pY(float $y)
+    private function pY(float $y): int
     {
         return (int) ($this->baseY - ($y - $this->gridYMin) * $this->pixPitchY);
     }
 
     /**
      * plots axis
-     * @return  self
      */
-    private function plotAxis()
+    private function plotAxis(): self
     {
         // horizontal axis
         $x1 = (int) $this->pX($this->gridXMin);
@@ -251,7 +249,7 @@ class Plotter extends Analyzer
             function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
                 $line->from($x1, $y1);
                 $line->to($x2, $y2);
-                $line->color($this->axisColor);
+                $line->color(Color::parse($this->axisColor));
                 $line->width($this->axisWidth);
             }
         );
@@ -264,7 +262,7 @@ class Plotter extends Analyzer
             function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
                 $line->from($x1, $y1);
                 $line->to($x2, $y2);
-                $line->color($this->axisColor);
+                $line->color(Color::parse($this->axisColor));
                 $line->width($this->axisWidth);
             }
         );
@@ -273,9 +271,8 @@ class Plotter extends Analyzer
 
     /**
      * plots x-grids
-     * @return  self
      */
-    private function plotGridsX()
+    private function plotGridsX(): self
     {
         if (!$this->gridX) {
             return $this;
@@ -289,7 +286,7 @@ class Plotter extends Analyzer
                 function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
                     $line->from($x1, $y1);
                     $line->to($x2, $y2);
-                    $line->color($this->gridColor);
+                    $line->color(Color::parse($this->gridColor));
                     $line->width($this->gridWidth);
                 }
             );
@@ -299,9 +296,8 @@ class Plotter extends Analyzer
 
     /**
      * plots y-grids
-     * @return  self
      */
-    private function plotGridsY()
+    private function plotGridsY(): self
     {
         if (!$this->gridY) {
             return $this;
@@ -315,7 +311,7 @@ class Plotter extends Analyzer
                 function (LineFactory $line) use ($x1, $y1, $x2, $y2) {
                     $line->from($x1, $y1);
                     $line->to($x2, $y2);
-                    $line->color($this->gridColor);
+                    $line->color(Color::parse($this->gridColor));
                     $line->width($this->gridWidth);
                 }
             );
@@ -325,9 +321,8 @@ class Plotter extends Analyzer
 
     /**
      * plots grid values of x
-     * @return  self
      */
-    private function plotGridValuesX()
+    private function plotGridValuesX(): self
     {
         for ($i = $this->gridXMin; $i <= $this->gridXMax; $i += $this->gridXPitch) {
             $x = $this->pX($i);
@@ -339,9 +334,8 @@ class Plotter extends Analyzer
                 function (FontFactory $font) {
                     $font->filename($this->fontPath);
                     $font->size($this->fontSize);
-                    $font->color($this->fontColor);
-                    $font->align('center');
-                    $font->valign('bottom');
+                    $font->color(Color::parse($this->fontColor));
+                    $font->align(Align::parse('center'), Align::parse('bottom'));
                 }
             );
         }
@@ -350,9 +344,8 @@ class Plotter extends Analyzer
 
     /**
      * plots grid values of y
-     * @return  self
      */
-    private function plotGridValuesY()
+    private function plotGridValuesY(): self
     {
         for ($i = $this->gridYMin; $i <= $this->gridYMax; $i += $this->gridYPitch) {
             $x = (int) ($this->baseX - $this->fontSize * 0.4);
@@ -364,9 +357,8 @@ class Plotter extends Analyzer
                 function (FontFactory $font) {
                     $font->filename($this->fontPath);
                     $font->size($this->fontSize);
-                    $font->color($this->fontColor);
-                    $font->align('right');
-                    $font->valign('bottom');
+                    $font->color(Color::parse($this->fontColor));
+                    $font->align(Align::parse('right'), Align::parse('bottom'));
                 }
             );
         }
@@ -375,9 +367,8 @@ class Plotter extends Analyzer
 
     /**
      * plots x-label
-     * @return  self
      */
-    private function plotLabelX()
+    private function plotLabelX(): self
     {
         $x = (int) ($this->canvasWidth / 2);
         $y = (int) ($this->baseY + (1 - $this->frameYRatio) * $this->canvasHeight / 3);
@@ -388,9 +379,8 @@ class Plotter extends Analyzer
             function (FontFactory $font) {
                 $font->filename($this->fontPath);
                 $font->size($this->fontSize);
-                $font->color($this->fontColor);
-                $font->align('center');
-                $font->valign('bottom');
+                $font->color(Color::parse($this->fontColor));
+                $font->align(Align::parse('center'), Align::parse('bottom'));
             }
         );
         return $this;
@@ -398,13 +388,12 @@ class Plotter extends Analyzer
 
     /**
      * plots y-label
-     * @return  self
      */
-    private function plotLabelY()
+    private function plotLabelY(): self
     {
         $width = $this->canvasHeight;
         $height = (int) ($this->canvasWidth * (1 - $this->frameXRatio) / 3);
-        $image = $this->imageManager->create($width, $height);
+        $image = $this->imageManager->createImage($width, $height);
         $x = (int) ($width / 2);
         $y = (int) (($height + $this->fontSize) / 2);
         $image->text(
@@ -414,21 +403,19 @@ class Plotter extends Analyzer
             function (FontFactory $font) {
                 $font->filename($this->fontPath);
                 $font->size($this->fontSize);
-                $font->color($this->fontColor);
-                $font->align('center');
-                $font->valign('bottom');
+                $font->color(Color::parse($this->fontColor));
+                $font->align(Align::parse('center'), Align::parse('bottom'));
             }
         );
         $image->rotate(90);
-        $this->image->place($image, 'left');
+        $this->image->insert(image: $image, alignment: Align::parse('left'));
         return $this;
     }
 
     /**
      * plots caption
-     * @return  self
      */
-    private function plotCaption()
+    private function plotCaption(): self
     {
         $x = (int) ($this->canvasWidth / 2);
         $y = (int) ($this->canvasHeight * (1 - $this->frameYRatio) / 3);
@@ -439,9 +426,8 @@ class Plotter extends Analyzer
             function (FontFactory $font) {
                 $font->filename($this->fontPath);
                 $font->size($this->fontSize);
-                $font->color($this->fontColor);
-                $font->align('center');
-                $font->valign('bottom');
+                $font->color(Color::parse($this->fontColor));
+                $font->align(Align::parse('center'), Align::parse('bottom'));
             }
         );
         return $this;
@@ -449,9 +435,8 @@ class Plotter extends Analyzer
 
     /**
      * plots layers
-     * @return  self
      */
-    private function plotLayers()
+    private function plotLayers(): self
     {
         if (!self::isValidLayers($this->layers)) {
             return $this;
@@ -470,9 +455,8 @@ class Plotter extends Analyzer
     /**
      * plots layer
      * @param   array<string, array<int|float>> $data
-     * @return  self
      */
-    private function plotLayer(array $data)
+    private function plotLayer(array $data): self
     {
         $count = count($data['x']);
         for ($i = 0; $i < $count; $i++) {
@@ -483,11 +467,8 @@ class Plotter extends Analyzer
 
     /**
      * plots a dot
-     * @param   int|float   $x
-     * @param   int|float   $y
-     * @return  self
      */
-    private function plotXY(int|float $x, int|float $y)
+    private function plotXY(int|float $x, int|float $y): self
     {
         if (!self::isNumber($x) || !self::isNumber($y)) {
             return $this;
@@ -495,11 +476,10 @@ class Plotter extends Analyzer
         $px = $this->pX($x);
         $py = $this->pY($y);
         $this->image->drawCircle(
-            $px,
-            $py,
-            function (CircleFactory $circle) {
+            function (CircleFactory $circle) use ($px, $py) {
+                $circle->at($px, $py);
                 $circle->radius((int) ($this->plotDiameter / 2));
-                $circle->background($this->plotColor);
+                $circle->background(Color::parse($this->plotColor));
             }
         );
         return $this;
@@ -508,9 +488,8 @@ class Plotter extends Analyzer
     /**
      * plots a regression line
      * @param   array<string, array<int|float>>   $layer
-     * @return  self
      */
-    private function plotRegressionLine(array $layer)
+    private function plotRegressionLine(array $layer): self
     {
         if (!$this->regressionLine) {
             return $this;
@@ -532,7 +511,7 @@ class Plotter extends Analyzer
                 $line->from($x1, $y1);
                 $line->to($x2, $y2);
                 $line->width($this->regressionLineWidth);
-                $line->color($this->regressionLineColor);
+                $line->color(Color::parse($this->regressionLineColor));
             }
         );
         return $this;
@@ -540,9 +519,8 @@ class Plotter extends Analyzer
 
     /**
      * plots a reference line of x
-     * @return  self
      */
-    private function plotReferenceLineX()
+    private function plotReferenceLineX(): self
     {
         if (!$this->referenceLineX) {
             return $this;
@@ -556,7 +534,7 @@ class Plotter extends Analyzer
                 $line->from($x1, $y1);
                 $line->to($x2, $y2);
                 $line->width($this->referenceLineXWidth);
-                $line->color($this->referenceLineXColor);
+                $line->color(Color::parse($this->referenceLineXColor));
             }
         );
         return $this;
@@ -564,9 +542,8 @@ class Plotter extends Analyzer
 
     /**
      * plots a reference line of Y
-     * @return  self
      */
-    private function plotReferenceLineY()
+    private function plotReferenceLineY(): self
     {
         if (!$this->referenceLineY) {
             return $this;
@@ -580,7 +557,7 @@ class Plotter extends Analyzer
                 $line->from($x1, $y1);
                 $line->to($x2, $y2);
                 $line->width($this->referenceLineYWidth);
-                $line->color($this->referenceLineYColor);
+                $line->color(Color::parse($this->referenceLineYColor));
             }
         );
         return $this;
@@ -588,9 +565,8 @@ class Plotter extends Analyzer
 
     /**
      * plots specification limit lines of X
-     * @return  self
      */
-    private function plotSpecificationLimitX()
+    private function plotSpecificationLimitX(): self
     {
         if (!$this->specificationLimitX) {
             return $this;
@@ -605,7 +581,7 @@ class Plotter extends Analyzer
                 $line->from($x1, $y1);
                 $line->to($x2, $y2);
                 $line->width($this->specificationLimitXWidth);
-                $line->color($this->specificationLimitXColor);
+                $line->color(Color::parse($this->specificationLimitXColor));
             }
         );
         // upper limit
@@ -616,7 +592,7 @@ class Plotter extends Analyzer
                 $line->from($x1, $y1);
                 $line->to($x2, $y2);
                 $line->width($this->specificationLimitXWidth);
-                $line->color($this->specificationLimitXColor);
+                $line->color(Color::parse($this->specificationLimitXColor));
             }
         );
         return $this;
@@ -624,9 +600,8 @@ class Plotter extends Analyzer
 
     /**
      * plots specification limit lines of y
-     * @return  self
      */
-    private function plotSpecificationLimitY()
+    private function plotSpecificationLimitY(): self
     {
         if (!$this->specificationLimitY) {
             return $this;
@@ -641,7 +616,7 @@ class Plotter extends Analyzer
                 $line->from($x1, $y1);
                 $line->to($x2, $y2);
                 $line->width($this->specificationLimitYWidth);
-                $line->color($this->specificationLimitYColor);
+                $line->color(Color::parse($this->specificationLimitYColor));
             }
         );
         // upper limit
@@ -652,7 +627,7 @@ class Plotter extends Analyzer
                 $line->from($x1, $y1);
                 $line->to($x2, $y2);
                 $line->width($this->specificationLimitYWidth);
-                $line->color($this->specificationLimitYColor);
+                $line->color(Color::parse($this->specificationLimitYColor));
             }
         );
         return $this;
@@ -660,9 +635,8 @@ class Plotter extends Analyzer
 
     /**
      * plots legends
-     * @return  self
      */
-    private function plotLegend()
+    private function plotLegend(): self
     {
         if (!$this->legend) {
             return $this;
@@ -674,12 +648,11 @@ class Plotter extends Analyzer
         $x2 = $x1 + $this->legendWidth;
         $y2 = (int) ($y1 + $this->legendFontSize * 1.2 * $this->legendCount + 8);
         $this->image->drawRectangle(
-            $x1,
-            $y1,
             function (RectangleFactory $rectangle) use ($x1, $y1, $x2, $y2) {
+                $rectangle->at($x1, $y1);
                 $rectangle->size($x2 - $x1, $y2 - $y1);
-                $rectangle->background($this->canvasBackgroundColor);
-                $rectangle->border($this->axisColor, $this->axisWidth);
+                $rectangle->background(Color::parse($this->canvasBackgroundColor));
+                $rectangle->border(Color::parse($this->axisColor), $this->axisWidth);
             }
         );
         for ($i = 0; $i < $this->legendCount; $i++) {
@@ -693,12 +666,11 @@ class Plotter extends Analyzer
             $x2 = (int) ($x1 + 20);
             $y2 = (int) ($y1 + $this->legendFontSize);
             $this->image->drawRectangle(
-                $x1,
-                $y1,
                 function (RectangleFactory $rectangle) use ($i, $x1, $y1, $x2, $y2) {
+                    $rectangle->at($x1, $y1);
                     $rectangle->size($x2 - $x1, $y2 - $y1);
-                    $rectangle->background($this->colors[$i]);
-                    $rectangle->border($this->axisColor, 1);
+                    $rectangle->background(Color::parse($this->colors[$i]));
+                    $rectangle->border(Color::parse($this->axisColor), 1);
                 }
             );
             $x = $x2 + 4;
@@ -710,9 +682,8 @@ class Plotter extends Analyzer
                 function (FontFactory $font) {
                     $font->filename($this->fontPath);
                     $font->size($this->legendFontSize);
-                    $font->color($this->fontColor);
-                    $font->align('left');
-                    $font->valign('top');
+                    $font->color(Color::parse($this->fontColor));
+                    $font->align(Align::parse('left'), Align::parse('top'));
                 }
             );
         }
@@ -721,11 +692,9 @@ class Plotter extends Analyzer
 
     /**
      * creates a scatter plot image and save it
-     * @param   string  $filePath
-     * @return  self
      * @thrown  \Exception
      */
-    public function create(string $filePath)
+    public function create(string $filePath): self
     {
         if (strlen($filePath) == 0) {
             throw new \Exception("Empty string specified for file path.");

@@ -16,7 +16,7 @@ xLimitLower: 0
 yLimitUpper: 12
 yLimitLower: 0
 plotDiameter: 6
-#fontPath: 'fonts/ipaexg.ttf' # IPA ex Gothic 00401
+#fontPath: '/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf'
 #fontSize: 16
 #fontColor: '#333333'
 referenceLineX: true

@@ -33,10 +33,8 @@ trait StyleCoreTrait
 
     /**
      * sets the background color of the canvas
-     * @param   string|null $color = null (null results in transparent)
-     * @return  self
      */
-    public function bgcolor(string|null $color = null)
+    public function bgcolor(string|null $color = null): self
     {
         if (!self::isColorCode($color) && !is_null($color)) {
             throw new \Exception("param must be null or color code (in '#rgb' or '#rrggbb' format).");
@@ -47,12 +45,9 @@ trait StyleCoreTrait
 
     /**
      * sets the width and color of the axis
-     * @param   int         $width
-     * @param   string|null $color
-     * @return  self
      * @thrown  \Exception
      */
-    public function axis(int $width, string|null $color = null)
+    public function axis(int $width, string|null $color = null): self
     {
         if ($width < 1) {
             throw new \Exception("width must be positive integer.");
@@ -69,12 +64,9 @@ trait StyleCoreTrait
 
     /**
      * sets the width and color of the grids
-     * @param   int         $width
-     * @param   string|null $color
-     * @return  self
      * @thrown  \Exception
      */
-    public function grid(int $width, string|null $color = null)
+    public function grid(int $width, string|null $color = null): self
     {
         if ($width < 1) {
             throw new \Exception("width must be positive integer.");
@@ -91,10 +83,8 @@ trait StyleCoreTrait
 
     /**
      * sets the grid pitch of x
-     * @param   int|float   $pitch
-     * @return  self
      */
-    public function gridXPitch(int|float $pitch)
+    public function gridXPitch(int|float $pitch): self
     {
         if ($pitch <= 0) {
             throw new \Exception("specify positive integer.");
@@ -105,10 +95,8 @@ trait StyleCoreTrait
 
     /**
      * sets the grid pitch of y
-     * @param   int|float   $pitch
-     * @return  self
      */
-    public function gridYPitch(int|float $pitch)
+    public function gridYPitch(int|float $pitch): self
     {
         if ($pitch <= 0) {
             throw new \Exception("specify positive integer.");
@@ -120,10 +108,9 @@ trait StyleCoreTrait
     /**
      * sets the color of dots
      * @param   string[]    $colors
-     * @return  self
      * @thrown  \Exception
      */
-    public function colors(array $colors)
+    public function colors(array $colors): self
     {
         if (!self::isColorCodesAll($colors)) {
             throw new \Exception("color codes must be in '#rgb' or '#rrggbb' format.");
@@ -138,11 +125,9 @@ trait StyleCoreTrait
 
     /**
      * sets the size (diameter) of dots in pixels
-     * @param   int     $size
-     * @return  self
      * @thrown  \Exception
      */
-    public function plotSize(int $size)
+    public function plotSize(int $size): self
     {
         if ($size < 1) {
             throw new \Exception("size must be positive integer.");
@@ -153,11 +138,9 @@ trait StyleCoreTrait
 
     /**
      * sets the font path
-     * @param   string  $path
-     * @return  self
      * @thrown  \Exception
      */
-    public function fontPath(string $path)
+    public function fontPath(string $path): self
     {
         if (!file_exists($path)) {
             throw new \Exception("File does not exists.");
@@ -175,11 +158,9 @@ trait StyleCoreTrait
 
     /**
      * sets the font size
-     * @param   int|float   $size
-     * @return  self
      * @thrown  \Exception
      */
-    public function fontSize(int|float $size)
+    public function fontSize(int|float $size): self
     {
         if ($size < 6) {
             throw new \Exception("Size must be 6 or above.");
@@ -190,11 +171,9 @@ trait StyleCoreTrait
 
     /**
      * sets the font color
-     * @param   string  $color
-     * @return  self
      * @thrown  \Exception
      */
-    public function fontColor(string $color)
+    public function fontColor(string $color): self
     {
         if (!self::isColorCode($color)) {
             throw new \Exception("Color code must be in '#rgb' or '#rrggbb' format.");

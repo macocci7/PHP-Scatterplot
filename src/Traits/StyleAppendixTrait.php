@@ -46,14 +46,13 @@ trait StyleAppendixTrait
 
     /**
      * sets x, width and color of the reference line of x
-     * @param   int|float   $x
-     * @param   int         $width
-     * @param   string      $color = '#0000ff'
-     * @return  self
      * @thrown  \Exception
      */
-    public function referenceLineX(int|float $x, int $width = 1, string $color = '#0000ff')
-    {
+    public function referenceLineX(
+        int|float $x,
+        int $width = 1,
+        string $color = '#0000ff',
+    ): self {
         if ($width < 1) {
             throw new \Exception("Width must be positive integer.");
         }
@@ -69,14 +68,13 @@ trait StyleAppendixTrait
 
     /**
      * sets y, width and color of the reference line of y
-     * @param   int|float   $y
-     * @param   int         $width
-     * @param   string      $color = '#0000ff'
-     * @return  self
      * @thrown  \Exception
      */
-    public function referenceLineY(int|float $y, int $width = 1, string $color = '#0000ff')
-    {
+    public function referenceLineY(
+        int|float $y,
+        int $width = 1,
+        string $color = '#0000ff',
+    ): self {
         if ($width < 1) {
             throw new \Exception("Width must be positive integer.");
         }
@@ -92,15 +90,14 @@ trait StyleAppendixTrait
 
     /**
      * sets the specification limits of x
-     * @param   int|float   $lower
-     * @param   int|float   $upper
-     * @param   int         $width = 1
-     * @param   string      $color = '#ff00ff'
-     * @return  self
      * @thrown  \Exception
      */
-    public function specificationLimitX(int|float $lower, int|float $upper, int $width = 1, string $color = '#ff00ff')
-    {
+    public function specificationLimitX(
+        int|float $lower,
+        int|float $upper,
+        int $width = 1,
+        string $color = '#ff00ff',
+    ): self {
         if ($lower >= $upper) {
             throw new \Exception("The lower and upper limits are opposite in size.");
         }
@@ -108,7 +105,7 @@ trait StyleAppendixTrait
             throw new \Exception("Width must be positive integer.");
         }
         if (!self::isColorCode($color)) {
-            throw new \Exception("Color code msut be in '#rgb' or '#rrggbb' format.");
+            throw new \Exception("Color code must be in '#rgb' or '#rrggbb' format.");
         }
         $this->specificationLimitX = true;
         $this->specificationLimitXLower = $lower;
@@ -120,15 +117,14 @@ trait StyleAppendixTrait
 
     /**
      * sets the specification limits of y
-     * @param   int|float   $lower
-     * @param   int|float   $upper
-     * @param   int         $width = 1
-     * @param   string      $color = '#ff00ff'
-     * @return  self
      * @thrown  \Exception
      */
-    public function specificationLimitY(int|float $lower, int|float $upper, int $width = 1, string $color = '#ff00ff')
-    {
+    public function specificationLimitY(
+        int|float $lower,
+        int|float $upper,
+        int $width = 1,
+        string $color = '#ff00ff',
+    ): self {
         if ($lower >= $upper) {
             throw new \Exception("The lower and upper limits are opposite in size.");
         }
@@ -136,7 +132,7 @@ trait StyleAppendixTrait
             throw new \Exception("Width must be positive integer.");
         }
         if (!self::isColorCode($color)) {
-            throw new \Exception("Color code msut be in '#rgb' or '#rrggbb' format.");
+            throw new \Exception("Color code must be in '#rgb' or '#rrggbb' format.");
         }
         $this->specificationLimitY = true;
         $this->specificationLimitYLower = $lower;
@@ -148,12 +144,10 @@ trait StyleAppendixTrait
 
     /**
      * sets the width and color of the regression line
-     * @param   int         $width
      * @param   string[]    $colors
-     * @return  self
      * @thrown  \Exception
      */
-    public function regressionLine(int $width, array $colors)
+    public function regressionLine(int $width, array $colors): self
     {
         if ($width < 1) {
             throw new \Exception("Width must be positive integer.");
